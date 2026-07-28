@@ -19,7 +19,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<PublicTab>('home');
   const [flyerData, setFlyerData] = useState<FlyerData>(initialFlyerData);
   const [theme, setTheme] = useState<FlyerTheme>('ruby-red');
-  const [format, setFormat] = useState<FlyerFormat>('poster-story');
+  const [format, setFormat] = useState<FlyerFormat>('horizontal-banner');
   const [showPdfCatalog, setShowPdfCatalog] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const [showProposalModal, setShowProposalModal] = useState<boolean>(false);

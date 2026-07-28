@@ -196,20 +196,9 @@ Escribime directamente por WhatsApp: ${whatsappDirectLink}`;
 
   const themeClasses = getThemeClasses();
 
-  // Format styles
+  // Format styles - Fixed as horizontal banner
   const getFormatContainerClass = () => {
-    switch (format) {
-      case 'poster-story':
-        return 'max-w-md w-full aspect-[9/16] min-h-[720px]';
-      case 'square-post':
-        return 'max-w-xl w-full aspect-square min-h-[580px]';
-      case 'horizontal-banner':
-        return 'max-w-4xl w-full min-h-[420px]';
-      case 'business-card':
-        return 'max-w-lg w-full aspect-[1.75/1] min-h-[320px]';
-      default:
-        return 'max-w-md w-full aspect-[9/16] min-h-[720px]';
-    }
+    return 'max-w-4xl w-full min-h-[420px]';
   };
 
   return (
@@ -287,35 +276,6 @@ Escribime directamente por WhatsApp: ${whatsappDirectLink}`;
               </div>
               <span className="uppercase tracking-wide">Enviar WhatsApp</span>
             </motion.a>
-          </div>
-        </div>
-
-        {/* Style Controls (Aspect Ratio Formats) */}
-        <div className="mt-5 pt-4 border-t border-zinc-800">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-            <label className="text-xs font-black uppercase tracking-wider text-zinc-400">
-              Formato de Publicación:
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { id: 'poster-story', label: 'Historia / Estado (9:16)' },
-                { id: 'square-post', label: 'Post Cuadrado (1:1)' },
-                { id: 'horizontal-banner', label: 'Banner Horizontal' },
-                { id: 'business-card', label: 'Tarjeta Digital' }
-              ].map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => setFormat(item.id as FlyerFormat)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition border ${
-                    format === item.id 
-                      ? 'bg-red-950/90 text-white border-red-500 ring-2 ring-red-500/40 shadow-md' 
-                      : 'bg-zinc-950/70 text-zinc-400 border-zinc-800 hover:text-zinc-200 hover:bg-zinc-900'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </motion.div>
