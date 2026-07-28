@@ -59,7 +59,7 @@ export const portfolioModules: SystemModule[] = [
       metrics: [
         { label: 'Mesas Ocupadas', value: '3 / 12', color: 'text-amber-400' },
         { label: 'Comandas Activas', value: '8', color: 'text-emerald-400' },
-        { label: 'Mozo Activo', value: 'Enzo Gilardi', color: 'text-rose-400' }
+        { label: 'Mozo Activo', value: 'Enzo Girardi', color: 'text-rose-400' }
       ],
       tables: [
         { id: 1, name: 'Mesa 1', status: 'libre' },
@@ -329,7 +329,7 @@ export const portfolioModules: SystemModule[] = [
       metrics: [
         { label: 'Rubros Soportados', value: '14 Módulos', color: 'text-blue-400' },
         { label: 'Facturación ARCA', value: 'Comprobantes A/B/C', color: 'text-emerald-400' },
-        { label: 'Soporte', value: 'Anahí & Enzo Gilardi', color: 'text-rose-400' }
+        { label: 'Soporte', value: 'Anahí Gilardi & Enzo Girardi', color: 'text-rose-400' }
       ],
       items: [
         { id: 'm1', name: 'Gastronomía & Comandas', category: '10 Módulos', price: 'Incluido', status: 'Mesas, comandas y despacho', tag: 'Popular' },

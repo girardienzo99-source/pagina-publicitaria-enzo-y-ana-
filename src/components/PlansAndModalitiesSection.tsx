@@ -86,7 +86,7 @@ export const PlansAndModalitiesSection: React.FC<PlansAndModalitiesSectionProps>
           Elegí la modalidad perfecta para la escala de tu negocio
         </h3>
         <p className="text-xs sm:text-sm text-rose-200/70 font-medium">
-          Todos los planes incluyen diseño responsivo, instalación, configuración personalizada, carga inicial de datos y soporte posventa directo con Anahí & Enzo Gilardi.
+          Todos los planes incluyen diseño responsivo, instalación, configuración personalizada, carga inicial de datos y soporte posventa directo con Anahí Gilardi & Enzo Girardi (Programadores).
         </p>
       </div>
 

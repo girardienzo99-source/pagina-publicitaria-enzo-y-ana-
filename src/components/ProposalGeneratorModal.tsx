@@ -148,7 +148,7 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
                 </h1>
               </div>
               <p className="text-xs font-bold text-slate-600 mt-1 uppercase tracking-wider">
-                Anahí & Enzo Gilardi • Desarrollo Web & Sistemas A Medida
+                Anahí Gilardi & Enzo Girardi • Programadores Web & Software A Medida
               </p>
             </div>
 
@@ -233,7 +233,7 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
           {/* Signature Footer */}
           <div className="pt-8 border-t-2 border-slate-200 flex justify-between items-end text-xs">
             <div>
-              <p className="font-bold text-slate-900">Desarrollado por Tu Sitio Web Río Cuarto (Anahí & Enzo Gilardi)</p>
+              <p className="font-bold text-slate-900">Desarrollado por Tu Sitio Web Río Cuarto (Anahí Gilardi & Enzo Girardi)</p>
               <p className="text-slate-500">Programación e Integración de Sistemas</p>
             </div>
             <div className="text-right">

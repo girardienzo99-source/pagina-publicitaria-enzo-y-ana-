@@ -128,7 +128,7 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
           Presupuestá tu Sitio Web o Sistema a Medida
         </h1>
         <p className="text-sm sm:text-base text-rose-200/80 max-w-xl mx-auto">
-          Seleccioná tu rubro y las funciones que necesita tu negocio para armar una estimación funcional y enviársela directo a Anahí & Enzo Gilardi por WhatsApp.
+          Seleccioná tu rubro y las funciones que necesita tu negocio para armar una estimación funcional y enviársela directo a Anahí Gilardi & Enzo Girardi (Programadores) por WhatsApp.
         </p>
       </motion.div>
 
@@ -390,7 +390,7 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
             </button>
 
             <p className="text-[11px] text-center text-slate-500">
-              Al hacer clic se abrirá WhatsApp con los detalles ya cargados para enviarle a Anahí & Enzo Gilardi ({phone}).
+              Al hacer clic se abrirá WhatsApp con los detalles ya cargados para enviarle a Anahí Gilardi & Enzo Girardi ({phone}).
             </p>
 
           </div>

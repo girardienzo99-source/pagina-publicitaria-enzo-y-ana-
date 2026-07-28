@@ -430,7 +430,7 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
 
           {/* Footer note */}
           <div className="text-center text-[10px] text-slate-400 font-mono">
-            Tu Sitio Web Río Cuarto (Anahí & Enzo Gilardi) • Río Cuarto, Córdoba & Atención a todo el país.
+            Tu Sitio Web Río Cuarto (Anahí Gilardi & Enzo Girardi) • Río Cuarto, Córdoba & Atención a todo el país.
           </div>
 
         </div>

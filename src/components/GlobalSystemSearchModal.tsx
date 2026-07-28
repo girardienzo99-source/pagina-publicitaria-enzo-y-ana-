@@ -164,7 +164,7 @@ export const GlobalSystemSearchModal: React.FC<GlobalSystemSearchModalProps> = (
                   No encontramos resultados para "{searchTerm}"
                 </p>
                 <p className="text-xs max-w-sm mx-auto">
-                  Anahí & Enzo Gilardi pueden desarrollar la función que necesitás 100% a medida de tu negocio.
+                  Anahí Gilardi & Enzo Girardi (Programadores) pueden desarrollar la función que necesitás 100% a medida de tu negocio.
                 </p>
               </div>
             )}

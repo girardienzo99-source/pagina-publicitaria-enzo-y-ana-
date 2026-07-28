@@ -43,7 +43,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ phone, onO
   
   // Interactive mock state for demoing the resto/ecommerce/saas software live!
   const [activeTableId, setActiveTableId] = useState<number | null>(2);
-  const [selectedWaiter, setSelectedWaiter] = useState<string>('Enzo Gilardi');
+  const [selectedWaiter, setSelectedWaiter] = useState<string>('Enzo Girardi');
   const [selectedTagFilter, setSelectedTagFilter] = useState<string>('todos');
   const [orderItems, setOrderItems] = useState<{ name: string; price: string }[]>([
     { name: 'Fernet Branca Estilo Patrón', price: '$4.500' },
