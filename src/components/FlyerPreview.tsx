@@ -233,7 +233,7 @@ Escribime directamente por WhatsApp: ${whatsappDirectLink}`;
               </h1>
             </div>
             <p className="text-xs sm:text-sm text-rose-200/80 mt-1 font-medium">
-              Sitios web y sistemas creados a medida por <strong className="text-white font-extrabold">Tu Sitio Web Río Cuarto (Anahí & Enzo Gilardi)</strong>. Listo para consultar, descargar folleto o enviar por WhatsApp.
+              Sitios web y sistemas creados a medida por <strong className="text-white font-extrabold">Tu Sitio Web Río Cuarto (Anahí Gilardi & Enzo Girardi)</strong>. Listo para consultar, descargar folleto o enviar por WhatsApp.
             </p>
           </div>
 
@@ -561,7 +561,7 @@ Escribime directamente por WhatsApp: ${whatsappDirectLink}`;
 
           {/* Bottom Footer Bar */}
           <div className="mt-6 text-center text-[11px] text-rose-200/50 font-medium">
-            Diseño Web & Sistemas 100% personalizados • Anahí & Enzo Gilardi • {flyerData.email}
+            Diseño Web & Sistemas 100% personalizados • Anahí Gilardi & Enzo Girardi (Programadores) • {flyerData.email}
           </div>
 
         </motion.div>

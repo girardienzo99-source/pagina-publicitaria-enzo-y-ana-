@@ -71,7 +71,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                 </span>
               </div>
               <p className="text-xs text-rose-200/70 font-semibold hidden sm:block">
-                Anahí & Enzo Gilardi • Desarrollo Web & Sistemas
+                Anahí Gilardi & Enzo Girardi • Programadores Web & Software
               </p>
             </div>
           </div>

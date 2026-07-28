@@ -24,7 +24,7 @@ export const DirectContactBar: React.FC<DirectContactBarProps> = ({
           <span className="w-2.5 h-2.5 rounded-full bg-rose-400 animate-pulse shrink-0" />
           <div className="leading-tight">
             <span className="font-extrabold text-white text-xs sm:text-sm block">Tu Sitio Web Río Cuarto</span>
-            <span className="text-[11px] text-rose-300/80 font-medium hidden sm:block">Anahí & Enzo Gilardi</span>
+            <span className="text-[11px] text-rose-300/80 font-medium hidden sm:block">Anahí Gilardi & Enzo Girardi (Programadores)</span>
           </div>
         </div>
 

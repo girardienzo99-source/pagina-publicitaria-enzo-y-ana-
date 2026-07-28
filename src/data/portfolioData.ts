@@ -2,7 +2,7 @@ import { FlyerData, SystemModule, IndustryOption } from '../types';
 
 export const initialFlyerData: FlyerData = {
   developerName: 'Tu Sitio Web Río Cuarto',
-  role: 'Desarrollo Web & Software a Medida (Anahí & Enzo Gilardi)',
+  role: 'Programadores Web & Desarrolladores de Software (Anahí Gilardi & Enzo Girardi)',
   hookTitle: '¿LENTITUD EN TU NEGOCIO? MULTIPLICÁ TUS VENTAS HOY',
   slogan: 'Diseñamos tu sitio web y programas a medida que automatizan tu gestión, eliminan errores y ordenan tus ventas',
   phone: '5493584860640',
@@ -24,7 +24,7 @@ export const initialFlyerData: FlyerData = {
     '100% Personalizado a la medida de tu negocio',
     'CERO Comisiones por venta ni cuotas abusivas',
     'Diseño moderno, rápido y adaptado a celulares',
-    'Atención y soporte directo con Anahí & Enzo Gilardi'
+    'Atención y soporte directo con Anahí Gilardi & Enzo Girardi (Programadores)'
   ],
   promoBadge: '🔥 ¡DEMO GRATUITA Y ASESORAMIENTO SIN CARGO! 🔥',
   guaranteeText: 'Garantía total de satisfacción + Instalación y capacitación guiada',

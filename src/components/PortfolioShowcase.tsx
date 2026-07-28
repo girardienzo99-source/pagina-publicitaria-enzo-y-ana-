@@ -76,7 +76,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ phone, onO
         <div className="flex items-center justify-center space-x-2">
           <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-red-600/20 text-red-300 border border-red-500/30 text-xs font-black uppercase tracking-wider">
             <Sparkles className="w-4 h-4 text-red-400" />
-            <span>Proyectos Realizados por Tu Sitio Web Río Cuarto (Anahí & Enzo Gilardi)</span>
+            <span>Proyectos Realizados por Tu Sitio Web Río Cuarto (Anahí Gilardi & Enzo Girardi)</span>
           </span>
         </div>
 
@@ -599,7 +599,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ phone, onO
               rel="noopener noreferrer"
               className="text-emerald-400 font-bold hover:underline flex items-center space-x-1"
             >
-              <span>Consultar a Anahí & Enzo Gilardi</span>
+              <span>Consultar a Anahí Gilardi & Enzo Girardi (Programadores)</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>

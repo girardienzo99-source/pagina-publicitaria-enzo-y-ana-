@@ -208,7 +208,7 @@ export default function App() {
 
       {/* Discreet Footer Link for Internal Admin Panel Access */}
       <footer className="relative z-10 border-t border-rose-900/20 mt-12 pt-8 pb-16 text-center text-xs text-rose-200/50 space-y-2">
-        <p>Tu Sitio Web Río Cuarto — Anahí & Enzo Gilardi © 2026. Todos los derechos reservados.</p>
+        <p>Tu Sitio Web Río Cuarto — Anahí Gilardi & Enzo Girardi (Programadores) © 2026. Todos los derechos reservados.</p>
         <button
           onClick={() => setActiveTab('admin')}
           className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-900/40 text-[11px] font-bold transition"
