@@ -1,0 +1,22 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+// Validar que las credenciales no estén vacías y tengan un formato básico
+export const isSupabaseConfigured = 
+  supabaseUrl.trim() !== '' && 
+  supabaseAnonKey.trim() !== '' && 
+  supabaseUrl.startsWith('http');
+
+if (!isSupabaseConfigured) {
+  console.warn(
+    '⚠️ Supabase no está configurado o las variables VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY faltan en tu .env. ' +
+    'La aplicación funcionará en modo local/offline.'
+  );
+}
+
+// Crear el cliente solo si está configurado para evitar excepciones en la inicialización
+export const supabase = isSupabaseConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey) 
+  : null;

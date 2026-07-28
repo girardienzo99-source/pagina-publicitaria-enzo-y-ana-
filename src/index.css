@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
+  --font-heading: "Outfit", sans-serif;
+}
+
+/* Custom Color Utilities for Dark Burgundy (Bordó Oscuro) & Soft Eye-Catching Accents */
+:root {
+  --color-burgundy-base: #14040a;
+  --color-burgundy-card: rgba(34, 9, 20, 0.88);
+  --color-burgundy-border: rgba(186, 58, 98, 0.28);
+  --color-rose-soft: #e892a8;
+  --color-rose-vibrant: #d44d71;
+  --color-champagne-soft: #f3c99f;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  background-color: var(--color-burgundy-base);
+  color: #f8fafc;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Universal Touch Target Guidelines (Min 44px for accessibility) */
+button, 
+a.btn, 
+input[type="text"], 
+input[type="email"], 
+input[type="tel"], 
+input[type="number"], 
+select {
+  min-height: 44px;
+}
+
+/* Glassmorphism custom helper utilities */
+.glass-panel {
+  background: rgba(28, 7, 17, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(232, 146, 168, 0.18);
+}
+
+.glass-panel-light {
+  background: rgba(255, 245, 248, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(138, 28, 62, 0.15);
+}
+
+.glow-burgundy {
+  box-shadow: 0 0 35px -8px rgba(186, 58, 98, 0.25);
+}
+
+.glow-rose-soft {
+  box-shadow: 0 0 25px -5px rgba(232, 146, 168, 0.2);
+}
+
+/* Accessibility Focus States */
+*:focus-visible {
+  outline: 2px solid #e892a8;
+  outline-offset: 2px;
+}

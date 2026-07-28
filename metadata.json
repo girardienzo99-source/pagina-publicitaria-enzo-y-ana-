@@ -1,0 +1,6 @@
+{
+  "name": "Enzo Girardi - Programas Personalizados",
+  "description": "Publicidad oficial, portafolio de programas y cotizador de software a medida por Enzo Girardi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
