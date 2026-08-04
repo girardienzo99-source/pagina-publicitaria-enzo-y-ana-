@@ -379,3 +379,46 @@ export const industryOptions: IndustryOption[] = [
     recommendedFeatures: ['contratos', 'liquidacion-expensas', 'honorarios', 'documentos-pdf']
   }
 ];
+
+export interface CompanyMetric {
+  label: string;
+  value: string;
+  subtext: string;
+  iconName: string;
+}
+
+export const companyMetrics: CompanyMetric[] = [
+  { label: 'Facturación ARCA', value: '+150.000', subtext: 'Comprobantes A, B y C emitidos', iconName: 'FileCheck' },
+  { label: 'Comercios & Pymes', value: '+40', subtext: 'Automatizados en Río Cuarto y la región', iconName: 'Building' },
+  { label: 'Disponibilidad', value: '99.9%', subtext: 'Acceso seguro 24/7 sin interrupciones', iconName: 'ShieldCheck' },
+  { label: 'Cero Comisiones', value: '$0 ARS', subtext: 'Sin porcentaje por venta ni cuotas ocultas', iconName: 'Sparkles' }
+];
+
+export interface ComparisonItem {
+  feature: string;
+  withoutSystem: string;
+  withSystem: string;
+}
+
+export const beforeAfterComparison: ComparisonItem[] = [
+  {
+    feature: 'Control de Arqueo de Caja',
+    withoutSystem: 'Faltantes involuntarios al cerrar turno y diferencias de efectivo sin justificar.',
+    withSystem: 'Arqueo de caja automático en 1 click con reporte exacto por cajero y método de pago.'
+  },
+  {
+    feature: 'Facturación Electrónica ARCA',
+    withoutSystem: 'Cargar facturas manualmente en AFIP/ARCA perdiendo hasta 10 minutos por cliente.',
+    withSystem: 'Emisión instantánea de comprobantes A, B y C integrada a la caja en solo 2 segundos.'
+  },
+  {
+    feature: 'Gestión de Stock & Talles',
+    withoutSystem: 'Planillas de Excel desactualizadas y pérdida de clientes por falta de prenda/producto.',
+    withSystem: 'Descuento de stock en tiempo real, matriz de talles/colores y alertas de reposición.'
+  },
+  {
+    feature: 'Atención al Cliente & Comandas',
+    withoutSystem: 'Anotaciones en papel que se pierden, demoras en cocina y errores de comandas.',
+    withSystem: 'Mozos en turno tomando comanda en tablet con impresión directa en cocina y barra.'
+  }
+];

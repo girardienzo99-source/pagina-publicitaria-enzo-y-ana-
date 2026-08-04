@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { TrendingUp, DollarSign, Clock, AlertTriangle, ShieldCheck, MessageCircle, ArrowRight } from 'lucide-react';
 
+import { getWhatsAppUrl } from '../lib/whatsapp';
+
 interface RoiCalculatorSectionProps {
   phone: string;
 }
 
-export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = ({ phone }) => {
+export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = () => {
   const [hoursPerDay, setHoursPerDay] = useState<number>(2.5);
   const [chargingErrorsPerMonth, setChargingErrorsPerMonth] = useState<number>(45000);
   const [lostSalesPerMonth, setLostSalesPerMonth] = useState<number>(85000);
@@ -20,7 +22,7 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = ({ phon
   const estimatedPaybackMonths = Math.max(1, Math.round(350000 / totalMonthlySavings * 10) / 10);
 
   const whatsappMessage = `Hola Anahí y Enzo! Usé el simulador de ROI en Tu Sitio Web Río Cuarto y calculé que un desarrollo a medida me ahorraría aproximadamente $${totalMonthlySavings.toLocaleString('es-AR')} al mes (${monthlyHoursSaved} hs de trabajo). Me gustaría cotizar para mi negocio.`;
-  const whatsappUrl = `https://wa.me/549${phone}?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappUrl = getWhatsAppUrl(whatsappMessage);
 
   return (
     <motion.div 

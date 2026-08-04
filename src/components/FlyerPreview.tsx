@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { FlyerData, FlyerTheme, FlyerFormat } from '../types';
+import { companyMetrics, beforeAfterComparison } from '../data/portfolioData';
+import { FileCheck, XCircle } from 'lucide-react';
 
 interface FlyerPreviewProps {
   flyerData: FlyerData;
@@ -280,6 +282,31 @@ Escribime directamente por WhatsApp: ${whatsappDirectLink}`;
         </div>
       </motion.div>
 
+      {/* Metrics & Proof Stats Bar */}
+      <motion.div 
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, delay: 0.05 }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
+      >
+        {companyMetrics.map((metric, i) => (
+          <div 
+            key={i} 
+            className="bg-[#240A15]/90 border border-rose-900/40 rounded-2xl p-4 text-center space-y-1 shadow-xl hover:border-rose-500/50 transition group"
+          >
+            <div className="text-xl sm:text-2xl font-black text-white group-hover:text-rose-300 transition">
+              {metric.value}
+            </div>
+            <div className="text-xs font-bold text-rose-300 uppercase tracking-wide">
+              {metric.label}
+            </div>
+            <div className="text-[11px] text-rose-200/60 leading-tight">
+              {metric.subtext}
+            </div>
+          </div>
+        ))}
+      </motion.div>
+
       {/* FLYER DISPLAY STAGE */}
       <div className="flex justify-center items-center py-4 print:p-0 print:m-0">
         <motion.div
@@ -355,7 +382,7 @@ Escribime directamente por WhatsApp: ${whatsappDirectLink}`;
               </ul>
             </div>
 
-            {/* REAL PROJECTS & PRODUCTS SHOWCASE (Requested by user) */}
+            {/* REAL PROJECTS & PRODUCTS SHOWCASE */}
             <div className={`p-4 sm:p-5 rounded-2xl border ${themeClasses.cardBg}`}>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-xs font-black uppercase tracking-wider text-red-400 flex items-center space-x-2">
@@ -363,140 +390,102 @@ Escribime directamente por WhatsApp: ${whatsappDirectLink}`;
                   <span>Trabajos Realizados & Programas Creados:</span>
                 </h3>
                 <button
-                  type="button"
                   onClick={onNavigateToPortfolio}
-                  className="text-[11px] font-black text-amber-400 hover:underline flex items-center space-x-1"
+                  className="text-xs font-bold text-rose-300 hover:text-white flex items-center space-x-1 transition"
                 >
-                  <span>Ver Todos Demo →</span>
+                  <span>Ver todos</span>
+                  <ExternalLink className="w-3 h-3" />
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {[
-                  {
-                    title: 'El Patrón - Gastronomía',
-                    tag: 'Mesas & Comandas',
-                    sub: 'Carta Vinos, Tragos, Carnes & Comanda Mozo',
-                    url: 'restaurante-potro.vercel.app',
-                    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80'
-                  },
-                  {
-                    title: 'Colores Pizzería POS',
-                    tag: 'Takeaway & Delivery',
-                    sub: 'Pizzas Mitad y Mitad & Despacho Cocina',
-                    url: 'restaurante-colores.vercel.app',
-                    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80'
-                  },
-                  {
-                    title: 'BLESSED - Tienda de Ropa',
-                    tag: 'Control de Stock',
-                    sub: 'Zapatillas & Ropa, Talles, Colores & Caja',
-                    url: 'tiendadigitalropa-phi.vercel.app',
-                    image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=600&q=80'
-                  },
-                  {
-                    title: 'Consultorio & Salud',
-                    tag: 'Historias Clínicas',
-                    sub: 'Turnos, Diagnósticos & Fichas Médicas',
-                    url: 'salud-historiaclinica.vercel.app',
-                    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80'
-                  },
-                  {
-                    title: 'SaaS ERP Multirrubro',
-                    tag: '+14 Módulos',
-                    sub: 'Ferreterías, Talleres, Supermercados & Gyms',
-                    url: 'programa-saas.vercel.app',
-                    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80'
-                  }
-                ].map((item, idx) => (
-                  <div 
-                    key={idx} 
-                    onClick={onNavigateToPortfolio}
-                    className="rounded-xl overflow-hidden bg-slate-950/80 border border-slate-800/90 hover:border-red-500/50 transition cursor-pointer group flex flex-col justify-between"
-                  >
-                    <div className="relative h-24 w-full bg-slate-900 overflow-hidden">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
-                      <span className="absolute top-1.5 left-1.5 text-[9px] font-extrabold text-white bg-red-600/90 px-2 py-0.5 rounded">
-                        {item.tag}
-                      </span>
-                    </div>
-
-                    <div className="p-2.5 space-y-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-xs font-black text-white group-hover:text-red-400 transition">
-                          {item.title}
-                        </h4>
-                      </div>
-                      <p className="text-[10px] text-slate-300 font-medium line-clamp-1">
-                        {item.sub}
-                      </p>
-                      <div className="text-[9px] font-mono text-amber-400 font-bold pt-0.5">
-                        {item.url}
-                      </div>
-                    </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div 
+                  onClick={onNavigateToPortfolio}
+                  className="bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-red-500/40 p-3 rounded-xl transition cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between text-xs font-black text-white group-hover:text-red-400">
+                    <span>EL PATRÓN RESTO</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-950 text-red-300">POS</span>
                   </div>
-                ))}
+                  <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">
+                    Comandas en mesas, mozos en turno, cocina e impresión de tickets.
+                  </p>
+                </div>
+
+                <div 
+                  onClick={onNavigateToPortfolio}
+                  className="bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 p-3 rounded-xl transition cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between text-xs font-black text-white group-hover:text-emerald-400">
+                    <span>BLESSED CLOTHING</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300">STOCK</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">
+                    Control de talles, colores, ventas rápidas y código de barras.
+                  </p>
+                </div>
+
+                <div 
+                  onClick={onNavigateToPortfolio}
+                  className="bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-blue-500/40 p-3 rounded-xl transition cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between text-xs font-black text-white group-hover:text-blue-400">
+                    <span>AUTOFIX TALLER</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-300">ARCA</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">
+                    Órdenes de trabajo, facturación ARCA automática y repuestos.
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Key Benefits */}
+            {/* Key Benefits Grid */}
             <div className={`p-4 sm:p-5 rounded-2xl border ${themeClasses.cardBg}`}>
-              <h3 className="text-xs font-black uppercase tracking-wider text-amber-400 mb-3 flex items-center space-x-2">
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
+              <h3 className="text-xs font-black uppercase tracking-wider text-red-400 mb-3 flex items-center space-x-2">
+                <Award className={`w-4 h-4 ${themeClasses.iconColor}`} />
                 <span>¿Por qué elegir Tu Sitio Web Río Cuarto?</span>
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold">
-                {flyerData.keyBenefits.map((benefit, idx) => (
-                  <div key={idx} className="flex items-center space-x-2 bg-slate-950/60 p-2 rounded-lg border border-slate-800">
-                    <Zap className="w-4 h-4 text-amber-400 shrink-0" />
-                    <span className="text-slate-100">{benefit}</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                {flyerData.keyBenefits.map((benefit, bIdx) => (
+                  <div key={bIdx} className="flex items-center space-x-2 bg-slate-950/40 p-2 rounded-lg text-slate-200">
+                    <Zap className={`w-3.5 h-3.5 shrink-0 ${themeClasses.iconColor}`} />
+                    <span className="font-medium">{benefit}</span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Guarantee / Trust Badge */}
+          {/* Guarantee Banner */}
           {flyerData.guaranteeText && (
-            <div className="my-3 p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-center text-xs font-bold text-amber-300 flex items-center justify-center space-x-2">
-              <Award className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>{flyerData.guaranteeText}</span>
+            <div className="my-4 p-3 rounded-xl bg-slate-950/90 border border-amber-500/30 flex items-center justify-center space-x-2 text-center">
+              <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
+              <span className="text-xs font-bold text-amber-300 tracking-wide">
+                {flyerData.guaranteeText}
+              </span>
             </div>
           )}
 
-          {/* Footer Contact Block + Live QR Code (Marketing Methodology: ACTION) */}
-          <div className="mt-6 pt-5 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-5">
+          {/* Direct Contact Footer Block */}
+          <div className="mt-6 pt-5 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4">
             
-            {/* Contact Details */}
-            <div className="space-y-2.5 text-center sm:text-left w-full sm:w-auto">
-              <div className="text-xs font-black uppercase text-red-400 tracking-wider flex items-center justify-center sm:justify-start space-x-1">
-                <span>{flyerData.callToAction || '¡CONTACTAME AHORA!'}</span>
+            <div className="space-y-1 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start space-x-2">
+                <Smartphone className="w-4 h-4 text-emerald-400" />
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Atención WhatsApp Directa:</span>
               </div>
-              
               <a
                 href={whatsappDirectLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center sm:justify-start space-x-2.5 text-base sm:text-lg font-black text-white hover:text-red-400 transition"
+                className="text-lg sm:text-xl font-black text-white hover:text-emerald-400 transition block tracking-tight"
               >
-                <div className="p-2 rounded-xl bg-red-600 text-white shadow-md shadow-red-600/30">
-                  <MessageCircle className="w-5 h-5 fill-white text-red-600" />
-                </div>
-                <div>
-                  <span className="text-[10px] text-slate-400 block font-bold uppercase">WhatsApp Directo</span>
-                  <span className="text-red-400">{flyerData.phoneFormatted}</span>
-                </div>
+                {flyerData.phoneFormatted}
               </a>
-
               <a
                 href={`mailto:${flyerData.email}`}
-                className="flex items-center justify-center sm:justify-start space-x-2 text-xs font-bold text-slate-300 hover:text-white"
+                className="text-xs text-slate-300 hover:underline flex items-center justify-center md:justify-start space-x-1"
               >
                 <Mail className="w-3.5 h-3.5 text-slate-400" />
                 <span>{flyerData.email}</span>
@@ -526,6 +515,56 @@ Escribime directamente por WhatsApp: ${whatsappDirectLink}`;
 
         </motion.div>
       </div>
+
+      {/* Before vs After Comparison Table Block */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl"
+      >
+        <div className="text-center space-y-2 max-w-2xl mx-auto">
+          <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-rose-900/30 text-rose-300 border border-rose-500/30 text-xs font-bold uppercase tracking-wider">
+            <Zap className="w-4 h-4 text-rose-300" />
+            <span>Transformá la Gestión de tu Negocio</span>
+          </span>
+          <h3 className="text-xl sm:text-3xl font-black text-white">
+            ¿Cómo cambia tu negocio con nuestro software?
+          </h3>
+          <p className="text-xs sm:text-sm text-rose-200/70">
+            Compará el funcionamiento tradicional contra un sistema 100% automatizado por Anahí Gilardi & Enzo Girardi.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {beforeAfterComparison.map((item, idx) => (
+            <div 
+              key={idx}
+              className="bg-[#18040B] border border-rose-900/30 rounded-2xl p-5 space-y-3 flex flex-col justify-between"
+            >
+              <div className="font-extrabold text-sm text-white border-b border-rose-900/30 pb-2">
+                {item.feature}
+              </div>
+              <div className="space-y-2 text-xs">
+                <div className="flex items-start space-x-2 text-rose-300/80 bg-red-950/40 p-2.5 rounded-xl border border-red-900/40">
+                  <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-red-300 block mb-0.5">Sin Sistema:</span>
+                    {item.withoutSystem}
+                  </div>
+                </div>
+                <div className="flex items-start space-x-2 text-emerald-200 bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-900/40">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-emerald-300 block mb-0.5">Con Tu Sitio Web Río Cuarto:</span>
+                    {item.withSystem}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
 
       {/* CTA Section below flyer */}
       <motion.div 
