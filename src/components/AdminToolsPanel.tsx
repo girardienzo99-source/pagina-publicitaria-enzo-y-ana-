@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Settings, Lock, Edit3, FileText, Printer, Copy, Check, ArrowLeft } from 'lucide-react';
+import { Settings, Lock, FileText, Printer, ArrowLeft, Palette, Sparkles } from 'lucide-react';
 import { FlyerEditor } from './FlyerEditor';
+import { PremiumFlyerCard } from './PremiumFlyerCard';
 import { FlyerData, FlyerTheme, FlyerFormat } from '../types';
 
 interface AdminToolsPanelProps {
@@ -44,10 +45,10 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
             <span>Panel de Administración Interno</span>
           </span>
           <h1 className="text-2xl sm:text-3xl font-black text-white">
-            Herramientas de Publicidad & Configuración
+            Generador de Flyers & Anuncios Publicitarios
           </h1>
           <p className="text-xs sm:text-sm text-rose-200/70 font-medium">
-            Personalizá los anuncios publicitarios, cambiá formatos de flyers, generá propuestas técnicas o editá los textos de la landing.
+            Personalizá los anuncios publicitarios en tiempo real, cambiá temas de color, formatos (9:16, 1:1, Banner) o generá propuestas técnicas oficiales.
           </p>
         </div>
 
@@ -60,15 +61,17 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
         </button>
       </div>
 
-      {/* Quick Action Grid */}
+      {/* Control Tools Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        {/* PDF Catalog Option */}
         <div className="bg-[#1C050E] border border-rose-900/30 rounded-2xl p-5 space-y-3">
           <div className="flex items-center space-x-2 text-rose-300 font-bold text-sm">
             <FileText className="w-4 h-4 text-rose-400" />
             <span>Catálogo PDF Oficial</span>
           </div>
           <p className="text-xs text-rose-200/60">
-            Descargá o visualizá el catálogo imprimible con todos los desarrollos realizados.
+            Visualizá o imprimí el folleto técnico completo con todos los desarrollos.
           </p>
           <button
             onClick={onOpenPdfCatalog}
@@ -78,13 +81,14 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
           </button>
         </div>
 
+        {/* Technical Proposal */}
         <div className="bg-[#1C050E] border border-rose-900/30 rounded-2xl p-5 space-y-3">
           <div className="flex items-center space-x-2 text-emerald-300 font-bold text-sm">
             <Printer className="w-4 h-4 text-emerald-400" />
             <span>Propuesta Técnica Formal</span>
           </div>
           <p className="text-xs text-rose-200/60">
-            Generá una propuesta imprimible en PDF personalizada para un cliente específico.
+            Armá una propuesta imprimible personalizada para enviar a un cliente.
           </p>
           <button
             onClick={onOpenProposalModal}
@@ -94,36 +98,80 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
           </button>
         </div>
 
+        {/* Format & Theme Controls */}
         <div className="bg-[#1C050E] border border-rose-900/30 rounded-2xl p-5 space-y-3">
           <div className="flex items-center space-x-2 text-amber-300 font-bold text-sm">
-            <Settings className="w-4 h-4 text-amber-400" />
-            <span>Formatos de Anuncio</span>
+            <Palette className="w-4 h-4 text-amber-400" />
+            <span>Formato & Estilo de Anuncio</span>
           </div>
-          <p className="text-xs text-rose-200/60">
-            Seleccioná la relación de aspecto para guardar o imprimir el folleto.
-          </p>
-          <div className="flex items-center space-x-2">
+          <div className="grid grid-cols-2 gap-1.5 text-xs">
+            {[
+              { id: 'horizontal-banner', label: 'Banner 16:9' },
+              { id: 'poster-story', label: 'Story 9:16' },
+              { id: 'square-post', label: 'Post 1:1' },
+              { id: 'business-card', label: 'Tarjeta' }
+            ].map(f => (
+              <button
+                key={f.id}
+                onClick={() => setFormat(f.id as FlyerFormat)}
+                className={`py-1.5 px-2 rounded-lg font-bold border transition ${
+                  format === f.id ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' : 'bg-black/40 text-zinc-400 border-zinc-800'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* Theme Picker Selector */}
+      <div className="bg-[#1C050E] border border-rose-900/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div className="flex items-center space-x-2 text-white font-bold">
+          <Sparkles className="w-4 h-4 text-rose-400" />
+          <span>Tema de Color del Flyer:</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {[
+            { id: 'ruby-red', label: 'Bordó Rubí (Oficial)' },
+            { id: 'neon-tech', label: 'Neón Tech (Cyber)' },
+            { id: 'modern-emerald', label: 'Esmeralda Corporativo' },
+            { id: 'clean-corporate', label: 'Blanco Impresión' }
+          ].map(t => (
             <button
-              onClick={() => setFormat('poster-story')}
-              className={`flex-1 min-h-[40px] text-xs font-bold rounded-lg border transition ${
-                format === 'poster-story' ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' : 'bg-black/40 text-zinc-400 border-zinc-800'
+              key={t.id}
+              onClick={() => setTheme(t.id as FlyerTheme)}
+              className={`px-3 py-1.5 rounded-lg font-extrabold border transition ${
+                theme === t.id ? 'bg-rose-900 text-white border-rose-500' : 'bg-black/40 text-zinc-400 border-zinc-800 hover:text-white'
               }`}
             >
-              Story / Póster
+              {t.label}
             </button>
-            <button
-              onClick={() => setFormat('square-post')}
-              className={`flex-1 min-h-[40px] text-xs font-bold rounded-lg border transition ${
-                format === 'square-post' ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' : 'bg-black/40 text-zinc-400 border-zinc-800'
-              }`}
-            >
-              Post Cuadrado
-            </button>
-          </div>
+          ))}
         </div>
       </div>
 
-      {/* Editor Component */}
+      {/* Live Ultra-Premium Flyer Card Preview */}
+      <div className="bg-[#18040B] border border-rose-900/40 rounded-3xl p-6 shadow-2xl">
+        <div className="flex items-center justify-between mb-4 border-b border-rose-900/30 pb-3">
+          <h3 className="text-sm font-black text-white uppercase tracking-wider">
+            Vista Previa en Vivo del Flyer ({format})
+          </h3>
+          <span className="text-xs text-rose-300/70 font-mono">
+            Anahí Gilardi & Enzo Girardi (Programadores)
+          </span>
+        </div>
+
+        <PremiumFlyerCard
+          flyerData={flyerData}
+          theme={theme}
+          format={format}
+          onNavigateToPortfolio={onPreviewFlyer}
+        />
+      </div>
+
+      {/* Flyer Content Editor */}
       <div className="bg-[#1D0610] border border-rose-900/40 rounded-3xl p-6 shadow-xl">
         <FlyerEditor
           flyerData={flyerData}
@@ -132,6 +180,7 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
           onSaveConfig={onSaveConfig}
         />
       </div>
+
     </motion.div>
   );
 };
