@@ -1,4 +1,4 @@
-// Centralized WhatsApp link & contact details for Tu Sitio Web Río Cuarto (Anahí Gilardi & Enzo Girardi)
+// Centralized WhatsApp link & contact details for Río Cuarto Web (Anahí Gilardi & Enzo Girardi)
 
 export const ANAHI_WHATSAPP_NUMBER = '5493584860640';
 export const ANAHI_PHONE_FORMATTED = '+54 358 486-0640';
@@ -12,7 +12,8 @@ export const OFFICIAL_WHATSAPP_NUMBER = ANAHI_WHATSAPP_NUMBER;
 export const OFFICIAL_PHONE_FORMATTED = ANAHI_PHONE_FORMATTED;
 export const OFFICIAL_EMAIL = ANAHI_EMAIL;
 
-export const OFFICIAL_COMPANY_NAME = 'Tu Sitio Web Río Cuarto';
+export const OFFICIAL_COMPANY_NAME = 'Río Cuarto Web';
+export const OFFICIAL_TAGLINE = 'Diseño Digital a Medida';
 export const OFFICIAL_TEAM_NAMES = 'Anahí Gilardi & Enzo Girardi';
 
 export function getWhatsAppUrl(messageText?: string, developer: 'anahi' | 'enzo' | 'default' = 'default'): string {

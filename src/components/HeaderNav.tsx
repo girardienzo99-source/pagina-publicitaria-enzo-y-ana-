@@ -55,26 +55,26 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           <div 
             tabIndex={0}
             role="button"
-            aria-label="Ir al inicio de Tu Sitio Web Río Cuarto"
+            aria-label="Ir al inicio de Río Cuarto Web"
             onClick={() => handleTabClick('home')}
             onKeyDown={(e) => e.key === 'Enter' && handleTabClick('home')}
-            className="flex items-center space-x-3 cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 rounded-xl"
+            className="flex items-center space-x-3 cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-xl"
           >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-rose-700 via-rose-500 to-amber-300 p-[2px] shadow-lg group-hover:scale-105 transition-transform overflow-hidden">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 via-sky-400 to-amber-300 p-[2px] shadow-lg group-hover:scale-105 transition-transform overflow-hidden">
               <img 
                 src={brandLogo} 
-                alt="Logo Tu Sitio Web Río Cuarto" 
+                alt="Logo Río Cuarto Web" 
                 className="w-full h-full object-cover rounded-[14px]"
               />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-black text-base sm:text-xl tracking-tight text-white">
-                  Tu Sitio Web <span className="text-rose-300 font-extrabold">Río Cuarto</span>
+                <span className="font-black text-base sm:text-xl tracking-tight text-white uppercase">
+                  Río Cuarto <span className="text-cyan-400 font-black">Web</span>
                 </span>
               </div>
-              <p className="text-xs text-rose-200/70 font-semibold hidden sm:block">
-                Anahí Gilardi & Enzo Girardi • Programadores Web & Software
+              <p className="text-xs text-amber-300 font-extrabold tracking-wider uppercase hidden sm:block">
+                Diseño Digital a Medida • Anahí Gilardi & Enzo Girardi
               </p>
             </div>
           </div>

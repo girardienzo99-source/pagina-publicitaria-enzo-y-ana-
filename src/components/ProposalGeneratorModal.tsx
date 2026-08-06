@@ -266,10 +266,10 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
                 </div>
                 <div>
                   <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-950 uppercase">
-                    Tu Sitio Web Río Cuarto
+                    Río Cuarto Web
                   </h1>
-                  <p className="text-xs font-black text-rose-800 uppercase tracking-wide">
-                    Anahí Gilardi & Enzo Girardi • Programadores Web & Desarrolladores de Software
+                  <p className="text-xs font-black text-cyan-800 uppercase tracking-wide">
+                    Diseño Digital a Medida • Anahí Gilardi & Enzo Girardi
                   </p>
                 </div>
               </div>

@@ -4,15 +4,15 @@ import facturacionArcaImg from '../assets/facturacion_arca.jpg';
 import indumentariaStockImg from '../assets/indumentaria_stock.jpg';
 
 export const initialFlyerData: FlyerData = {
-  developerName: 'Tu Sitio Web Río Cuarto',
-  role: 'Programadores Web & Desarrolladores de Software (Anahí Gilardi & Enzo Girardi)',
+  developerName: 'Río Cuarto Web',
+  role: 'Diseño Digital a Medida • Anahí Gilardi & Enzo Girardi (Programadores Web & Software)',
   hookTitle: '¿LENTITUD EN TU NEGOCIO? MULTIPLICÁ TUS VENTAS HOY',
-  slogan: 'Diseñamos tu sitio web y programas a medida que automatizan tu gestión, eliminan errores y ordenan tus ventas',
+  slogan: 'Diseño Digital a Medida: Desarrollamos tu sitio web y sistemas que automatizan tu gestión y ordenan tus ventas',
   phone: '5493584860640 / 5493584302024',
   phoneFormatted: 'Anahí: +54 358 486-0640 | Enzo: +54 358 430-2024',
   email: 'anagilardi1234@gmail.com | enzogirardi84@gmail.com',
   location: 'Río Cuarto / Córdoba • Envíos e Instalación a todo el país',
-  whatsappMessage: 'Hola Anahí y Enzo! Vi su web de Tu Sitio Web Río Cuarto y quisiera consultar por un proyecto para mi negocio.',
+  whatsappMessage: 'Hola Anahí y Enzo! Vi la web de Río Cuarto Web y quisiera consultar por un proyecto para mi negocio.',
   mainServices: [
     'Diseño y Desarrollo de Páginas Web & Tiendas Online',
     'Sistemas de Gestión Gastronómica (Comandas, Mesas, Delivery)',

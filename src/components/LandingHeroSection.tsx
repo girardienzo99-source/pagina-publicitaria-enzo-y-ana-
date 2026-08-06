@@ -37,9 +37,9 @@ export const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           animate={{ opacity: 1, scale: 1 }}
           className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-rose-950 via-rose-900 to-amber-950 text-amber-300 border border-amber-500/40 shadow-lg text-[11px] font-black uppercase tracking-wider"
         >
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-          <span>Sistemas Web & Software • Anahí Gilardi & Enzo Girardi</span>
+          <span>RÍO CUARTO WEB • DISEÑO DIGITAL A MEDIDA</span>
         </motion.div>
 
         {/* Punchy Neon Title */}
@@ -48,9 +48,9 @@ export const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           animate={{ opacity: 1, y: 0 }}
           className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight uppercase"
         >
-          Sistemas Web & Software a Medida{' '}
+          Río Cuarto Web <span className="text-cyan-400">Diseño Digital</span>{' '}
           <span className="bg-gradient-to-r from-amber-300 via-rose-300 to-emerald-300 bg-clip-text text-transparent drop-shadow-md">
-            para tu Negocio
+            a Medida
           </span>
         </motion.h1>
 
