@@ -47,10 +47,10 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
       }
 
       const opt = {
-        margin:       [8, 8, 8, 8],
-        filename:     'Catalogo_Sistemas_TuSitioWebRioCuarto.pdf',
+        margin:       [5, 5, 5, 5],
+        filename:     'Catalogo_Sistemas_RioCuartoWeb.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        html2canvas:  { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#ffffff', logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
@@ -77,7 +77,7 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 overflow-y-auto bg-stone-950/90 backdrop-blur-md p-2 sm:p-6 flex flex-col items-center justify-start"
+      className="printable-dialog fixed inset-0 z-50 overflow-y-auto bg-stone-950/90 backdrop-blur-md p-2 sm:p-6 flex flex-col items-center justify-start"
     >
       
       {/* Top Floating Control Bar (Hidden when printing) */}

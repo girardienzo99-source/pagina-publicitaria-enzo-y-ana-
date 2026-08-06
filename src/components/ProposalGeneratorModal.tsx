@@ -94,12 +94,12 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
         await new Promise((resolve) => { script.onload = resolve; });
       }
 
-      const cleanFileName = `Propuesta_${clientBusiness.replace(/[^a-zA-Z0-9]/g, '_')}_TuSitioWebRioCuarto.pdf`;
+      const cleanFileName = `Propuesta_${clientBusiness.replace(/[^a-zA-Z0-9]/g, '_')}_RioCuartoWeb.pdf`;
       const opt = {
-        margin:       [8, 8, 8, 8],
+        margin:       [5, 5, 5, 5],
         filename:     cleanFileName,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        html2canvas:  { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#ffffff', logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
@@ -114,7 +114,7 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-950/95 backdrop-blur-md p-2 sm:p-6 flex flex-col items-center justify-start">
+      <div className="printable-dialog fixed inset-0 z-50 overflow-y-auto bg-stone-950/95 backdrop-blur-md p-2 sm:p-6 flex flex-col items-center justify-start">
         
         {/* Top Control Header Bar (Hidden on Print) */}
         <div className="no-print sticky top-2 z-50 bg-[#240A15] border border-rose-900/50 rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-wrap items-center justify-between gap-3 w-full max-w-4xl mb-6">
