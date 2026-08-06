@@ -65,3 +65,54 @@ select {
   outline: 2px solid #e892a8;
   outline-offset: 2px;
 }
+
+/* HIGH-RESOLUTION CLEAN PRINTING & PDF EXPORT RULES */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+    font-size: 12pt !important;
+  }
+
+  /* Hide all non-printable UI elements */
+  .no-print, 
+  nav, 
+  header, 
+  footer, 
+  aside, 
+  .glow-burgundy,
+  button,
+  .fixed:not(.printable-dialog) {
+    display: none !important;
+  }
+
+  /* Ensure printable containers fill page cleanly */
+  .printable-catalog, 
+  .printable-proposal, 
+  .printable-flyer {
+    position: static !important;
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ensure text & elements print with true colors */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

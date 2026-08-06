@@ -67,7 +67,14 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
         console.error('Error guardando lead de propuesta:', err);
       }
     }
-    window.print();
+    try {
+      if (typeof window !== 'undefined') {
+        window.print();
+      }
+    } catch (err) {
+      console.error('Error al ejecutar impresión:', err);
+      alert('Para guardar en PDF: Presioná las teclas Ctrl + P en tu teclado y en el destino seleccioná "Guardar como PDF".');
+    }
   };
 
   return (

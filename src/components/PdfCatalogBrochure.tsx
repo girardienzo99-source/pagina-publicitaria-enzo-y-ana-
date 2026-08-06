@@ -35,7 +35,14 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
   )}`;
 
   const handlePrint = () => {
-    window.print();
+    try {
+      if (typeof window !== 'undefined') {
+        window.print();
+      }
+    } catch (err) {
+      console.error('Error al ejecutar impresión:', err);
+      alert('Para guardar en PDF: Presioná las teclas Ctrl + P en tu teclado y en el destino seleccioná "Guardar como PDF".');
+    }
   };
 
   return (
