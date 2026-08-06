@@ -1,17 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { 
   MessageCircle, 
   Sparkles, 
-  ArrowRight, 
   CheckCircle2, 
-  Utensils, 
-  ShoppingBag, 
-  FileCheck, 
-  Calendar, 
   Zap,
-  Code2,
-  PhoneCall
+  Code2
 } from 'lucide-react';
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
 
@@ -22,21 +16,17 @@ interface LandingHeroSectionProps {
 }
 
 export const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
-  onNavigateToPortfolio,
-  onNavigateToCalculator,
-  onOpenPdfCatalog
+  onNavigateToCalculator
 }) => {
-  const [activeDemoTab, setActiveDemoTab] = useState<'resto' | 'arca' | 'ropa' | 'salud'>('resto');
-
   const mainWhatsAppUrl = getWhatsAppUrl(
     'Hola Anahí y Enzo! Vi la web de Tu Sitio Web Río Cuarto y me gustaría pedir presupuesto y demo para mi negocio.'
   );
 
   return (
-    <div className="relative space-y-8 py-4 sm:py-6">
+    <div className="relative space-y-6 py-4 sm:py-6 max-w-4xl mx-auto">
       
       {/* Vibrant Neon Backdrop Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-72 bg-gradient-to-b from-rose-600/20 via-amber-500/10 to-transparent blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-gradient-to-b from-rose-600/20 via-amber-500/10 to-transparent blur-3xl pointer-events-none -z-10" />
 
       {/* Main Compact Hero Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
@@ -106,106 +96,6 @@ export const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             <Zap className="w-4 h-4 text-amber-300" />
             <span>Cotizar en 1 Minuto</span>
           </button>
-        </div>
-
-      </div>
-
-      {/* Interactive Compact Software Stage */}
-      <div className="bg-[#240A15]/95 border-2 border-rose-700/40 rounded-3xl p-4 sm:p-6 shadow-2xl space-y-4">
-        
-        {/* Stage Selector Tabs */}
-        <div className="flex items-center justify-between border-b border-rose-900/40 pb-3 flex-wrap gap-2">
-          <div className="flex items-center space-x-2">
-            <Code2 className="w-4 h-4 text-amber-300" />
-            <span className="text-xs font-black uppercase text-white tracking-wider">
-              Demostración Interactiva en Vivo:
-            </span>
-          </div>
-
-          <div className="grid grid-cols-4 gap-1.5 w-full sm:w-auto">
-            {[
-              { id: 'resto', label: 'Resto & Bar', icon: Utensils },
-              { id: 'arca', label: 'Factura ARCA', icon: FileCheck },
-              { id: 'ropa', label: 'Ropa & Stock', icon: ShoppingBag },
-              { id: 'salud', label: 'Agenda Turnos', icon: Calendar }
-            ].map(t => {
-              const IconComp = t.icon;
-              const isActive = activeDemoTab === t.id;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => setActiveDemoTab(t.id as any)}
-                  className={`py-1.5 px-2.5 rounded-xl text-[11px] font-black flex items-center justify-center space-x-1.5 border transition ${
-                    isActive
-                      ? 'bg-gradient-to-r from-rose-700 to-amber-600 text-white border-amber-400 shadow-md'
-                      : 'bg-[#18040B] text-rose-200/70 border-rose-900/40 hover:text-white'
-                  }`}
-                >
-                  <IconComp className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate">{t.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Active Stage Content */}
-        <div className="bg-[#18040B] p-4 sm:p-5 rounded-2xl border border-rose-900/30">
-          {activeDemoTab === 'resto' && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-rose-900/20 pb-2">
-                <span className="text-xs font-black text-amber-300 uppercase">Módulo Gastronómico & Mozos</span>
-                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-500/30">
-                  ● 3 Mesas Activas
-                </span>
-              </div>
-              <p className="text-xs text-rose-100/90 font-medium">
-                Mozos toman pedidos en celulares o tablets y las comandas se imprimen automáticamente en cocina en 1 segundo.
-              </p>
-            </div>
-          )}
-
-          {activeDemoTab === 'arca' && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-rose-900/20 pb-2">
-                <span className="text-xs font-black text-emerald-300 uppercase">Facturación Electrónica ARCA (ex AFIP)</span>
-                <span className="text-[10px] font-bold text-amber-300 bg-amber-950 px-2 py-0.5 rounded-full border border-amber-500/30">
-                  Comprobante A, B y C
-                </span>
-              </div>
-              <p className="text-xs text-rose-100/90 font-medium">
-                Emití facturas legales con CAE oficial y QR en 2 segundos desde tu caja sin ingresar a la web de la AFIP.
-              </p>
-            </div>
-          )}
-
-          {activeDemoTab === 'ropa' && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-rose-900/20 pb-2">
-                <span className="text-xs font-black text-rose-300 uppercase">Stock Indumentaria por Talles y Colores</span>
-                <span className="text-[10px] font-bold text-rose-200 bg-rose-950 px-2 py-0.5 rounded-full border border-rose-500/30">
-                  Lector Código Barras
-                </span>
-              </div>
-              <p className="text-xs text-rose-100/90 font-medium">
-                Controlá tus variantes (S al XXL), lecturas con pistola de código de barras y avisos de falta de prendas.
-              </p>
-            </div>
-          )}
-
-          {activeDemoTab === 'salud' && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-rose-900/20 pb-2">
-                <span className="text-xs font-black text-cyan-300 uppercase">Agenda de Turnos & Recordatorios WhatsApp</span>
-                <span className="text-[10px] font-bold text-cyan-200 bg-cyan-950 px-2 py-0.5 rounded-full border border-cyan-500/30">
-                  Envío Automático
-                </span>
-              </div>
-              <p className="text-xs text-rose-100/90 font-medium">
-                Organizá turnos de profesionales y enviá avisos por WhatsApp para reducir ausencias de pacientes.
-              </p>
-            </div>
-          )}
         </div>
 
       </div>
