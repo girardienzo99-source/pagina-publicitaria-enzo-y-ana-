@@ -34,6 +34,33 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
     'Hola Anahí y Enzo! Estuve viendo su Catálogo PDF de Tu Sitio Web Río Cuarto y quisiera consultar por un proyecto para mi negocio.'
   )}`;
 
+  const handleDirectPdfDownload = async () => {
+    const element = document.querySelector('.printable-catalog') || document.querySelector('.pdf-container');
+    if (!element) return;
+
+    try {
+      if (!(window as any).html2pdf) {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        document.head.appendChild(script);
+        await new Promise((resolve) => { script.onload = resolve; });
+      }
+
+      const opt = {
+        margin:       [8, 8, 8, 8],
+        filename:     'Catalogo_Sistemas_TuSitioWebRioCuarto.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      await (window as any).html2pdf().set(opt).from(element).save();
+    } catch (err) {
+      console.error('Error al generar PDF directo:', err);
+      window.print();
+    }
+  };
+
   const handlePrint = () => {
     try {
       if (typeof window !== 'undefined') {
@@ -72,11 +99,19 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
 
         <div className="flex items-center space-x-2">
           <button
-            onClick={handlePrint}
-            className="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs sm:text-sm shadow-xl shadow-red-950/60 transition duration-300 hover:scale-105 active:scale-95 border border-red-400/60"
+            onClick={handleDirectPdfDownload}
+            className="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-green-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black text-xs sm:text-sm shadow-xl shadow-emerald-950/60 transition duration-300 hover:scale-105 active:scale-95 border border-emerald-400/60 cursor-pointer"
           >
-            <Printer className="w-4 h-4 text-amber-300" />
-            <span className="uppercase tracking-wider">DESCARGAR / GUARDAR PDF</span>
+            <Download className="w-4 h-4 text-amber-300" />
+            <span className="uppercase tracking-wider">DESCARGAR ARCHIVO PDF</span>
+          </button>
+
+          <button
+            onClick={handlePrint}
+            className="hidden sm:flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-xs border border-stone-600 transition"
+          >
+            <Printer className="w-4 h-4" />
+            <span>Imprimir</span>
           </button>
 
           <a
