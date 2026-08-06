@@ -19,6 +19,7 @@ import {
 import { portfolioModules } from '../data/portfolioData';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 import { OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
+import brandLogo from '../assets/logo_brand.jpg';
 
 interface ProposalGeneratorModalProps {
   isOpen: boolean;
@@ -200,8 +201,8 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-rose-900 pb-6 gap-4">
             <div className="space-y-1">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-slate-950 flex items-center justify-center text-white shadow-md">
-                  <Code2 className="w-6 h-6 text-rose-500" />
+                <div className="w-11 h-11 rounded-xl overflow-hidden shadow-md border border-slate-300">
+                  <img src={brandLogo} alt="Logo Tu Sitio Web Río Cuarto" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-950 uppercase">

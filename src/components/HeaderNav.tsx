@@ -16,6 +16,7 @@ import {
   Briefcase
 } from 'lucide-react';
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
+import brandLogo from '../assets/logo_brand.jpg';
 
 export type PublicTab = 'home' | 'services' | 'portfolio' | 'planes' | 'calculator' | 'admin';
 
@@ -59,10 +60,12 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             onKeyDown={(e) => e.key === 'Enter' && handleTabClick('home')}
             className="flex items-center space-x-3 cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 rounded-xl"
           >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-rose-700 via-rose-500 to-amber-300 p-[2px] shadow-md group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-[#1A050D] rounded-[14px] flex items-center justify-center">
-                <Code2 className="w-6 h-6 text-rose-400" />
-              </div>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-rose-700 via-rose-500 to-amber-300 p-[2px] shadow-lg group-hover:scale-105 transition-transform overflow-hidden">
+              <img 
+                src={brandLogo} 
+                alt="Logo Tu Sitio Web Río Cuarto" 
+                className="w-full h-full object-cover rounded-[14px]"
+              />
             </div>
             <div>
               <div className="flex items-center space-x-2">
