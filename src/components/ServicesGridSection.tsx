@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Globe, 
@@ -7,11 +7,11 @@ import {
   ShoppingBag, 
   Calendar, 
   Wrench, 
-  ArrowRight, 
   CheckCircle2, 
-  Sparkles,
   MessageCircle,
-  Code2
+  Code2,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { getWhatsAppUrl } from '../lib/whatsapp';
 
@@ -20,10 +20,13 @@ interface ServicesGridSectionProps {
   onNavigateToCalculator: () => void;
 }
 
-export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({
-  onNavigateToPortfolio,
-  onNavigateToCalculator
-}) => {
+export const ServicesGridSection: React.FC<ServicesGridSectionProps> = () => {
+  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
+
+  const toggleExpandCard = (id: string) => {
+    setExpandedCardId(prev => (prev === id ? null : id));
+  };
+
   const services = [
     {
       id: 'web-design',
@@ -88,26 +91,27 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({
   ];
 
   return (
-    <section className="space-y-10 py-8">
+    <section className="space-y-8 py-6">
       
       {/* Section Header */}
-      <div className="text-center space-y-3 max-w-3xl mx-auto">
-        <span className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-rose-950/70 text-rose-300 border border-rose-800/50 text-xs font-black uppercase tracking-wider shadow-md">
+      <div className="text-center space-y-2 max-w-3xl mx-auto">
+        <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-rose-950/70 text-rose-300 border border-rose-800/50 text-xs font-black uppercase tracking-wider shadow-md">
           <Code2 className="w-4 h-4 text-rose-400" />
           <span>Soluciones Desarrolladas por Anahí Gilardi & Enzo Girardi</span>
         </span>
-        <h2 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
           Sistemas & Programas Creados a la Medida de tu Negocio
         </h2>
-        <p className="text-xs sm:text-base text-rose-200/70 font-medium">
-          Elegí la solución desarrollada específicamente para tu rubro. Sin comisiones abusivas y con soporte técnico directo de programadores.
+        <p className="text-xs sm:text-sm text-rose-200/70 font-medium">
+          Seleccioná tu rubro para consultar por WhatsApp con atención directa de los programadores.
         </p>
       </div>
 
       {/* Services Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {services.map((srv, idx) => {
           const IconComponent = srv.icon;
+          const isExpanded = expandedCardId === srv.id;
           const serviceWhatsAppUrl = getWhatsAppUrl(
             `Hola Anahí y Enzo! Quisiera consultar por el servicio de "${srv.title}" para mi negocio.`
           );
@@ -115,47 +119,62 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({
           return (
             <motion.div
               key={srv.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: idx * 0.06 }}
-              className="group bg-[#240A15]/90 hover:bg-[#330C1E] border border-rose-900/40 hover:border-rose-500/50 rounded-3xl p-6 shadow-xl transition-all duration-300 flex flex-col justify-between space-y-5 relative overflow-hidden"
+              transition={{ duration: 0.35, delay: idx * 0.05 }}
+              className="group bg-[#240A15]/90 hover:bg-[#330C1E] border border-rose-900/40 hover:border-rose-500/50 rounded-3xl p-5 shadow-xl transition-all duration-300 flex flex-col justify-between space-y-4 relative overflow-hidden"
             >
-              <div className="space-y-4">
+              <div className="space-y-3">
                 
                 {/* Top Badge & Icon */}
                 <div className="flex items-center justify-between">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${srv.color} p-0.5 shadow-lg group-hover:scale-110 transition-transform`}>
+                  <div className={`w-11 h-11 rounded-2xl bg-gradient-to-br ${srv.color} p-0.5 shadow-lg group-hover:scale-105 transition-transform`}>
                     <div className="w-full h-full bg-[#18040B] rounded-[14px] flex items-center justify-center">
-                      <IconComponent className="w-6 h-6 text-white" />
+                      <IconComponent className="w-5 h-5 text-white" />
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-800/60 text-[11px] font-black uppercase tracking-wider">
+                  <span className="px-3 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-800/60 text-[10px] font-black uppercase tracking-wider">
                     {srv.badge}
                   </span>
                 </div>
 
-                {/* Title & Description */}
+                {/* Title & Short Summary */}
                 <div>
-                  <h3 className="text-lg font-black text-white group-hover:text-rose-200 transition">
+                  <h3 className="text-base font-black text-white group-hover:text-rose-200 transition">
                     {srv.title}
                   </h3>
-                  <p className="text-xs font-semibold text-rose-300/80 mb-2">
+                  <p className="text-[11px] font-bold text-rose-300/80 mb-1">
                     {srv.subtitle}
                   </p>
-                  <p className="text-xs text-rose-200/70 leading-relaxed">
+                  <p className="text-xs text-rose-200/70 leading-snug">
                     {srv.desc}
                   </p>
                 </div>
 
-                {/* Feature Bullet List */}
-                <ul className="space-y-1.5 pt-2 border-t border-rose-900/30">
-                  {srv.features.map((feat, fIdx) => (
-                    <li key={fIdx} className="flex items-start space-x-2 text-xs text-rose-100/90">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
+                {/* Collapsible Features Details Toggle */}
+                <button
+                  onClick={() => toggleExpandCard(srv.id)}
+                  className="flex items-center space-x-1 text-[11px] font-extrabold text-amber-300 hover:text-white transition pt-1"
+                >
+                  <span>{isExpanded ? 'Ocultar detalles' : 'Ver funciones incluidas'}</span>
+                  {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                </button>
+
+                {/* Collapsible Bullet List */}
+                {isExpanded && (
+                  <motion.ul 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="space-y-1.5 pt-2 border-t border-rose-900/30 text-xs"
+                  >
+                    {srv.features.map((feat, fIdx) => (
+                      <li key={fIdx} className="flex items-start space-x-2 text-xs text-rose-100/90 bg-black/40 p-2 rounded-xl border border-rose-900/30">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
 
               </div>
 
@@ -164,10 +183,10 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({
                 href={serviceWhatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between px-4 min-h-[44px] rounded-xl bg-[#18040B] group-hover:bg-rose-900/90 text-rose-200 group-hover:text-white border border-rose-900/50 group-hover:border-rose-500/40 text-xs font-black transition-all"
+                className="flex items-center justify-between px-4 min-h-[44px] rounded-xl bg-[#18040B] group-hover:bg-rose-900/90 text-rose-200 group-hover:text-white border border-rose-900/50 group-hover:border-rose-500/40 text-xs font-black transition-all uppercase tracking-wider"
               >
                 <span>Consultar por WhatsApp</span>
-                <MessageCircle className="w-4 h-4 text-emerald-400" />
+                <MessageCircle className="w-4 h-4 text-emerald-400 fill-current" />
               </a>
 
             </motion.div>
