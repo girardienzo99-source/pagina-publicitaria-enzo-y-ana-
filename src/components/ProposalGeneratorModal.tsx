@@ -222,11 +222,11 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
               </div>
             </div>
 
-            <div className="text-left sm:text-right text-xs space-y-1 font-mono border-l-2 sm:border-l-0 sm:border-r-2 border-slate-300 pl-3 sm:pl-0 sm:pr-3">
-              <div className="font-black text-slate-950 text-sm">{proposalFolio}</div>
+            <div className="text-left sm:text-right text-[11px] space-y-0.5 font-mono border-l-2 sm:border-l-0 sm:border-r-2 border-slate-300 pl-3 sm:pl-0 sm:pr-3">
+              <div className="font-black text-slate-950 text-xs">{proposalFolio}</div>
               <div className="text-slate-700 font-bold">Fecha: {todayDate}</div>
-              <div className="text-slate-700">WhatsApp: {OFFICIAL_PHONE_FORMATTED}</div>
-              <div className="text-slate-700">Email: {email}</div>
+              <div className="text-slate-800 font-semibold">Anahí: +54 358 486-0640 | anagilardi1234@gmail.com</div>
+              <div className="text-slate-800 font-semibold">Enzo: +54 358 430-2024 | enzogirardi84@gmail.com</div>
             </div>
           </div>
 

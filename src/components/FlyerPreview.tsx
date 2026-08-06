@@ -69,13 +69,23 @@ export const FlyerPreview: React.FC<FlyerPreviewProps> = ({
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <a
-            href={mainWhatsAppUrl}
+            href="https://wa.me/5493584860640?text=Hola%20Anah%C3%AD!%20Quisiera%20pedir%20asesoramiento%20para%20un%20proyecto%20web."
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 min-h-[48px] bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-xs sm:text-sm rounded-xl shadow-xl shadow-emerald-950/60 border border-emerald-300/40 uppercase tracking-wider transition transform hover:scale-[1.02]"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 min-h-[48px] bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-xs sm:text-sm rounded-xl shadow-xl shadow-emerald-950/60 border border-emerald-300/40 uppercase tracking-wider transition transform hover:scale-[1.02]"
           >
             <MessageCircle className="w-4 h-4 fill-white text-emerald-800" />
-            <span>Hablar por WhatsApp Ahora</span>
+            <span>WhatsApp Anahí (+54 358 486-0640)</span>
+          </a>
+
+          <a
+            href="https://wa.me/5493584302024?text=Hola%20Enzo!%20Quisiera%20pedir%20asesoramiento%20para%20un%20proyecto%20web."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 min-h-[48px] bg-gradient-to-r from-teal-600 via-emerald-600 to-green-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black text-xs sm:text-sm rounded-xl shadow-xl shadow-emerald-950/60 border border-emerald-300/40 uppercase tracking-wider transition transform hover:scale-[1.02]"
+          >
+            <MessageCircle className="w-4 h-4 fill-white text-emerald-800" />
+            <span>WhatsApp Enzo (+54 358 430-2024)</span>
           </a>
 
           <button
@@ -83,7 +93,7 @@ export const FlyerPreview: React.FC<FlyerPreviewProps> = ({
             className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 min-h-[48px] bg-[#18040B] hover:bg-[#260A17] text-rose-200 font-black text-xs sm:text-sm rounded-xl border border-rose-800/60 transition"
           >
             <Store className="w-4 h-4 text-rose-300" />
-            <span>Ver Trabajos Realizados</span>
+            <span>Ver Trabajos</span>
           </button>
         </div>
       </motion.div>

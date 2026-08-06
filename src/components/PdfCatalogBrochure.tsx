@@ -426,11 +426,12 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
                   <span className="absolute -inset-1 rounded-full bg-white/40 animate-ping opacity-75" />
                   <MessageCircle className="relative w-5 h-5 fill-white text-emerald-700" />
                 </div>
-                <span className="uppercase tracking-wider">Contactar por WhatsApp: {flyerData.phoneFormatted}</span>
+                <span className="uppercase tracking-wider">Contactar WhatsApp: Anahí (+54 358 486-0640) | Enzo (+54 358 430-2024)</span>
               </a>
 
-              <div className="text-xs font-mono text-slate-300">
-                Email: <span className="font-bold text-white">{flyerData.email}</span>
+              <div className="text-xs font-mono text-slate-300 space-y-0.5">
+                <div>Anahí: <span className="font-bold text-white">anagilardi1234@gmail.com</span></div>
+                <div>Enzo: <span className="font-bold text-white">enzogirardi84@gmail.com</span></div>
               </div>
             </div>
           </div>

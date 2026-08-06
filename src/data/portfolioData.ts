@@ -8,9 +8,9 @@ export const initialFlyerData: FlyerData = {
   role: 'Programadores Web & Desarrolladores de Software (Anahí Gilardi & Enzo Girardi)',
   hookTitle: '¿LENTITUD EN TU NEGOCIO? MULTIPLICÁ TUS VENTAS HOY',
   slogan: 'Diseñamos tu sitio web y programas a medida que automatizan tu gestión, eliminan errores y ordenan tus ventas',
-  phone: '5493584860640',
-  phoneFormatted: '+54 358 486-0640',
-  email: 'anagilardi1234@gmail.com',
+  phone: '5493584860640 / 5493584302024',
+  phoneFormatted: 'Anahí: +54 358 486-0640 | Enzo: +54 358 430-2024',
+  email: 'anagilardi1234@gmail.com | enzogirardi84@gmail.com',
   location: 'Río Cuarto / Córdoba • Envíos e Instalación a todo el país',
   whatsappMessage: 'Hola Anahí y Enzo! Vi su web de Tu Sitio Web Río Cuarto y quisiera consultar por un proyecto para mi negocio.',
   mainServices: [
