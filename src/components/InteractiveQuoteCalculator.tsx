@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Calculator, 
   Check, 
@@ -7,32 +7,31 @@ import {
   Sparkles, 
   CheckCircle2, 
   Clock, 
-  ShieldCheck, 
   Building, 
-  Utensils, 
-  ShoppingBag, 
-  Wrench, 
-  ShoppingCart, 
-  Calendar, 
-  Layers,
-  Send,
+  Send, 
+  ArrowRight, 
+  ArrowLeft,
+  DollarSign,
   HelpCircle,
-  Loader2
+  Zap,
+  Loader2,
+  FileText
 } from 'lucide-react';
 import { industryOptions } from '../data/portfolioData';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
-import { getWhatsAppUrl } from '../lib/whatsapp';
+import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
 
 interface InteractiveQuoteCalculatorProps {
   phone: string;
 }
 
-export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProps> = ({ phone }) => {
+export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProps> = () => {
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [selectedIndustry, setSelectedIndustry] = useState<string>('gastronomia');
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([
     'pos-rapido',
     'control-stock',
-    'reportes-ventas'
+    'facturacion'
   ]);
   const [timeline, setTimeline] = useState<string>('normal');
   const [additionalNotes, setAdditionalNotes] = useState<string>('');
@@ -41,13 +40,48 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const availableFeatures = [
-    { id: 'pos-rapido', label: 'Punto de Venta (POS) Rápido', desc: 'Cobro ágil con lector de código de barras o botones táctiles' },
-    { id: 'control-stock', label: 'Control de Stock & Inventario', desc: 'Alertas de faltantes, precios de costo y margen de ganancia' },
-    { id: 'comandas-mesas', label: 'Comandas & Mapa de Mesas', desc: 'Especial Gastronomía: mozos en turno y despacho en cocina/barra' },
-    { id: 'whatsapp-bot', label: 'Notificaciones & WhatsApp', desc: 'Envío de recibos, pedidos o confirmación de turnos por WhatsApp' },
-    { id: 'facturacion', label: 'Facturación & Caja Diaria', desc: 'Arqueo de caja, reportes de turnos e ingresos diarios/mensuales' },
-    { id: 'multisucursal', label: 'Multi-Usuario / Multi-Sucursal', desc: 'Roles con permisos (administrador, empleado, mozo, caja)' },
-    { id: 'reportes-ventas', label: 'Dashboard de Reportes', desc: 'Gráficos de ventas, productos más vendidos e ingresos' }
+    { 
+      id: 'pos-rapido', 
+      label: 'Punto de Venta (POS) Ultrarrápido', 
+      desc: 'Cobro ágil con lector de código de barras o botones táctiles.',
+      didacticNote: '💡 Cobrá en menos de 10 segundos en caja sin hacer esperar al cliente.'
+    },
+    { 
+      id: 'control-stock', 
+      label: 'Control de Stock & Inventario con Talles/Colores', 
+      desc: 'Alertas de faltantes, costo y margen de ganancia.',
+      didacticNote: '💡 Evitá perder ventas sabiendo exactamente qué prendas o insumos tenés en depósito.'
+    },
+    { 
+      id: 'comandas-mesas', 
+      label: 'Comandas & Mapa de Mesas Gastronómico', 
+      desc: 'Mozos en turno con tablet y despacho instantáneo en cocina.',
+      didacticNote: '💡 Los mozos cargan el pedido desde la mesa y el ticket sale impreso en cocina en 1 sec.'
+    },
+    { 
+      id: 'whatsapp-bot', 
+      label: 'Notificaciones & Recordatorios por WhatsApp', 
+      desc: 'Envío de recibos, avisos de pedido listo o turnos.',
+      didacticNote: '💡 Automatizá la comunicación por WhatsApp sin enviar mensajes manuales uno por uno.'
+    },
+    { 
+      id: 'facturacion', 
+      label: 'Facturación Electrónica ARCA (ex AFIP)', 
+      desc: 'Comprobantes A, B y C aprobados con CAE en 2 segundos.',
+      didacticNote: '💡 Emití facturas oficiales sin necesidad de ingresar manualmente a la página de la AFIP.'
+    },
+    { 
+      id: 'multisucursal', 
+      label: 'Multi-Usuario / Multi-Sucursal', 
+      desc: 'Permisos por rol (administrador, cajero, mozo, depósito).',
+      didacticNote: '💡 Controlá lo que puede ver o editar cada empleado desde cualquier celular o PC.'
+    },
+    { 
+      id: 'reportes-ventas', 
+      label: 'Dashboard de Reportes & Rentabilidad', 
+      desc: 'Gráficos de ventas diarias, productos más vendidos y caja.',
+      didacticNote: '💡 Visualizá cuánto facturaste en el día y cuál es tu producto estrella.'
+    }
   ];
 
   const toggleFeature = (id: string) => {
@@ -58,30 +92,27 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
 
   const currentIndustryObj = industryOptions.find(i => i.id === selectedIndustry) || industryOptions[0];
 
-  // Calculate estimated time frame based on selected features
-  const estimatedDays = Math.max(7, selectedFeatures.length * 4);
+  // Calculations
+  const estimatedDays = Math.max(5, Math.min(15, selectedFeatures.length * 2.5));
+  const estimatedPriceBase = 180000 + (selectedFeatures.length * 45000);
 
-  const handleSubmit = async (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setIsSubmitting(true);
 
     if (isSupabaseConfigured && supabase) {
       try {
-        const { error } = await supabase.from('leads').insert({
-          client_business: clientBusiness.trim() || 'Consulta Cotizador Web',
+        await supabase.from('leads').insert({
+          client_business: clientBusiness.trim() || 'Consulta Cotizador Didáctico',
           client_contact: clientContact.trim() || 'Interesado Anónimo',
           industry: selectedIndustry,
           selected_features: selectedFeatures,
           timeline: timeline,
           notes: additionalNotes.trim(),
-          estimated_days: estimatedDays,
+          estimated_days: Math.round(estimatedDays),
           status: 'nuevo'
         });
-        if (error) {
-          console.error('Error al guardar lead en Supabase:', error);
-        }
       } catch (err) {
-        console.error('Error inesperado al guardar lead:', err);
+        console.error('Error guardando lead en Supabase:', err);
       }
     }
 
@@ -98,14 +129,15 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
       .map(f => `• ${f.label}`)
       .join('\n');
 
-    let text = `Hola Anahí y Enzo! Estuve en el Cotizador de Tu Sitio Web Río Cuarto y armé esta propuesta para mi negocio:\n\n`;
+    let text = `Hola Anahí y Enzo! Estuve en el Cotizador Interactivo de Tu Sitio Web Río Cuarto y armé la siguiente estimación para mi negocio:\n\n`;
     if (clientBusiness) text += `🏢 *Negocio:* ${clientBusiness}\n`;
     if (clientContact) text += `👤 *Contacto:* ${clientContact}\n`;
     text += `📌 *Rubro:* ${currentIndustryObj.name}\n`;
-    text += `⚙️ *Funciones Requeridas:*\n${selectedFeatureLabels || '• A definir con Anahí y Enzo'}\n\n`;
-    text += `⏱️ *Plazo Deseado:* ${timeline === 'urgente' ? 'Urgente (<15 días)' : timeline === 'normal' ? 'Estándar (15-30 días)' : 'Sin apuro'}`;
-    if (additionalNotes) text += `\n📝 *Notas:* ${additionalNotes}`;
-    text += `\n\n¿Podrían decirme qué costo estimado tendría y cuándo podríamos coordinar una demo?`;
+    text += `⚙️ *Funciones Seleccionadas:*\n${selectedFeatureLabels || '• A definir con Anahí y Enzo'}\n\n`;
+    text += `⏱️ *Plazo Estimado:* ~${Math.round(estimatedDays)} días hábiles\n`;
+    text += `💰 *Presupuesto Estimado:* ~$${estimatedPriceBase.toLocaleString('es-AR')} ARS (Pago Único)\n`;
+    if (additionalNotes) text += `📝 *Notas adicionales:* ${additionalNotes}\n`;
+    text += `\n¿Cuándo podríamos coordinar una demo para ajustar los detalles?`;
 
     return text;
   };
@@ -117,281 +149,422 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
       <motion.div 
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
-        className="bg-gradient-to-r from-[#1C050E] via-[#2D0917] to-[#16040B] border border-rose-900/40 rounded-3xl p-6 sm:p-8 text-center space-y-3 shadow-xl"
+        transition={{ duration: 0.35 }}
+        className="bg-gradient-to-r from-[#1F0611] via-[#2E0919] to-[#14040A] border border-rose-900/40 rounded-3xl p-6 sm:p-8 text-center space-y-3 shadow-xl"
       >
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-rose-900/30 text-rose-300 border border-rose-500/30 text-xs font-bold uppercase tracking-wider">
-          <Calculator className="w-4 h-4 text-rose-300" />
-          <span>Cotizador Express de Proyectos</span>
-        </div>
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Presupuestá tu Sitio Web o Sistema a Medida
+        <span className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-rose-950/80 text-rose-200 border border-rose-700/50 text-xs font-black uppercase tracking-wider">
+          <Calculator className="w-4 h-4 text-amber-300" />
+          <span>Asistente Interactivo de Cotización</span>
+        </span>
+        <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase">
+          Presupuestá tu Sitio Web o Sistema en 3 Pasos Didácticos
         </h1>
-        <p className="text-sm sm:text-base text-rose-200/80 max-w-xl mx-auto">
-          Seleccioná tu rubro y las funciones que necesita tu negocio para armar una estimación funcional y enviársela directo a Anahí Gilardi & Enzo Girardi (Programadores) por WhatsApp.
+        <p className="text-xs sm:text-base text-rose-200/70 max-w-2xl mx-auto font-medium">
+          Respondé 3 preguntas guiadas para calcular las funciones que necesita tu negocio y comunicate directo por WhatsApp con <strong className="text-white">Anahí Gilardi & Enzo Girardi (Programadores)</strong>.
         </p>
       </motion.div>
 
+      {/* Wizard Stepper Progress Bar */}
+      <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-2xl p-4 shadow-xl">
+        <div className="grid grid-cols-4 gap-2 text-center text-xs">
+          {[
+            { step: 1, title: '1. Tu Rubro', icon: Building },
+            { step: 2, title: '2. Funciones', icon: Zap },
+            { step: 3, title: '3. Plazos & Datos', icon: Clock },
+            { step: 4, title: '4. Resumen & Enviar', icon: Send }
+          ].map(s => {
+            const IconComp = s.icon;
+            const isActive = currentStep === s.step;
+            const isCompleted = currentStep > s.step;
+
+            return (
+              <button
+                key={s.step}
+                onClick={() => setCurrentStep(s.step)}
+                className={`py-2.5 px-2 rounded-xl font-black transition flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 border min-h-[44px] ${
+                  isActive
+                    ? 'bg-rose-900 text-white border-rose-500 shadow-md shadow-rose-950'
+                    : isCompleted
+                    ? 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40'
+                    : 'bg-[#18040B] text-rose-300/60 border-rose-900/30 hover:text-white'
+                }`}
+              >
+                <IconComp className="w-4 h-4 shrink-0" />
+                <span className="truncate">{s.title}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Left Form: Options */}
+        {/* Active Step Panel */}
         <motion.div 
-          initial={{ opacity: 0, x: -20 }}
+          key={currentStep}
+          initial={{ opacity: 0, x: -15 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
+          transition={{ duration: 0.3 }}
           className="lg:col-span-7 space-y-6"
         >
           
-          {/* Step 1: Industry Selection */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
-            <label className="block text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center space-x-2">
-              <span className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs">1</span>
-              <span>¿Cuál es el rubro de tu negocio?</span>
-            </label>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {industryOptions.map(ind => {
-                const isSelected = selectedIndustry === ind.id;
-                return (
-                  <motion.button
-                    key={ind.id}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setSelectedIndustry(ind.id);
-                      // Auto select recommended features
-                      setSelectedFeatures(ind.recommendedFeatures);
-                    }}
-                    className={`p-3.5 rounded-xl border text-left transition flex items-start space-x-3 ${
-                      isSelected
-                        ? 'bg-emerald-950/40 border-emerald-500 text-white ring-1 ring-emerald-500'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white'
-                    }`}
-                  >
-                    <Building className={`w-5 h-5 mt-0.5 shrink-0 ${isSelected ? 'text-emerald-400' : 'text-slate-500'}`} />
-                    <div>
-                      <h4 className="text-xs font-bold leading-tight">{ind.name}</h4>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Step 2: Feature Selection */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
-            <label className="block text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center space-x-2">
-              <span className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs">2</span>
-              <span>¿Qué módulos o funciones necesitás?</span>
-            </label>
-
-            <div className="space-y-2.5">
-              {availableFeatures.map(feature => {
-                const isChecked = selectedFeatures.includes(feature.id);
-                return (
-                  <div
-                    key={feature.id}
-                    onClick={() => toggleFeature(feature.id)}
-                    className={`p-3.5 rounded-xl border cursor-pointer transition flex items-start space-x-3 ${
-                      isChecked
-                        ? 'bg-slate-800 border-emerald-500/80 text-white'
-                        : 'bg-slate-950/60 border-slate-800/80 text-slate-400 hover:border-slate-700'
-                    }`}
-                  >
-                    <div className={`w-5 h-5 rounded-md border mt-0.5 flex items-center justify-center shrink-0 transition ${
-                      isChecked ? 'bg-emerald-500 border-emerald-400 text-slate-950' : 'border-slate-700'
-                    }`}>
-                      {isChecked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                    </div>
-
-                    <div>
-                      <h4 className="text-xs font-bold text-white">{feature.label}</h4>
-                      <p className="text-[11px] text-slate-400 mt-0.5">{feature.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Step 3: Timeline & Additional Comments */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
-            <label className="block text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center space-x-2">
-              <span className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs">3</span>
-              <span>Urgencia o plazo deseado</span>
-            </label>
-
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { id: 'urgente', label: '⚡ Urgente (<15 días)' },
-                { id: 'normal', label: '📅 Normal (15-30 días)' },
-                { id: 'tranquilo', label: '☕ Sin apuro' }
-              ].map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setTimeline(t.id)}
-                  className={`py-2.5 px-2 rounded-xl text-xs font-bold border transition ${
-                    timeline === t.id
-                      ? 'bg-emerald-600 text-white border-emerald-400'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="quote-client-business" className="block text-xs font-semibold text-rose-200/80 mb-1.5">
-                  Nombre de tu Negocio / Empresa (Opcional)
-                </label>
-                <input
-                  id="quote-client-business"
-                  type="text"
-                  value={clientBusiness}
-                  onChange={e => setClientBusiness(e.target.value)}
-                  placeholder="Ej: Pizzería Roma"
-                  className="w-full bg-[#14040A] border border-rose-900/40 rounded-xl p-3 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 transition min-h-[44px]"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="quote-client-contact" className="block text-xs font-semibold text-rose-200/80 mb-1.5">
-                  Tu Nombre o Contacto (Opcional)
-                </label>
-                <input
-                  id="quote-client-contact"
-                  type="text"
-                  value={clientContact}
-                  onChange={e => setClientContact(e.target.value)}
-                  placeholder="Ej: Juan Pérez"
-                  className="w-full bg-[#14040A] border border-rose-900/40 rounded-xl p-3 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 transition min-h-[44px]"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="quote-additional-notes" className="block text-xs font-semibold text-rose-200/80 mb-1.5">
-                Detalles adicionales o preguntas para Anahí & Enzo (Opcional)
-              </label>
-              <textarea
-                id="quote-additional-notes"
-                value={additionalNotes}
-                onChange={e => setAdditionalNotes(e.target.value)}
-                placeholder="Ej: Tengo 2 empleados, necesito que funcione en tablet y computadoras..."
-                rows={2}
-                className="w-full bg-[#14040A] border border-rose-900/40 rounded-xl p-3 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 transition min-h-[44px]"
-              />
-            </div>
-          </div>
-
-        </motion.div>
-
-        {/* Right Panel: Instant Summary Card */}
-        <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
-          className="lg:col-span-5"
-        >
-          <div className="sticky top-24 bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-emerald-500/40 rounded-3xl p-6 shadow-2xl space-y-6">
-            
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div>
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">
-                  Resumen de Propuesta
+          {/* STEP 1: Industry Selection */}
+          {currentStep === 1 && (
+            <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-5 shadow-2xl">
+              <div className="border-b border-rose-900/30 pb-3">
+                <span className="text-xs font-black uppercase text-rose-300 tracking-wider block">
+                  PASO 1 DE 4
                 </span>
                 <h3 className="text-xl font-black text-white">
-                  Programa Personalizado
+                  ¿Cuál es el rubro principal de tu comercio o empresa?
                 </h3>
+                <p className="text-xs text-rose-200/70 mt-1">
+                  Elegí tu actividad para cargar automáticamente las funciones recomendadas.
+                </p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold">
-                <Sparkles className="w-5 h-5" />
-              </div>
-            </div>
 
-            {/* Selected Industry */}
-            <div className="space-y-1">
-              <span className="text-[11px] text-slate-400 uppercase font-bold tracking-wider">
-                Rubro Seleccionado:
-              </span>
-              <p className="text-sm font-extrabold text-amber-400">
-                {currentIndustryObj.name}
-              </p>
-            </div>
-
-            {/* Selected Features */}
-            <div className="space-y-2">
-              <span className="text-[11px] text-slate-400 uppercase font-bold tracking-wider">
-                Módulos Incluidos ({selectedFeatures.length}):
-              </span>
-              <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                {selectedFeatures.length === 0 ? (
-                  <p className="text-xs text-slate-500">Seleccioná al menos una función.</p>
-                ) : (
-                  availableFeatures
-                    .filter(f => selectedFeatures.includes(f.id))
-                    .map(f => (
-                      <div key={f.id} className="flex items-center space-x-2 text-xs text-slate-200 bg-slate-950/80 p-2 rounded-lg border border-slate-800">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                        <span className="truncate">{f.label}</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {industryOptions.map(ind => {
+                  const isSelected = selectedIndustry === ind.id;
+                  return (
+                    <motion.button
+                      key={ind.id}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        setSelectedIndustry(ind.id);
+                        setSelectedFeatures(ind.recommendedFeatures);
+                      }}
+                      className={`p-4 rounded-2xl border text-left transition flex items-start space-x-3 min-h-[72px] ${
+                        isSelected
+                          ? 'bg-rose-900/80 border-rose-500 text-white ring-2 ring-rose-500/40 shadow-xl'
+                          : 'bg-[#18040B] border-rose-900/40 text-rose-200/80 hover:border-rose-700 hover:text-white'
+                      }`}
+                    >
+                      <Building className={`w-5 h-5 mt-0.5 shrink-0 ${isSelected ? 'text-amber-300' : 'text-rose-400'}`} />
+                      <div>
+                        <h4 className="text-xs font-black uppercase tracking-wide">{ind.name}</h4>
                       </div>
-                    ))
-                )}
+                    </motion.button>
+                  );
+                })}
+              </div>
+
+              <div className="pt-4 flex justify-end">
+                <button
+                  onClick={() => setCurrentStep(2)}
+                  className="flex items-center space-x-2 px-6 min-h-[48px] rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-black text-xs uppercase tracking-wider shadow-lg"
+                >
+                  <span>Siguiente Paso (Elegir Funciones)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
+          )}
 
-            {/* Estimated Development Time */}
-            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
-              <div className="flex items-center space-x-2">
-                <Clock className="w-4 h-4 text-amber-400" />
-                <span className="text-slate-300">Estimado de Entrega:</span>
+          {/* STEP 2: Feature Selection with Didactic Notes */}
+          {currentStep === 2 && (
+            <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-5 shadow-2xl">
+              <div className="border-b border-rose-900/30 pb-3">
+                <span className="text-xs font-black uppercase text-rose-300 tracking-wider block">
+                  PASO 2 DE 4
+                </span>
+                <h3 className="text-xl font-black text-white">
+                  ¿Qué módulos o funciones necesitás en tu sistema?
+                </h3>
+                <p className="text-xs text-rose-200/70 mt-1">
+                  Hacé clic en las funciones para activar o desactivar las herramientas de tu negocio.
+                </p>
               </div>
-              <span className="font-extrabold text-amber-400">
-                ~{estimatedDays} a {estimatedDays + 7} días
-              </span>
+
+              <div className="space-y-3">
+                {availableFeatures.map(feature => {
+                  const isChecked = selectedFeatures.includes(feature.id);
+                  return (
+                    <div
+                      key={feature.id}
+                      onClick={() => toggleFeature(feature.id)}
+                      className={`p-4 rounded-2xl border cursor-pointer transition flex items-start space-x-3.5 ${
+                        isChecked
+                          ? 'bg-[#1F0611] border-rose-500 text-white ring-1 ring-rose-500/40'
+                          : 'bg-[#14040A] border-rose-900/30 text-rose-200/70 hover:border-rose-800'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 rounded-lg border mt-0.5 flex items-center justify-center shrink-0 transition ${
+                        isChecked ? 'bg-emerald-500 border-emerald-400 text-slate-950 font-black' : 'border-rose-900'
+                      }`}>
+                        {isChecked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      </div>
+
+                      <div className="space-y-1">
+                        <h4 className="text-xs font-black text-white uppercase tracking-wide">{feature.label}</h4>
+                        <p className="text-xs text-rose-200/80">{feature.desc}</p>
+                        <div className="p-2 rounded-lg bg-black/40 border border-rose-900/30 text-[11px] text-amber-300 font-semibold mt-1">
+                          {feature.didacticNote}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="pt-4 flex items-center justify-between">
+                <button
+                  onClick={() => setCurrentStep(1)}
+                  className="flex items-center space-x-2 px-5 min-h-[48px] rounded-xl bg-[#18040B] text-rose-200 hover:text-white border border-rose-900/40 font-bold text-xs"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Volver a Rubros</span>
+                </button>
+                <button
+                  onClick={() => setCurrentStep(3)}
+                  className="flex items-center space-x-2 px-6 min-h-[48px] rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-black text-xs uppercase tracking-wider shadow-lg"
+                >
+                  <span>Siguiente Paso (Plazos & Datos)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
+          )}
 
-            {/* What's Always Included */}
-            <div className="space-y-2 text-xs text-slate-400 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60">
-              <div className="font-bold text-slate-300">Todas las propuestas de Tu Sitio Web Río Cuarto incluyen:</div>
-              <div className="flex items-center space-x-1.5 text-emerald-400">
-                <Check className="w-3.5 h-3.5" />
-                <span>Instalación y capacitación inicial</span>
+          {/* STEP 3: Timeline & Client Contact Info */}
+          {currentStep === 3 && (
+            <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-5 shadow-2xl">
+              <div className="border-b border-rose-900/30 pb-3">
+                <span className="text-xs font-black uppercase text-rose-300 tracking-wider block">
+                  PASO 3 DE 4
+                </span>
+                <h3 className="text-xl font-black text-white">
+                  Plazo deseado y datos de tu comercio
+                </h3>
+                <p className="text-xs text-rose-200/70 mt-1">
+                  Indicanos la urgencia y tus datos de contacto para personalizar la propuesta.
+                </p>
               </div>
-              <div className="flex items-center space-x-1.5 text-emerald-400">
-                <Check className="w-3.5 h-3.5" />
-                <span>Garantía de funcionamiento y soporte directo</span>
+
+              <div className="space-y-3">
+                <label className="text-xs font-black uppercase tracking-wider text-rose-300 block">
+                  ¿Con qué velocidad necesitás el sistema?
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: 'urgente', label: '⚡ Urgente (<10 días)' },
+                    { id: 'normal', label: '📅 Normal (10-20 días)' },
+                    { id: 'tranquilo', label: '☕ Sin apuro' }
+                  ].map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => setTimeline(t.id)}
+                      className={`py-3 px-2 rounded-xl text-xs font-black border transition ${
+                        timeline === t.id
+                          ? 'bg-rose-900 text-white border-rose-500'
+                          : 'bg-[#14040A] text-rose-200/60 border-rose-900/30 hover:text-white'
+                      }`}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex items-center space-x-1.5 text-emerald-400">
-                <Check className="w-3.5 h-3.5" />
-                <span>100% código tuyo sin mensualidades ocultas</span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="quote-client-business" className="block text-xs font-bold text-rose-200/80 mb-1.5">
+                    Nombre de tu Negocio / Empresa (Opcional):
+                  </label>
+                  <input
+                    id="quote-client-business"
+                    type="text"
+                    value={clientBusiness}
+                    onChange={e => setClientBusiness(e.target.value)}
+                    placeholder="Ej: Pizzería El Patrón"
+                    className="w-full bg-[#14040A] border border-rose-900/40 rounded-xl p-3 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 transition min-h-[44px]"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="quote-client-contact" className="block text-xs font-bold text-rose-200/80 mb-1.5">
+                    Tu Nombre o Contacto (Opcional):
+                  </label>
+                  <input
+                    id="quote-client-contact"
+                    type="text"
+                    value={clientContact}
+                    onChange={e => setClientContact(e.target.value)}
+                    placeholder="Ej: Juan Pérez"
+                    className="w-full bg-[#14040A] border border-rose-900/40 rounded-xl p-3 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 transition min-h-[44px]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="quote-additional-notes" className="block text-xs font-bold text-rose-200/80 mb-1.5">
+                  Detalles adicionales o preguntas para Anahí & Enzo (Opcional):
+                </label>
+                <textarea
+                  id="quote-additional-notes"
+                  value={additionalNotes}
+                  onChange={e => setAdditionalNotes(e.target.value)}
+                  placeholder="Ej: Tengo 2 empleados en caja, necesito que funcione en tablet y computadoras..."
+                  rows={2}
+                  className="w-full bg-[#14040A] border border-rose-900/40 rounded-xl p-3 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 transition min-h-[44px]"
+                />
+              </div>
+
+              <div className="pt-4 flex items-center justify-between">
+                <button
+                  onClick={() => setCurrentStep(2)}
+                  className="flex items-center space-x-2 px-5 min-h-[48px] rounded-xl bg-[#18040B] text-rose-200 hover:text-white border border-rose-900/40 font-bold text-xs"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Volver a Funciones</span>
+                </button>
+                <button
+                  onClick={() => setCurrentStep(4)}
+                  className="flex items-center space-x-2 px-6 min-h-[48px] rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-black text-xs uppercase tracking-wider shadow-lg"
+                >
+                  <span>Ver Resumen & WhatsApp</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
+          )}
 
-            {/* SEND DIRECT TO WHATSAPP BUTTON */}
-            <button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className="relative group overflow-hidden w-full py-4 bg-gradient-to-r from-emerald-500 via-green-500 to-emerald-600 hover:from-emerald-400 hover:via-green-400 hover:to-emerald-500 text-white font-black text-sm rounded-2xl shadow-xl shadow-emerald-950/60 border border-emerald-300/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-3 uppercase tracking-wider disabled:opacity-50 cursor-pointer"
-            >
-              <div className="relative flex items-center justify-center">
+          {/* STEP 4: Summary & Send to WhatsApp */}
+          {currentStep === 4 && (
+            <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-5 shadow-2xl">
+              <div className="border-b border-rose-900/30 pb-3">
+                <span className="text-xs font-black uppercase text-emerald-400 tracking-wider block">
+                  PASO 4 DE 4 — ¡TODO LISTO!
+                </span>
+                <h3 className="text-xl font-black text-white">
+                  Resumen de tu Cotización Personalizada
+                </h3>
+                <p className="text-xs text-rose-200/70 mt-1">
+                  Revisá la propuesta estimada y envíala directamente por WhatsApp para coordinar tu demo.
+                </p>
+              </div>
+
+              <div className="space-y-3 bg-[#18040B] p-4 rounded-2xl border border-rose-900/30 text-xs">
+                <div className="flex justify-between border-b border-rose-900/20 pb-2">
+                  <span className="text-rose-200/60 font-bold">Rubro:</span>
+                  <span className="text-amber-300 font-bold">{currentIndustryObj.name}</span>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-rose-200/60 font-bold block">Funciones Elegidas ({selectedFeatures.length}):</span>
+                  <ul className="space-y-1">
+                    {availableFeatures
+                      .filter(f => selectedFeatures.includes(f.id))
+                      .map(f => (
+                        <li key={f.id} className="flex items-center space-x-2 text-rose-100">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span>{f.label}</span>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+
+                <div className="flex justify-between border-t border-rose-900/20 pt-2 font-mono">
+                  <span className="text-rose-200/60 font-bold">Inversión Proyectada:</span>
+                  <span className="text-emerald-400 font-black text-sm">
+                    ~${estimatedPriceBase.toLocaleString('es-AR')} ARS <span className="text-[10px] font-sans text-rose-200/60">(Pago Único)</span>
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="relative group overflow-hidden w-full py-4 bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-sm sm:text-base rounded-2xl shadow-2xl shadow-emerald-950/70 border border-emerald-300/40 transition-all uppercase tracking-wider flex items-center justify-center space-x-3 cursor-pointer"
+              >
                 {isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                   <>
-                    <span className="absolute -inset-1 rounded-full bg-white/40 animate-ping opacity-75" />
-                    <MessageCircle className="relative w-5 h-5 fill-white text-emerald-700" />
+                    <MessageCircle className="w-5 h-5 fill-white text-emerald-800" />
+                    <span>Enviar Cotización por WhatsApp</span>
                   </>
                 )}
-              </div>
-              <span>{isSubmitting ? 'Registrando...' : 'Enviar Propuesta por WhatsApp'}</span>
-            </button>
+              </button>
 
-            <p className="text-[11px] text-center text-slate-500">
-              Al hacer clic se abrirá WhatsApp con los detalles ya cargados para enviarle a Anahí Gilardi & Enzo Girardi ({phone}).
-            </p>
+              <div className="flex justify-start">
+                <button
+                  onClick={() => setCurrentStep(3)}
+                  className="flex items-center space-x-2 px-5 min-h-[44px] rounded-xl bg-[#18040B] text-rose-200 hover:text-white border border-rose-900/40 font-bold text-xs"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Modificar Datos</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+        </motion.div>
+
+        {/* Right Summary Sidebar (Updates Live) */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4 }}
+          className="lg:col-span-5"
+        >
+          <div className="sticky top-24 bg-[#240A15]/95 border-2 border-rose-700/50 rounded-3xl p-6 shadow-2xl space-y-5 backdrop-blur-xl">
+            
+            <div className="flex items-center justify-between border-b border-rose-900/40 pb-3">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                  Resumen de tu Cotización
+                </span>
+                <h3 className="text-lg font-black text-white">
+                  Sistema a Medida
+                </h3>
+              </div>
+              <Sparkles className="w-5 h-5 text-amber-300" />
+            </div>
+
+            <div className="space-y-1 text-xs">
+              <span className="text-rose-200/60 font-bold uppercase text-[10px] tracking-wider block">Rubro:</span>
+              <p className="text-sm font-black text-amber-300">{currentIndustryObj.name}</p>
+            </div>
+
+            <div className="space-y-1.5 text-xs">
+              <span className="text-rose-200/60 font-bold uppercase text-[10px] tracking-wider block">
+                Módulos Seleccionados ({selectedFeatures.length}):
+              </span>
+              <div className="space-y-1 max-h-40 overflow-y-auto pr-1">
+                {selectedFeatures.map(fId => {
+                  const featureObj = availableFeatures.find(af => af.id === fId);
+                  return (
+                    <div key={fId} className="flex items-center space-x-2 text-[11px] text-rose-100 bg-[#18040B] p-2 rounded-lg border border-rose-900/30">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span className="truncate">{featureObj?.label || fId}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-[#14040A] border border-rose-900/40 space-y-1 font-mono text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-rose-200/70">Plazo Estimado:</span>
+                <span className="text-amber-300 font-bold">~{Math.round(estimatedDays)} Días Hábiles</span>
+              </div>
+              <div className="flex items-center justify-between pt-1 border-t border-rose-900/20">
+                <span className="text-rose-200/70">Inversión Est.:</span>
+                <span className="text-emerald-400 font-black text-sm">~${estimatedPriceBase.toLocaleString('es-AR')} ARS</span>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-[#18040B] border border-rose-900/30 text-[11px] text-rose-200/70 space-y-1">
+              <div className="font-bold text-white flex items-center space-x-1">
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>Tu Sitio Web Río Cuarto Incluye:</span>
+              </div>
+              <div>✓ Instalación y capacitación guiada</div>
+              <div>✓ Cero comisiones por venta</div>
+              <div>✓ Soporte directo con Anahí Gilardi & Enzo Girardi</div>
+            </div>
 
           </div>
         </motion.div>
