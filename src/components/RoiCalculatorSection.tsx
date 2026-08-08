@@ -21,7 +21,7 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = () => {
   const totalMonthlySavings = timeSavedMoney + totalMonthlyLossPrevented;
   const estimatedPaybackMonths = Math.max(1, Math.round(350000 / totalMonthlySavings * 10) / 10);
 
-  const whatsappMessage = `Hola Anahí y Enzo! Usé el simulador de ROI en Tu Sitio Web Río Cuarto y calculé que un desarrollo a medida me ahorraría aproximadamente $${totalMonthlySavings.toLocaleString('es-AR')} al mes (${monthlyHoursSaved} hs de trabajo). Me gustaría cotizar para mi negocio.`;
+  const whatsappMessage = `Hola Anahí y Enzo! Usé el simulador de ROI en Río Cuarto Web y calculé que un desarrollo a medida me ahorraría aproximadamente $${totalMonthlySavings.toLocaleString('es-AR')} al mes (${monthlyHoursSaved} hs de trabajo). Me gustaría cotizar para mi negocio.`;
   const whatsappUrl = getWhatsAppUrl(whatsappMessage);
 
   return (

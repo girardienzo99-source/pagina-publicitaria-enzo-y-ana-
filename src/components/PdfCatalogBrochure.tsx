@@ -31,7 +31,7 @@ interface PdfCatalogBrochureProps {
 
 export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerData, onClose }) => {
   const whatsappUrl = `https://wa.me/549${flyerData.phone}?text=${encodeURIComponent(
-    'Hola Anahí y Enzo! Estuve viendo su Catálogo PDF de Tu Sitio Web Río Cuarto y quisiera consultar por un proyecto para mi negocio.'
+    'Hola Anahí y Enzo! Estuve viendo el Catálogo PDF de Río Cuarto Web y quisiera consultar por un proyecto para mi negocio.'
   )}`;
 
   const handleDirectPdfDownload = async () => {
@@ -473,7 +473,7 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
 
           {/* Footer note */}
           <div className="text-center text-[10px] text-slate-400 font-mono">
-            Tu Sitio Web Río Cuarto (Anahí Gilardi & Enzo Girardi) • Río Cuarto, Córdoba & Atención a todo el país.
+            Río Cuarto Web — Diseño Digital a Medida (Anahí Gilardi & Enzo Girardi) • Río Cuarto, Córdoba & Atención a todo el país.
           </div>
 
         </div>

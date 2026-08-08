@@ -99,7 +99,7 @@ export const PlansAndModalitiesSection: React.FC<PlansAndModalitiesSectionProps>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {plans.map((plan) => {
           const whatsappUrl = getWhatsAppUrl(
-            `Hola Anahí y Enzo! Me interesa consultar por el ${plan.title} en Tu Sitio Web Río Cuarto.`
+            `Hola Anahí y Enzo! Me interesa consultar por el ${plan.title} en Río Cuarto Web.`
           );
 
           return (

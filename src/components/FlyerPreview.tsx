@@ -28,7 +28,7 @@ export const FlyerPreview: React.FC<FlyerPreviewProps> = ({
   onOpenPdfCatalog
 }) => {
   const mainWhatsAppUrl = getWhatsAppUrl(
-    'Hola Anahí y Enzo! Vi su página web de Tu Sitio Web Río Cuarto y quisiera pedir asesoramiento y demo para mi negocio.'
+    'Hola Anahí y Enzo! Vi la página web de Río Cuarto Web y quisiera pedir asesoramiento y demo para mi negocio.'
   );
 
   return (

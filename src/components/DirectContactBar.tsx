@@ -11,7 +11,7 @@ interface DirectContactBarProps {
 export const DirectContactBar: React.FC<DirectContactBarProps> = ({
   email
 }) => {
-  const whatsappUrl = getWhatsAppUrl('Hola Anahí y Enzo! Vi su web de Tu Sitio Web Río Cuarto y quisiera consultar por un proyecto para mi negocio.');
+  const whatsappUrl = getWhatsAppUrl('Hola Anahí y Enzo! Vi la web de Río Cuarto Web y quisiera consultar por un proyecto para mi negocio.');
 
   return (
     <aside 
@@ -21,10 +21,10 @@ export const DirectContactBar: React.FC<DirectContactBarProps> = ({
       <div className="flex items-center justify-between gap-3 text-xs sm:text-sm">
         
         <div className="flex items-center space-x-2 text-rose-100">
-          <span className="w-2.5 h-2.5 rounded-full bg-rose-400 animate-pulse shrink-0" />
+          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
           <div className="leading-tight">
-            <span className="font-extrabold text-white text-xs sm:text-sm block">Tu Sitio Web Río Cuarto</span>
-            <span className="text-[11px] text-rose-300/80 font-medium hidden sm:block">Anahí Gilardi & Enzo Girardi (Programadores)</span>
+            <span className="font-black text-white text-xs sm:text-sm uppercase tracking-tight block">Río Cuarto <span className="text-cyan-400">Web</span></span>
+            <span className="text-[11px] text-amber-300 font-extrabold uppercase hidden sm:block">Diseño Digital a Medida • Anahí & Enzo</span>
           </div>
         </div>
 

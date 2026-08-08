@@ -129,7 +129,7 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
       .map(f => `• ${f.label}`)
       .join('\n');
 
-    let text = `Hola Anahí y Enzo! Estuve en el Cotizador Interactivo de Tu Sitio Web Río Cuarto y armé la siguiente estimación para mi negocio:\n\n`;
+    let text = `Hola Anahí y Enzo! Estuve en el Cotizador Interactivo de Río Cuarto Web y armé la siguiente estimación para mi negocio:\n\n`;
     if (clientBusiness) text += `🏢 *Negocio:* ${clientBusiness}\n`;
     if (clientContact) text += `👤 *Contacto:* ${clientContact}\n`;
     text += `📌 *Rubro:* ${currentIndustryObj.name}\n`;
@@ -559,7 +559,7 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
             <div className="p-3 rounded-xl bg-[#18040B] border border-rose-900/30 text-[11px] text-rose-200/70 space-y-1">
               <div className="font-bold text-white flex items-center space-x-1">
                 <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                <span>Tu Sitio Web Río Cuarto Incluye:</span>
+                <span>Río Cuarto Web Incluye:</span>
               </div>
               <div>✓ Instalación y capacitación guiada</div>
               <div>✓ Cero comisiones por venta</div>

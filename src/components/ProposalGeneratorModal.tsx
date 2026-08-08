@@ -262,7 +262,7 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
             <div className="space-y-1">
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md border border-slate-300">
-                  <img src={brandLogo} alt="Logo Tu Sitio Web Río Cuarto" className="w-full h-full object-cover" />
+                  <img src={brandLogo} alt="Logo Río Cuarto Web" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-950 uppercase">
@@ -373,7 +373,7 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
           {/* Sign-off Footer */}
           <div className="pt-4 border-t-2 border-slate-900 flex justify-between items-end text-xs">
             <div className="space-y-0.5">
-              <p className="font-black text-slate-950 uppercase">Tu Sitio Web Río Cuarto</p>
+              <p className="font-black text-slate-950 uppercase">Río Cuarto Web — Diseño Digital a Medida</p>
               <p className="text-slate-700 font-bold">Anahí Gilardi & Enzo Girardi (Programadores)</p>
               <p className="text-slate-500 text-[10px]">Río Cuarto, Córdoba & Atención a todo el país</p>
             </div>

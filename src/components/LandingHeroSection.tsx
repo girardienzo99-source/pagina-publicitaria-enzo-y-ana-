@@ -19,7 +19,7 @@ export const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   onNavigateToCalculator
 }) => {
   const mainWhatsAppUrl = getWhatsAppUrl(
-    'Hola Anahí y Enzo! Vi la web de Tu Sitio Web Río Cuarto y me gustaría pedir presupuesto y demo para mi negocio.'
+    'Hola Anahí y Enzo! Vi la web de Río Cuarto Web y me gustaría pedir presupuesto y demo para mi negocio.'
   );
 
   return (

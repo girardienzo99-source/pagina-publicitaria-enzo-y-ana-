@@ -39,7 +39,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const mainWhatsAppUrl = getWhatsAppUrl('Hola Anahí y Enzo! Vi su web de Tu Sitio Web Río Cuarto y quisiera pedir una demo de un desarrollo para mi negocio.');
+  const mainWhatsAppUrl = getWhatsAppUrl('Hola Anahí y Enzo! Vi la web de Río Cuarto Web y quisiera pedir una demo de un desarrollo para mi negocio.');
 
   const handleTabClick = (tab: PublicTab) => {
     setActiveTab(tab);

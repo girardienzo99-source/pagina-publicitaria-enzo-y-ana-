@@ -238,7 +238,7 @@ export const PremiumFlyerCard: React.FC<PremiumFlyerCardProps> = ({
           <div className={`p-4 sm:p-5 rounded-2xl border ${styles.cardBg}`}>
             <h3 className="text-xs font-black uppercase tracking-wider text-rose-300 mb-3 flex items-center space-x-2">
               <Award className={`w-4 h-4 ${styles.iconColor}`} />
-              <span>¿Por qué elegir Tu Sitio Web Río Cuarto?</span>
+              <span>¿Por qué elegir Río Cuarto Web?</span>
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               {flyerData.keyBenefits.map((benefit, bIdx) => (
@@ -305,7 +305,7 @@ export const PremiumFlyerCard: React.FC<PremiumFlyerCardProps> = ({
 
         {/* Bottom Sign-off */}
         <div className="mt-6 text-center text-[11px] text-rose-200/50 font-medium">
-          Tu Sitio Web Río Cuarto • Anahí Gilardi & Enzo Girardi (Programadores) • {flyerData.email}
+          Río Cuarto Web — Diseño Digital a Medida • Anahí Gilardi & Enzo Girardi (Programadores) • {flyerData.email}
         </div>
 
       </motion.div>
