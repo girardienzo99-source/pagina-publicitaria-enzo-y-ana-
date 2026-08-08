@@ -46,11 +46,9 @@ export const GlobalSystemSearchModal: React.FC<GlobalSystemSearchModalProps> = (
       `.toLowerCase();
 
       return searchTerms.some(term => {
-        // Escapar caracteres especiales para el RegEx
-        const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // Usar límites de palabra (\b) para evitar que "arca" coincida con "marca"
-        const regex = new RegExp(`\\b${escaped}\\b`, 'i');
-        return regex.test(fullText);
+        const cleanTerm = term.trim().toLowerCase();
+        if (!cleanTerm) return true;
+        return fullText.includes(cleanTerm);
       });
     });
   };

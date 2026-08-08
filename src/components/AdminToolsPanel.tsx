@@ -56,10 +56,17 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loginError, setLoginError] = useState<string>('');
-  
   const [activeAdminSubtab, setActiveAdminSubtab] = useState<'editor' | 'leads'>('editor');
   const [leads, setLeads] = useState<any[]>([]);
   const [isLoadingLeads, setIsLoadingLeads] = useState<boolean>(false);
+  const [leadSearchTerm, setLeadSearchTerm] = useState<string>('');
+
+  const filteredLeads = leads.filter(l => {
+    if (!leadSearchTerm.trim()) return true;
+    const term = leadSearchTerm.toLowerCase();
+    const searchCorpus = `${l.client_business || ''} ${l.client_contact || ''} ${l.industry || ''} ${l.notes || ''}`.toLowerCase();
+    return searchCorpus.includes(term);
+  });
 
   const fetchLeads = async () => {
     if (!isSupabaseConfigured || !supabase) return;
@@ -402,6 +409,17 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
             </button>
           </div>
 
+          {/* Quick Search Bar for CRM */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Filtrar presupuestos por nombre de comercio, contacto o rubro..."
+              value={leadSearchTerm}
+              onChange={(e) => setLeadSearchTerm(e.target.value)}
+              className="w-full bg-[#18040B] border border-rose-900/40 rounded-xl px-4 py-2.5 text-xs text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 min-h-[44px]"
+            />
+          </div>
+
           {!isSupabaseConfigured && (
             <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs font-semibold">
               ⚠️ Supabase no está configurado localmente con claves API activas. Las consultas de prueba se registran al generar propuestas o cotizar.
@@ -413,15 +431,15 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
               <RefreshCw className="w-6 h-6 animate-spin mx-auto text-amber-400" />
               <p>Cargando leads recibidos desde la base de datos...</p>
             </div>
-          ) : leads.length === 0 ? (
+          ) : filteredLeads.length === 0 ? (
             <div className="py-12 text-center text-rose-300/60 font-semibold text-xs space-y-2 border border-dashed border-rose-900/40 rounded-2xl p-6">
               <Users className="w-8 h-8 text-rose-500/40 mx-auto" />
-              <p>Aún no hay presupuestos registrados en el historial.</p>
+              <p>No se encontraron presupuestos que coincidan con "{leadSearchTerm}".</p>
               <p className="text-[11px] text-rose-400/50">Cuando los clientes completen el cotizador o generen una propuesta PDF, aparecerán aquí automáticamente.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {leads.map((lead, idx) => (
+              {filteredLeads.map((lead, idx) => (
                 <div 
                   key={lead.id || idx}
                   className="bg-[#18040B] border border-rose-900/40 rounded-2xl p-4 space-y-3 shadow-lg hover:border-rose-700/60 transition"
