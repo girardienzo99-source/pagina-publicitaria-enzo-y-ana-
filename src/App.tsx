@@ -70,8 +70,8 @@ export default function App() {
   if (isDbLoading) {
     return (
       <div className="min-h-screen bg-[#14040A] flex flex-col items-center justify-center text-white space-y-4">
-        <div className="w-12 h-12 border-4 border-rose-400 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-rose-200/70 font-bold uppercase tracking-wider text-xs">Cargando presentación de Tu Sitio Web Río Cuarto...</p>
+        <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-cyan-200/80 font-bold uppercase tracking-wider text-xs">Cargando presentación de Río Cuarto Web...</p>
       </div>
     );
   }
@@ -81,32 +81,6 @@ export default function App() {
       
       {/* Background Deep Burgundy Radial Accent */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_85%_75%_at_50%_-20%,rgba(163,40,75,0.35),rgba(20,4,10,1))] pointer-events-none" />
-
-      {/* Print Styles injected for clean PDF/paper printing */}
-      <style>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          .printable-flyer, .printable-flyer *, .printable-proposal, .printable-proposal * {
-            visibility: visible;
-          }
-          .printable-flyer, .printable-proposal {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100% !important;
-            max-width: 100% !important;
-            box-shadow: none !important;
-            border: none !important;
-            background: white !important;
-            color: black !important;
-          }
-          .no-print {
-            display: none !important;
-          }
-        }
-      `}</style>
 
       {/* Main Header Nav */}
       <HeaderNav
@@ -208,7 +182,7 @@ export default function App() {
 
       {/* Discreet Footer Link for Internal Admin Panel Access */}
       <footer className="relative z-10 border-t border-rose-900/20 mt-12 pt-8 pb-16 text-center text-xs text-rose-200/50 space-y-2">
-        <p>Tu Sitio Web Río Cuarto — Anahí Gilardi & Enzo Girardi (Programadores) © 2026. Todos los derechos reservados.</p>
+        <p>Río Cuarto Web — Anahí Gilardi & Enzo Girardi (Programadores) © 2026. Todos los derechos reservados.</p>
         <button
           onClick={() => setActiveTab('admin')}
           className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-900/40 text-[11px] font-bold transition"

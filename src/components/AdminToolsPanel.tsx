@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Settings, Lock, FileText, Printer, ArrowLeft, Palette, Sparkles, KeyRound, UserCheck, ShieldAlert, LogOut } from 'lucide-react';
+import { 
+  Settings, 
+  Lock, 
+  FileText, 
+  Printer, 
+  ArrowLeft, 
+  Palette, 
+  Sparkles, 
+  KeyRound, 
+  UserCheck, 
+  ShieldAlert, 
+  LogOut,
+  Users,
+  MessageSquare,
+  Clock,
+  RefreshCw,
+  Building,
+  DollarSign
+} from 'lucide-react';
 import { FlyerEditor } from './FlyerEditor';
 import { PremiumFlyerCard } from './PremiumFlyerCard';
 import { FlyerData, FlyerTheme, FlyerFormat } from '../types';
+import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 
 interface AdminToolsPanelProps {
   flyerData: FlyerData;
@@ -37,6 +56,36 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loginError, setLoginError] = useState<string>('');
+  
+  const [activeAdminSubtab, setActiveAdminSubtab] = useState<'editor' | 'leads'>('editor');
+  const [leads, setLeads] = useState<any[]>([]);
+  const [isLoadingLeads, setIsLoadingLeads] = useState<boolean>(false);
+
+  const fetchLeads = async () => {
+    if (!isSupabaseConfigured || !supabase) return;
+    setIsLoadingLeads(true);
+    try {
+      const { data, error } = await supabase
+        .from('leads')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (!error && data) {
+        setLeads(data);
+      }
+    } catch (err) {
+      console.error('Error cargando leads:', err);
+    } finally {
+      setIsLoadingLeads(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && activeAdminSubtab === 'leads') {
+      fetchLeads();
+    }
+  }, [isAuthenticated, activeAdminSubtab]);
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,48 +147,44 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
                   required
                   className="w-full bg-[#14040A] border border-rose-900/40 rounded-xl p-3 pl-10 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 font-semibold min-h-[44px]"
                 />
-                <UserCheck className="w-4 h-4 text-rose-400 absolute left-3 top-3.5" />
+                <KeyRound className="w-4 h-4 text-rose-400 absolute left-3.5 top-3.5" />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-black uppercase text-rose-200/80 mb-1">
-                Contraseña:
+                Contraseña de Acceso:
               </label>
               <div className="relative">
                 <input
                   type="password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder="••••••••"
                   required
                   className="w-full bg-[#14040A] border border-rose-900/40 rounded-xl p-3 pl-10 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 font-semibold min-h-[44px]"
                 />
-                <KeyRound className="w-4 h-4 text-rose-400 absolute left-3 top-3.5" />
+                <Lock className="w-4 h-4 text-rose-400 absolute left-3.5 top-3.5" />
               </div>
             </div>
 
             {loginError && (
-              <motion.div 
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs font-bold flex items-center space-x-2"
-              >
+              <div className="p-3 bg-red-950/80 border border-red-500/50 rounded-xl text-red-200 text-xs font-bold flex items-center space-x-2">
                 <ShieldAlert className="w-4 h-4 text-red-400 shrink-0" />
                 <span>{loginError}</span>
-              </motion.div>
+              </div>
             )}
 
             <button
               type="submit"
-              className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-rose-600 via-rose-700 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-rose-950/60 border border-rose-400/50 transition cursor-pointer min-h-[48px]"
+              className="w-full py-3.5 px-4 bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-black text-sm rounded-xl uppercase tracking-wider shadow-lg shadow-rose-950/50 transition transform active:scale-95"
             >
-              Iniciar Sesión Admin
+              Ingresar al Panel
             </button>
           </form>
 
-          <p className="text-[11px] text-rose-200/50">
-            Tu Sitio Web Río Cuarto (Anahí Gilardi & Enzo Girardi)
+          <p className="text-[11px] text-rose-300/40 font-mono">
+            Río Cuarto Web • Acceso Privado Co-Fundadores
           </p>
         </motion.div>
       </div>
@@ -150,31 +195,64 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="max-w-6xl mx-auto space-y-8 p-4 sm:p-6"
+      className="space-y-8"
     >
-      {/* Header Banner */}
-      <div className="bg-[#240916] border border-rose-900/40 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xl">
-        <div className="space-y-2">
-          <span className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-black uppercase tracking-wider">
-            <Lock className="w-3.5 h-3.5 text-amber-400" />
-            <span>Panel de Administración Autenticado</span>
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-white">
-            Generador de Flyers & Anuncios Publicitarios
-          </h1>
-          <p className="text-xs sm:text-sm text-rose-200/70 font-medium">
-            Personalizá los anuncios de Tu Sitio Web Río Cuarto (Anahí Gilardi & Enzo Girardi).
-          </p>
+      {/* Top Header Bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 shadow-2xl">
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-700 via-rose-500 to-amber-300 p-0.5 shadow-lg">
+            <div className="w-full h-full bg-[#18040B] rounded-[14px] flex items-center justify-center">
+              <Settings className="w-6 h-6 text-amber-300 animate-spin-slow" />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h2 className="text-xl font-black text-white uppercase tracking-tight">
+                Panel de Administración Privado
+              </h2>
+              <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-black text-[10px] uppercase flex items-center space-x-1">
+                <UserCheck className="w-3 h-3" />
+                <span>Sesión Activa</span>
+              </span>
+            </div>
+            <p className="text-xs text-rose-200/70">
+              Gestión de Anuncios Publicitarios, CRM de Presupuestos & Generación de PDF
+            </p>
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        {/* Action Buttons & Subtabs */}
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setActiveAdminSubtab('editor')}
+            className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition ${
+              activeAdminSubtab === 'editor'
+                ? 'bg-rose-600 text-white shadow-lg'
+                : 'bg-[#18040B] text-rose-300 border border-rose-900/40 hover:text-white'
+            }`}
+          >
+            <Palette className="w-4 h-4" />
+            <span>Editor Anuncio</span>
+          </button>
+
+          <button
+            onClick={() => setActiveAdminSubtab('leads')}
+            className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition ${
+              activeAdminSubtab === 'leads'
+                ? 'bg-rose-600 text-white shadow-lg'
+                : 'bg-[#18040B] text-rose-300 border border-rose-900/40 hover:text-white'
+            }`}
+          >
+            <Users className="w-4 h-4 text-amber-300" />
+            <span>CRM Leads & Consultas ({leads.length})</span>
+          </button>
+
           <button
             onClick={onOpenProposalModal}
-            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black text-xs uppercase tracking-wider shadow-lg border border-emerald-400/40"
+            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-950/50"
           >
-            <FileText className="w-4 h-4 text-amber-300" />
-            <span>Generar Propuesta PDF</span>
+            <FileText className="w-4 h-4" />
+            <span>Crear Propuesta PDF</span>
           </button>
 
           <button
@@ -196,107 +274,195 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
         </div>
       </div>
 
-      {/* Main Admin Editor Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        {/* Editor Options (Left) */}
-        <div className="lg:col-span-6 space-y-6">
+      {/* SUBTAB 1: EDITOR DE ANUNCIOS */}
+      {activeAdminSubtab === 'editor' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* Format & Theme Controls */}
-          <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-rose-900/30 pb-3">
-              <span className="text-xs font-black uppercase text-amber-300 tracking-wider flex items-center space-x-2">
-                <Palette className="w-4 h-4" />
-                <span>Estilo & Formato de Publicidad</span>
-              </span>
-              <Sparkles className="w-4 h-4 text-amber-300" />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 text-xs">
-              <div>
-                <label className="block font-bold text-rose-200/80 mb-1.5">Formato de Imagen:</label>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {[
-                    { id: 'story', label: 'Story 9:16' },
-                    { id: 'post', label: 'Post 1:1' },
-                    { id: 'banner', label: 'Banner 16:9' },
-                    { id: 'card', label: 'Tarjeta' }
-                  ].map(fmt => (
-                    <button
-                      key={fmt.id}
-                      onClick={() => setFormat(fmt.id as FlyerFormat)}
-                      className={`py-2 px-2 rounded-xl font-bold border transition ${
-                        format === fmt.id
-                          ? 'bg-rose-900 text-white border-rose-500'
-                          : 'bg-[#18040B] text-rose-300/60 border-rose-900/30 hover:text-white'
-                      }`}
-                    >
-                      {fmt.label}
-                    </button>
-                  ))}
-                </div>
+          {/* Editor Options (Left) */}
+          <div className="lg:col-span-6 space-y-6">
+            
+            {/* Format & Theme Controls */}
+            <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between border-b border-rose-900/30 pb-3">
+                <span className="text-xs font-black uppercase text-amber-300 tracking-wider flex items-center space-x-2">
+                  <Palette className="w-4 h-4" />
+                  <span>Estilo & Formato de Publicidad</span>
+                </span>
+                <Sparkles className="w-4 h-4 text-amber-300" />
               </div>
 
-              <div>
-                <label className="block font-bold text-rose-200/80 mb-1.5">Tema de Color Neón:</label>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {[
-                    { id: 'ruby', label: 'Bordó Rubí' },
-                    { id: 'neon', label: 'Tecno Neón' },
-                    { id: 'emerald', label: 'Esmeralda' },
-                    { id: 'corporate', label: 'Corporativo' }
-                  ].map(t => (
-                    <button
-                      key={t.id}
-                      onClick={() => setTheme(t.id as FlyerTheme)}
-                      className={`py-2 px-2 rounded-xl font-bold border transition ${
-                        theme === t.id
-                          ? 'bg-rose-900 text-white border-rose-500'
-                          : 'bg-[#18040B] text-rose-300/60 border-rose-900/30 hover:text-white'
-                      }`}
-                    >
-                      {t.label}
-                    </button>
-                  ))}
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label className="block font-bold text-rose-200/80 mb-1.5">Formato de Imagen:</label>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {[
+                      { id: 'story', label: 'Story 9:16' },
+                      { id: 'post', label: 'Post 1:1' },
+                      { id: 'banner', label: 'Banner 16:9' },
+                      { id: 'card', label: 'Tarjeta' }
+                    ].map(fmt => (
+                      <button
+                        key={fmt.id}
+                        onClick={() => setFormat(fmt.id as FlyerFormat)}
+                        className={`py-2 px-2 rounded-xl font-bold border transition ${
+                          format === fmt.id
+                            ? 'bg-rose-900 text-white border-rose-500'
+                            : 'bg-[#18040B] text-rose-300/60 border-rose-900/30 hover:text-white'
+                        }`}
+                      >
+                        {fmt.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
+
+                <div>
+                  <label className="block font-bold text-rose-200/80 mb-1.5">Tema de Color Neón:</label>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {[
+                      { id: 'ruby', label: 'Bordó Rubí' },
+                      { id: 'neon', label: 'Tecno Neón' },
+                      { id: 'emerald', label: 'Esmeralda' },
+                      { id: 'corporate', label: 'Corporativo' }
+                    ].map(t => (
+                      <button
+                        key={t.id}
+                        onClick={() => setTheme(t.id as FlyerTheme)}
+                        className={`py-2 px-2 rounded-xl font-bold border transition ${
+                          theme === t.id
+                            ? 'bg-rose-900 text-white border-rose-500'
+                            : 'bg-[#18040B] text-rose-300/60 border-rose-900/30 hover:text-white'
+                        }`}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <FlyerEditor 
+              flyerData={flyerData} 
+              onChange={setFlyerData}
+              onSave={onSaveConfig} 
+            />
+          </div>
+
+          {/* Live Premium Flyer Preview (Right) */}
+          <div className="lg:col-span-6 space-y-4">
+            <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between border-b border-rose-900/30 pb-3">
+                <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                  Vista Previa del Anuncio
+                </h3>
+                <button
+                  onClick={onPreviewFlyer}
+                  className="flex items-center space-x-1.5 text-xs font-bold text-rose-300 hover:text-white transition"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Ir al Sitio Público</span>
+                </button>
+              </div>
+
+              <div className="flex justify-center p-2 bg-black/40 rounded-2xl border border-rose-900/30">
+                <PremiumFlyerCard 
+                  flyerData={flyerData} 
+                  theme={theme}
+                  format={format}
+                />
               </div>
             </div>
           </div>
 
-          <FlyerEditor 
-            flyerData={flyerData} 
-            onChange={setFlyerData}
-            onSave={onSaveConfig} 
-          />
         </div>
+      )}
 
-        {/* Live Premium Flyer Preview (Right) */}
-        <div className="lg:col-span-6 space-y-4">
-          <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-rose-900/30 pb-3">
-              <h3 className="text-sm font-black text-white uppercase tracking-wider">
-                Vista Previa del Anuncio
+      {/* SUBTAB 2: CRM LEADS & PRESUPUESTOS */}
+      {activeAdminSubtab === 'leads' && (
+        <div className="bg-[#240A15]/90 border border-rose-900/40 rounded-3xl p-6 space-y-6 shadow-2xl">
+          <div className="flex items-center justify-between border-b border-rose-900/30 pb-4">
+            <div>
+              <h3 className="text-lg font-black text-white uppercase tracking-tight flex items-center space-x-2">
+                <Users className="w-5 h-5 text-amber-400" />
+                <span>Historial de Presupuestos & Consultas Recibidas</span>
               </h3>
-              <button
-                onClick={onPreviewFlyer}
-                className="flex items-center space-x-1.5 text-xs font-bold text-rose-300 hover:text-white transition"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Ir al Sitio Público</span>
-              </button>
+              <p className="text-xs text-rose-200/70">
+                Presupuestos solicitados desde el cotizador interactivo y el generador de PDF
+              </p>
             </div>
 
-            <div className="flex justify-center p-2 bg-black/40 rounded-2xl border border-rose-900/30">
-              <PremiumFlyerCard 
-                flyerData={flyerData} 
-                theme={theme}
-                format={format}
-              />
-            </div>
+            <button
+              onClick={fetchLeads}
+              disabled={isLoadingLeads}
+              className="flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-[#18040B] hover:bg-rose-900/60 text-rose-200 text-xs font-bold border border-rose-900/40 transition"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoadingLeads ? 'animate-spin' : ''}`} />
+              <span>Actualizar Listado</span>
+            </button>
           </div>
-        </div>
 
-      </div>
+          {!isSupabaseConfigured && (
+            <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs font-semibold">
+              ⚠️ Supabase no está configurado localmente con claves API activas. Las consultas de prueba se registran al generar propuestas o cotizar.
+            </div>
+          )}
+
+          {isLoadingLeads ? (
+            <div className="py-12 text-center text-rose-300 font-bold text-xs space-y-2">
+              <RefreshCw className="w-6 h-6 animate-spin mx-auto text-amber-400" />
+              <p>Cargando leads recibidos desde la base de datos...</p>
+            </div>
+          ) : leads.length === 0 ? (
+            <div className="py-12 text-center text-rose-300/60 font-semibold text-xs space-y-2 border border-dashed border-rose-900/40 rounded-2xl p-6">
+              <Users className="w-8 h-8 text-rose-500/40 mx-auto" />
+              <p>Aún no hay presupuestos registrados en el historial.</p>
+              <p className="text-[11px] text-rose-400/50">Cuando los clientes completen el cotizador o generen una propuesta PDF, aparecerán aquí automáticamente.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {leads.map((lead, idx) => (
+                <div 
+                  key={lead.id || idx}
+                  className="bg-[#18040B] border border-rose-900/40 rounded-2xl p-4 space-y-3 shadow-lg hover:border-rose-700/60 transition"
+                >
+                  <div className="flex items-center justify-between border-b border-rose-900/30 pb-2">
+                    <span className="text-xs font-black text-amber-300 uppercase flex items-center space-x-1.5">
+                      <Building className="w-3.5 h-3.5" />
+                      <span>{lead.client_business || 'Negocio / Cliente'}</span>
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-mono text-[10px]">
+                      {lead.created_at ? new Date(lead.created_at).toLocaleDateString('es-AR') : 'Reciente'}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1 text-xs text-rose-100">
+                    <div><strong className="text-rose-300/70">Contacto:</strong> {lead.client_contact || 'Cliente'}</div>
+                    <div><strong className="text-rose-300/70">Rubro:</strong> {lead.industry || 'Comercial'}</div>
+                    <div><strong className="text-rose-300/70">Detalle:</strong> {lead.notes || 'Consulta de presupuesto'}</div>
+                  </div>
+
+                  <div className="pt-2 border-t border-rose-900/30 flex items-center justify-between">
+                    <span className="text-[10px] text-emerald-400 font-black uppercase">
+                      Entrega: ~{lead.timeline || lead.estimated_days || 7} días
+                    </span>
+                    <a
+                      href={`https://wa.me/5493584860640?text=${encodeURIComponent(`Hola! Vi tu presupuesto para ${lead.client_business || 'tu negocio'} en Río Cuarto Web y quisiera responder a tu consulta.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[11px] uppercase tracking-wider flex items-center space-x-1 transition shadow-md"
+                    >
+                      <MessageSquare className="w-3 h-3" />
+                      <span>Abrir WhatsApp</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
     </motion.div>
   );
 };
