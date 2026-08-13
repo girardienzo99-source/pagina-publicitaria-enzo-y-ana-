@@ -13,6 +13,7 @@
   --color-rose-soft: #e892a8;
   --color-rose-vibrant: #d44d71;
   --color-champagne-soft: #f3c99f;
+  --color-cyan-neon: #38bdf8;
 }
 
 html, body {
@@ -24,25 +25,35 @@ html, body {
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Universal Touch Target Guidelines (Min 44px for accessibility) */
+/* Universal Touch Target Guidelines (Min 44px for iOS & Android accessibility) */
 button, 
 a.btn, 
 input[type="text"], 
 input[type="email"], 
 input[type="tel"], 
 input[type="number"], 
+input[type="password"], 
 select {
   min-height: 44px;
 }
 
-/* Glassmorphism custom helper utilities */
+/* Glassmorphism custom helper utilities & luxury textures */
 .glass-panel {
   background: rgba(28, 7, 17, 0.82);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(232, 146, 168, 0.18);
+}
+
+.glass-panel-luxury {
+  background: linear-gradient(135deg, rgba(38, 9, 23, 0.92) 0%, rgba(20, 4, 10, 0.96) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(225, 29, 72, 0.25);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
 }
 
 .glass-panel-light {
@@ -60,9 +71,18 @@ select {
   box-shadow: 0 0 25px -5px rgba(232, 146, 168, 0.2);
 }
 
+.glow-cyan-soft {
+  box-shadow: 0 0 30px -5px rgba(56, 189, 248, 0.25);
+}
+
+/* Mobile Safe Areas for Notch and Gesture Bars */
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
 /* Accessibility Focus States */
 *:focus-visible {
-  outline: 2px solid #e892a8;
+  outline: 2px solid #38bdf8;
   outline-offset: 2px;
 }
 
