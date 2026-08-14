@@ -94,19 +94,19 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-zinc-950 border border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
+      className="glass-panel-luxury rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
     >
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-zinc-800">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-rose-900/30">
         <div>
-          <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-black uppercase tracking-wider">
-            <Award className="w-4 h-4 text-amber-400" />
+          <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-amber-950/80 text-amber-300 border border-amber-500/40 text-xs font-black uppercase tracking-wider shadow-md">
+            <Award className="w-4 h-4 text-amber-300" />
             <span>Casos de Éxito & Testimonios</span>
           </span>
-          <h3 className="text-2xl sm:text-3xl font-black text-white mt-2">
-            Lo que dicen dueños de negocios que ya usan los sistemas
+          <h3 className="text-2xl sm:text-3xl font-black text-white mt-2 uppercase tracking-tight">
+            Lo que dicen dueños de negocios que ya usan Río Cuarto Web
           </h3>
-          <p className="text-xs sm:text-sm text-zinc-400 font-medium mt-1">
-            Resultados comprobados en locales comerciales, gastronomía y servicios profesionales.
+          <p className="text-xs sm:text-sm text-rose-200/70 font-medium mt-1">
+            Resultados comprobados en locales comerciales, gastronomía, salud y servicios profesionales.
           </p>
         </div>
 
@@ -122,10 +122,10 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
             <button
               key={f.id}
               onClick={() => setFilter(f.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                 filter === f.id
-                  ? 'bg-amber-500 text-zinc-950 font-black shadow-md'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800'
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black shadow-md'
+                  : 'bg-[#18040B] text-rose-200/70 hover:text-white border border-rose-900/40'
               }`}
             >
               {f.label}
@@ -144,7 +144,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.25 }}
-              className="bg-zinc-900/90 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-lg group"
+              className="bg-[#18040B]/90 border border-rose-900/40 card-premium-glow rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-xl group"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -158,22 +158,22 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
                   </span>
                 </div>
 
-                <p className="text-xs text-zinc-300 italic font-medium leading-relaxed">
+                <p className="text-xs text-rose-100 italic font-medium leading-relaxed">
                   "{t.comment}"
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between">
+              <div className="pt-3 border-t border-rose-900/30 flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-black text-white group-hover:text-amber-400 transition">
+                  <h4 className="text-xs font-black text-white group-hover:text-amber-300 transition">
                     {t.clientName}
                   </h4>
-                  <p className="text-[11px] text-zinc-400 font-semibold">
-                    {t.businessName} • <span className="text-zinc-500">{t.city}</span>
+                  <p className="text-[11px] text-rose-200/70 font-semibold">
+                    {t.businessName} • <span className="text-rose-300/50">{t.city}</span>
                   </p>
                 </div>
-                <div className="flex items-center space-x-1 text-[10px] text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-800/60 font-mono">
-                  <CheckCircle2 className="w-3 h-3" />
+                <div className="flex items-center space-x-1 text-[10px] text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/40 font-mono font-black">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                   <span>Verificado</span>
                 </div>
               </div>

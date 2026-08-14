@@ -66,28 +66,28 @@ export const FaqAccordionSection: React.FC<FaqAccordionSectionProps> = ({ phone 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
+      className="glass-panel-luxury rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-rose-900/30">
         <div>
-          <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-black uppercase tracking-wider">
-            <HelpCircle className="w-4 h-4 text-cyan-400" />
+          <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 text-xs font-black uppercase tracking-wider shadow-md">
+            <HelpCircle className="w-4 h-4 text-cyan-300" />
             <span>Preguntas Frecuentes</span>
           </span>
-          <h3 className="text-2xl sm:text-3xl font-black text-white mt-2">
+          <h3 className="text-2xl sm:text-3xl font-black text-white mt-2 uppercase tracking-tight">
             Respuestas claras antes de empezar
           </h3>
         </div>
 
         {/* Search input */}
         <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-rose-300/50 absolute left-3 top-1/2 -translate-y-1/2" />
           <input 
             type="text"
-            placeholder="Buscar duda (ej: AFIP, internet, cuotas)..."
+            placeholder="Buscar duda (ej: ARCA, AFIP, cuotas)..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-800 focus:border-cyan-500 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none"
+            className="w-full bg-[#18040B] border border-rose-900/40 focus:border-cyan-400 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-rose-300/40 focus:outline-none min-h-[44px]"
           />
         </div>
       </div>
@@ -99,17 +99,21 @@ export const FaqAccordionSection: React.FC<FaqAccordionSectionProps> = ({ phone 
           return (
             <div 
               key={faq.id}
-              className="border border-slate-800/80 rounded-2xl bg-slate-900/60 overflow-hidden transition"
+              className={`border rounded-2xl transition-all ${
+                isOpen 
+                  ? 'border-cyan-500/50 bg-[#18040B]/90 shadow-lg shadow-cyan-950/40' 
+                  : 'border-rose-900/40 bg-[#18040B]/60 hover:border-rose-700/60'
+              }`}
             >
               <button
                 onClick={() => setOpenId(isOpen ? null : faq.id)}
-                className="w-full p-4 text-left flex items-center justify-between space-x-3 text-xs sm:text-sm font-bold text-white hover:text-cyan-400 transition"
+                className="w-full p-4 text-left flex items-center justify-between space-x-3 text-xs sm:text-sm font-bold text-white hover:text-cyan-300 transition cursor-pointer min-h-[44px]"
               >
                 <span className="flex items-center space-x-2">
                   <CheckCircle className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span>{faq.question}</span>
                 </span>
-                <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-rose-300/60 shrink-0 transition-transform ${isOpen ? 'rotate-180 text-cyan-400' : ''}`} />
               </button>
 
               <AnimatePresence>
@@ -121,7 +125,7 @@ export const FaqAccordionSection: React.FC<FaqAccordionSectionProps> = ({ phone 
                     transition={{ duration: 0.25 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-4 pb-4 pt-1 text-xs text-slate-300 font-medium leading-relaxed border-t border-slate-800/50">
+                    <div className="px-4 pb-4 pt-1 text-xs text-rose-100 font-medium leading-relaxed border-t border-rose-900/30">
                       {faq.answer}
                     </div>
                   </motion.div>
@@ -134,10 +138,10 @@ export const FaqAccordionSection: React.FC<FaqAccordionSectionProps> = ({ phone 
 
       <div className="pt-2 text-center">
         <a
-          href={`https://wa.me/549${phone}?text=Hola%20Anah%C3%AD%20y%20Enzo!%20Tengo%20una%20consulta%20para%20Tu%20Sitio%20Web%20R%C3%ADo%20Cuarto.`}
+          href={`https://wa.me/549${phone}?text=Hola%20Anah%C3%AD%20y%20Enzo!%20Tengo%20una%20consulta%20para%20R%C3%ADo%20Cuarto%20Web.`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center space-x-2 text-xs font-bold text-slate-400 hover:text-emerald-400 transition"
+          className="inline-flex items-center space-x-2 text-xs font-bold text-rose-200/80 hover:text-emerald-400 transition"
         >
           <MessageCircle className="w-4 h-4 text-emerald-400" />
           <span>¿Tenés otra pregunta específica para tu negocio? Escribiles a Anahí y Enzo por WhatsApp →</span>
