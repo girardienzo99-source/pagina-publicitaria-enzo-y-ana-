@@ -83,17 +83,17 @@ export const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             href={mainWhatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-7 min-h-[48px] rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-emerald-950/70 border border-emerald-300/40 transition transform hover:scale-[1.02]"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-7 min-h-[48px] rounded-xl btn-premium-emerald text-white font-black text-xs sm:text-sm uppercase tracking-wider"
           >
-            <MessageCircle className="w-4 h-4 fill-white text-emerald-800" />
+            <MessageCircle className="w-4.5 h-4.5 fill-white text-emerald-900" />
             <span>Hablar por WhatsApp ({OFFICIAL_PHONE_FORMATTED})</span>
           </a>
 
           <button
             onClick={onNavigateToCalculator}
-            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 min-h-[48px] rounded-xl bg-[#18040B] hover:bg-rose-900/80 text-amber-300 hover:text-white font-black text-xs uppercase tracking-wider border border-amber-500/40 transition shadow-lg"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 min-h-[48px] rounded-xl btn-premium-gold text-white font-black text-xs uppercase tracking-wider"
           >
-            <Zap className="w-4 h-4 text-amber-300" />
+            <Zap className="w-4 h-4 text-amber-100" />
             <span>Cotizar en 1 Minuto</span>
           </button>
         </div>

@@ -122,7 +122,7 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: idx * 0.05 }}
-              className="group bg-[#240A15]/90 hover:bg-[#330C1E] border border-rose-900/40 hover:border-rose-500/50 rounded-3xl p-5 shadow-xl transition-all duration-300 flex flex-col justify-between space-y-4 relative overflow-hidden"
+              className="group glass-panel-luxury card-premium-glow rounded-3xl p-5 shadow-2xl flex flex-col justify-between space-y-4 relative overflow-hidden"
             >
               <div className="space-y-3">
                 
@@ -133,14 +133,14 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = () => {
                       <IconComponent className="w-5 h-5 text-white" />
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-800/60 text-[10px] font-black uppercase tracking-wider">
+                  <span className="px-3 py-1 rounded-full bg-rose-950/90 text-rose-300 border border-rose-700/60 text-[10px] font-black uppercase tracking-wider shadow-md">
                     {srv.badge}
                   </span>
                 </div>
 
                 {/* Title & Short Summary */}
                 <div>
-                  <h3 className="text-base font-black text-white group-hover:text-rose-200 transition">
+                  <h3 className="text-base font-black text-white group-hover:text-amber-300 transition">
                     {srv.title}
                   </h3>
                   <p className="text-[11px] font-bold text-rose-300/80 mb-1">
@@ -154,7 +154,7 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = () => {
                 {/* Collapsible Features Details Toggle */}
                 <button
                   onClick={() => toggleExpandCard(srv.id)}
-                  className="flex items-center space-x-1 text-[11px] font-extrabold text-amber-300 hover:text-white transition pt-1"
+                  className="flex items-center space-x-1 text-[11px] font-extrabold text-amber-300 hover:text-white transition pt-1 cursor-pointer"
                 >
                   <span>{isExpanded ? 'Ocultar detalles' : 'Ver funciones incluidas'}</span>
                   {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -183,10 +183,10 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = () => {
                 href={serviceWhatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between px-4 min-h-[44px] rounded-xl bg-[#18040B] group-hover:bg-rose-900/90 text-rose-200 group-hover:text-white border border-rose-900/50 group-hover:border-rose-500/40 text-xs font-black transition-all uppercase tracking-wider"
+                className="flex items-center justify-between px-4 min-h-[44px] rounded-xl btn-premium-emerald text-white text-xs font-black uppercase tracking-wider"
               >
                 <span>Consultar por WhatsApp</span>
-                <MessageCircle className="w-4 h-4 text-emerald-400 fill-current" />
+                <MessageCircle className="w-4 h-4 text-emerald-900 fill-current" />
               </a>
 
             </motion.div>
