@@ -181,13 +181,13 @@ export default function App() {
       </main>
 
       {/* Discreet Footer Link for Internal Admin Panel Access */}
-      <footer className="relative z-10 border-t border-rose-900/20 mt-12 pt-8 pb-16 text-center text-xs text-rose-200/50 space-y-2">
+      <footer className="relative z-10 border-t border-stone-200 mt-12 pt-8 pb-16 text-center text-xs text-stone-500 space-y-2 font-montserrat">
         <p>Río Cuarto Web — Anahí Gilardi & Enzo Girardi (Programadores) © 2026. Todos los derechos reservados.</p>
         <button
           onClick={() => setActiveTab('admin')}
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-900/40 text-[11px] font-bold transition"
+          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-stone-100 text-[#4a5d4a] border border-stone-300 shadow-sm text-[11px] font-bold transition cursor-pointer"
         >
-          <Lock className="w-3 h-3 text-amber-400" />
+          <Lock className="w-3 h-3 text-[#4a5d4a]" />
           <span>Acceso Panel Interno de Administración</span>
         </button>
       </footer>

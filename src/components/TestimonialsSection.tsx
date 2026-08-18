@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, Quote, CheckCircle2, Award, MessageCircle } from 'lucide-react';
+import { Star, Award, CheckCircle2 } from 'lucide-react';
 
 interface Testimonial {
   id: string;
@@ -10,7 +10,6 @@ interface Testimonial {
   city: string;
   rating: number;
   metric: string;
-  metricColor: string;
   comment: string;
   systemName: string;
 }
@@ -19,7 +18,7 @@ interface TestimonialsSectionProps {
   phone: string;
 }
 
-export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone }) => {
+export const TestimonialsSection: React.FC<TestimonialsSectionProps> = () => {
   const [filter, setFilter] = useState<string>('todos');
 
   const testimonials: Testimonial[] = [
@@ -31,55 +30,61 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
       city: 'Córdoba Cap.',
       rating: 5,
       metric: '+35% en rotación de mesas',
-      metricColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-800',
       comment: 'Antes perdíamos tiempo anotando comandas en papel y la cocina se demoraba. Con el programa de Enzo las comandas impresas salen directo al maestro pizzero y cobramos en la mesa en 20 segundos.',
       systemName: 'Sistema Resto & Comanderas'
     },
     {
       id: 't2',
       clientName: 'Gabriel V.',
-      businessName: 'Ferretería & Corralón El Vulcano',
+      businessName: 'Distribuidora San Juan',
       rubro: 'comercio',
-      city: 'Villa María',
+      city: 'Río Cuarto',
       rating: 5,
-      metric: '0 errores en cuentas corrientes',
-      metricColor: 'text-cyan-400 bg-cyan-950/60 border-cyan-800',
-      comment: 'Tenemos más de 80 constructoras en cuenta corriente. El sistema emite remitos y presupuestos en PDF al instante y sabemos exactamente el saldo de cada cliente con limite de crédito.',
-      systemName: 'Gestión Ferretería & Corralón'
+      metric: 'Facturación en 2 segundos',
+      comment: 'El módulo de facturación ARCA nos solucionó los problemas de fin de mes. Emitimos comprobantes A y B autorizados al instante con código QR oficial sin caídas.',
+      systemName: 'Facturación ARCA & Cajas'
     },
     {
       id: 't3',
-      clientName: 'Dra. Silvina M.',
-      businessName: 'Consultorio Médico & Salud',
+      clientName: 'Dra. Lucía M.',
+      businessName: 'Centro Odontológico Dentalis',
       rubro: 'salud',
-      city: 'Río Cuarto',
+      city: 'Villa María',
       rating: 5,
-      metric: '1.240 fichas digitales',
-      metricColor: 'text-amber-400 bg-amber-950/60 border-amber-800',
-      comment: 'Tengo las historias clínicas de todos mis pacientes organizadas con fecha, evoluciones y archivos PDF. La agenda de turnos nos ordenó la recepción por completo.',
-      systemName: 'Historia Clínica Digital'
+      metric: '-50% en ausencias de turnos',
+      comment: 'La agenda digital y el historial clínico de los pacientes es impecable. El recordatorio automático de turnos por WhatsApp redujo los turnos perdidos a la mitad.',
+      systemName: 'Historias Clínicas & Turnos'
     },
     {
       id: 't4',
-      clientName: 'Carlos M.',
-      businessName: 'AutoFix Servicentro Automotriz',
+      clientName: 'Roberto P.',
+      businessName: 'Taller & Repuestos El Eje',
       rubro: 'taller',
-      city: 'San Francisco',
+      city: 'Río Cuarto',
       rating: 5,
-      metric: 'Aviso WhatsApp automático',
-      metricColor: 'text-red-400 bg-red-950/60 border-red-800',
-      comment: 'Buscamos la orden de trabajo directamente ingresando la patente. El cliente recibe el mensaje automático por WhatsApp apenas el auto está listo para retirar.',
-      systemName: 'Sistema Taller & Patentes'
+      metric: 'Control total de reparaciones',
+      comment: 'Llevamos el seguimiento de cada vehículo, repuestos usados y presupuesto aprobado por el cliente desde el celular. Un sistema simple y sin vueltas.',
+      systemName: 'ERP Taller Mecánico'
     },
     {
       id: 't5',
-      clientName: 'Romina B.',
-      businessName: 'Boutique Urban Calzados',
+      clientName: 'Esteban C.',
+      businessName: 'Supermercado Central',
       rubro: 'comercio',
-      city: 'Córdoba Cap.',
+      city: 'Río Tercero',
+      rating: 5,
+      metric: 'Cajas ultrarrápidas con lector',
+      comment: 'Tenemos 3 cajas cobrando en simultáneo. El arqueo de caja diario coincide al centavo y el control de vencimientos de mercadería nos ahorra dinero todos los días.',
+      systemName: 'POS Multicaja & Stock'
+    },
+    {
+      id: 't6',
+      clientName: 'Romina B.',
+      businessName: 'Boutique & Calzado Urbano',
+      rubro: 'comercio',
+      city: 'Río Cuarto',
       rating: 5,
       metric: 'Control exacto de talles/colores',
-      metricColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-800',
       comment: 'Pudimos etiquetar todo el calzado con código de barras y saber en 1 segundo qué talle tenemos en depósito sin tener que ir a buscar caja por caja.',
       systemName: 'Indumentaria & Stock'
     }
@@ -94,18 +99,18 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="glass-panel-luxury rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
+      className="bg-white rounded-3xl p-8 sm:p-12 border border-stone-200 shadow-xl space-y-8 font-montserrat text-[#1e1b1b]"
     >
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-rose-900/30">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-stone-200">
         <div>
-          <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-amber-950/80 text-amber-300 border border-amber-500/40 text-xs font-black uppercase tracking-wider shadow-md">
-            <Award className="w-4 h-4 text-amber-300" />
+          <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#4a5d4a]/10 text-[#4a5d4a] border border-[#4a5d4a]/20 text-xs font-bold uppercase tracking-wider">
+            <Award className="w-4 h-4 text-[#4a5d4a]" />
             <span>Casos de Éxito & Testimonios</span>
           </span>
-          <h3 className="text-2xl sm:text-3xl font-black text-white mt-2 uppercase tracking-tight">
+          <h3 className="font-editorial text-2xl sm:text-4xl font-bold text-[#1e1b1b] mt-2">
             Lo que dicen dueños de negocios que ya usan Río Cuarto Web
           </h3>
-          <p className="text-xs sm:text-sm text-rose-200/70 font-medium mt-1">
+          <p className="text-xs sm:text-sm text-[#1e1b1b]/70 font-light mt-1">
             Resultados comprobados en locales comerciales, gastronomía, salud y servicios profesionales.
           </p>
         </div>
@@ -122,10 +127,10 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
             <button
               key={f.id}
               onClick={() => setFilter(f.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-sm text-xs font-semibold uppercase tracking-wider transition cursor-pointer ${
                 filter === f.id
-                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black shadow-md'
-                  : 'bg-[#18040B] text-rose-200/70 hover:text-white border border-rose-900/40'
+                  ? 'bg-[#4a5d4a] text-white shadow-sm'
+                  : 'bg-[#fcf9f8] text-[#1e1b1b]/70 hover:bg-stone-200/70 border border-stone-200'
               }`}
             >
               {f.label}
@@ -134,7 +139,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
         </div>
       </div>
 
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <AnimatePresence mode="popLayout">
           {filtered.map(t => (
             <motion.div
@@ -144,36 +149,36 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ phone 
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.25 }}
-              className="bg-[#18040B]/90 border border-rose-900/40 card-premium-glow rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-xl group"
+              className="bg-[#fcf9f8] border border-stone-200 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-sm hover:border-[#4a5d4a] transition group"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex text-amber-400 space-x-0.5">
+                  <div className="flex text-amber-500 space-x-0.5">
                     {[...Array(t.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded border ${t.metricColor}`}>
+                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#4a5d4a]/10 text-[#4a5d4a] border border-[#4a5d4a]/20">
                     {t.metric}
                   </span>
                 </div>
 
-                <p className="text-xs text-rose-100 italic font-medium leading-relaxed">
+                <p className="text-xs text-[#1e1b1b]/80 italic font-normal leading-relaxed">
                   "{t.comment}"
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-rose-900/30 flex items-center justify-between">
+              <div className="pt-3 border-t border-stone-200 flex items-center justify-between text-xs">
                 <div>
-                  <h4 className="text-xs font-black text-white group-hover:text-amber-300 transition">
+                  <h4 className="font-bold text-[#1e1b1b] group-hover:text-[#4a5d4a] transition">
                     {t.clientName}
                   </h4>
-                  <p className="text-[11px] text-rose-200/70 font-semibold">
-                    {t.businessName} • <span className="text-rose-300/50">{t.city}</span>
+                  <p className="text-[11px] text-[#1e1b1b]/60">
+                    {t.businessName} • <span>{t.city}</span>
                   </p>
                 </div>
-                <div className="flex items-center space-x-1 text-[10px] text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/40 font-mono font-black">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                <div className="flex items-center space-x-1 text-[10px] text-[#4a5d4a] bg-white px-2 py-0.5 rounded border border-stone-200 font-bold">
+                  <CheckCircle2 className="w-3 h-3 text-[#4a5d4a]" />
                   <span>Verificado</span>
                 </div>
               </div>

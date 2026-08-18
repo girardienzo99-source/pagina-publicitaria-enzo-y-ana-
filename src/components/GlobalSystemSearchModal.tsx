@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, X, ArrowRight, Sparkles, CheckCircle2, AlertCircle, FileText } from 'lucide-react';
+import { Search, X, ArrowRight, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
 import { portfolioModules } from '../data/portfolioData';
 
 interface GlobalSystemSearchModalProps {
@@ -61,47 +61,47 @@ export const GlobalSystemSearchModal: React.FC<GlobalSystemSearchModalProps> = (
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md p-4 sm:p-6 flex items-start justify-center pt-10 sm:pt-16">
+      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm p-4 sm:p-6 flex items-start justify-center pt-10 sm:pt-16 font-montserrat text-[#1e1b1b]">
         
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: -10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -10 }}
-          className="bg-[#18040B] border border-rose-900/40 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden"
+          className="bg-white border border-stone-300 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden"
         >
           {/* Header & Search Input */}
-          <div className="p-4 sm:p-6 bg-[#250915] border-b border-rose-900/30 space-y-4">
+          <div className="p-5 sm:p-7 bg-[#fcf9f8] border-b border-stone-200 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Sparkles className="w-5 h-5 text-rose-400" />
-                <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                <Sparkles className="w-4 h-4 text-[#4a5d4a]" />
+                <h3 className="text-xs font-bold text-[#4a5d4a] uppercase tracking-wider">
                   Buscador de Módulos & Facturación ARCA
                 </h3>
               </div>
               <button
                 onClick={onClose}
                 aria-label="Cerrar buscador"
-                className="p-2 min-h-[44px] min-w-[44px] rounded-xl bg-[#18040B] hover:bg-rose-950 text-rose-300 hover:text-white transition flex items-center justify-center"
+                className="p-2 min-h-[40px] min-w-[40px] rounded-full bg-white hover:bg-stone-200 text-stone-500 hover:text-[#1e1b1b] transition flex items-center justify-center cursor-pointer border border-stone-200"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="relative">
-              <Search className="w-5 h-5 text-rose-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 autoFocus
-                placeholder="Buscar por función (ej: ARCA, comandas, turnos, stock, patentes)..."
+                placeholder="Buscar por función (ej: ARCA, comandas, turnos, stock, talles)..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#16040B] border border-rose-900/40 rounded-2xl pl-11 pr-10 py-3 text-sm text-white placeholder-rose-300/40 focus:outline-none focus:border-rose-400 min-h-[48px]"
+                className="w-full bg-white border border-stone-300 focus:border-[#4a5d4a] rounded-xl pl-10 pr-10 py-3 text-sm text-[#1e1b1b] placeholder-stone-400 focus:outline-none min-h-[46px]"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm('')}
                   aria-label="Limpiar término de búsqueda"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300/60 hover:text-white p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-[#1e1b1b] p-1 cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -110,12 +110,12 @@ export const GlobalSystemSearchModal: React.FC<GlobalSystemSearchModalProps> = (
 
             {/* Quick Search Tags / Chips */}
             <div className="flex flex-wrap gap-2 text-xs pt-1">
-              <span className="text-rose-200/60 font-semibold py-1">Sugeridos:</span>
+              <span className="text-stone-500 font-semibold py-1">Sugeridos:</span>
               {['ARCA', 'Comandas', 'Stock', 'Turnos', 'Patentes', 'Balanza'].map(tag => (
                 <button
                   key={tag}
                   onClick={() => handleChipClick(tag)}
-                  className="px-2.5 py-1 rounded-lg bg-rose-950/60 hover:bg-rose-900/80 text-rose-200 border border-rose-800/40 font-bold transition"
+                  className="px-2.5 py-1 rounded-sm bg-white hover:bg-stone-100 text-[#1e1b1b] border border-stone-300 font-medium transition cursor-pointer"
                 >
                   {tag}
                 </button>
@@ -124,7 +124,7 @@ export const GlobalSystemSearchModal: React.FC<GlobalSystemSearchModalProps> = (
           </div>
 
           {/* Results List */}
-          <div className="max-h-[60vh] overflow-y-auto p-4 sm:p-6 space-y-3">
+          <div className="max-h-[60vh] overflow-y-auto p-5 sm:p-7 space-y-3">
             {filtered.length > 0 ? (
               filtered.map(sys => (
                 <div
@@ -133,32 +133,32 @@ export const GlobalSystemSearchModal: React.FC<GlobalSystemSearchModalProps> = (
                     onSelectSystem(sys.id);
                     onClose();
                   }}
-                  className="group bg-[#240A15]/80 hover:bg-[#330C1E] border border-rose-900/30 hover:border-rose-500/40 rounded-2xl p-4 transition-all cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md"
+                  className="group bg-[#fcf9f8] hover:bg-white border border-stone-200 hover:border-[#4a5d4a] rounded-2xl p-4 transition-all cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm hover:shadow-md"
                 >
                   <div className="space-y-1.5 flex-1">
                     <div className="flex items-center space-x-2">
-                      <span className="px-2.5 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800/40 text-[10px] font-black uppercase">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#4a5d4a]/10 text-[#4a5d4a] border border-[#4a5d4a]/20 text-[10px] font-bold uppercase">
                         {sys.badge}
                       </span>
-                      <h4 className="text-sm font-black text-white group-hover:text-rose-200 transition">
+                      <h4 className="text-sm font-bold text-[#1e1b1b] group-hover:text-[#4a5d4a] transition">
                         {sys.title}
                       </h4>
                     </div>
-                    <p className="text-xs text-rose-200/70 line-clamp-2">
+                    <p className="text-xs text-[#1e1b1b]/70 line-clamp-2">
                       {sys.description}
                     </p>
                   </div>
 
-                  <div className="flex items-center space-x-1.5 text-xs font-black text-rose-300 group-hover:text-white shrink-0">
+                  <div className="flex items-center space-x-1.5 text-xs font-bold text-[#4a5d4a] shrink-0">
                     <span>Ver módulo</span>
                     <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition" />
                   </div>
                 </div>
               ))
             ) : (
-              <div className="text-center py-10 space-y-3 text-rose-200/70">
-                <AlertCircle className="w-10 h-10 text-rose-400 mx-auto opacity-80" />
-                <p className="text-sm font-bold text-white">
+              <div className="text-center py-10 space-y-3 text-stone-500">
+                <AlertCircle className="w-10 h-10 text-stone-400 mx-auto" />
+                <p className="text-sm font-bold text-[#1e1b1b]">
                   No encontramos resultados para "{searchTerm}"
                 </p>
                 <p className="text-xs max-w-sm mx-auto">

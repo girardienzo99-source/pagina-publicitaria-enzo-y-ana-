@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { TrendingUp, DollarSign, Clock, AlertTriangle, ShieldCheck, MessageCircle, ArrowRight } from 'lucide-react';
-
 import { getWhatsAppUrl } from '../lib/whatsapp';
 
 interface RoiCalculatorSectionProps {
@@ -29,34 +28,34 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-gradient-to-br from-zinc-950 via-slate-950 to-zinc-900 border border-emerald-900/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
+      className="bg-white border border-stone-200 rounded-3xl p-8 sm:p-12 shadow-xl space-y-8 font-montserrat text-[#1e1b1b]"
     >
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-black uppercase tracking-wider">
-          <TrendingUp className="w-4 h-4 text-emerald-400" />
-          <span>Calculadora de Ahorro & ROI</span>
+        <span className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#4a5d4a]/10 text-[#4a5d4a] border border-[#4a5d4a]/20 text-xs font-bold uppercase tracking-wider">
+          <TrendingUp className="w-4 h-4 text-[#4a5d4a]" />
+          <span>Calculadora de Ahorro & Retorno de Inversión (ROI)</span>
         </span>
-        <h3 className="text-2xl sm:text-3xl font-black text-white">
+        <h3 className="font-editorial text-2xl sm:text-4xl font-bold text-[#1e1b1b]">
           Simulá cuánto dinero y tiempo te ahorra un sistema a medida
         </h3>
-        <p className="text-xs sm:text-sm text-zinc-400 font-medium">
+        <p className="text-xs sm:text-sm text-[#1e1b1b]/70 font-light">
           Ajustá los valores según tu negocio para ver el retorno de inversión real al automatizar caja, stock y ventas.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Sliders Input Panel */}
-        <div className="lg:col-span-7 bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 sm:p-6 space-y-5">
+        <div className="lg:col-span-7 bg-[#fcf9f8] border border-stone-200 rounded-2xl p-6 space-y-6">
           
           {/* Slider 1: Hours spent manually */}
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs font-bold">
-              <span className="text-zinc-300 flex items-center space-x-1.5">
-                <Clock className="w-4 h-4 text-amber-400" />
-                <span>Horas diarias perdidas en papel/planillas:</span>
+              <span className="text-[#1e1b1b] flex items-center space-x-1.5">
+                <Clock className="w-4 h-4 text-[#4a5d4a]" />
+                <span>Horas diarias perdidas en papel o planillas:</span>
               </span>
-              <span className="text-amber-400 font-mono text-sm bg-amber-950/60 px-2.5 py-0.5 rounded border border-amber-800">
+              <span className="text-[#4a5d4a] font-mono text-sm bg-white px-3 py-1 rounded border border-stone-300 shadow-sm">
                 {hoursPerDay} hs / día
               </span>
             </div>
@@ -67,19 +66,19 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = () => {
               step="0.5" 
               value={hoursPerDay}
               onChange={(e) => setHoursPerDay(parseFloat(e.target.value))}
-              className="w-full accent-amber-500 bg-zinc-800 rounded-lg h-2 cursor-pointer"
+              className="w-full accent-[#4a5d4a] bg-stone-200 rounded-lg h-2 cursor-pointer"
             />
-            <p className="text-[11px] text-zinc-500">Anotar pedidos, contar stock a mano, conciliar cajas al cierre.</p>
+            <p className="text-[11px] text-stone-500">Anotar pedidos, contar stock a mano, conciliar cajas al cierre.</p>
           </div>
 
           {/* Slider 2: Hourly value */}
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs font-bold">
-              <span className="text-zinc-300 flex items-center space-x-1.5">
-                <DollarSign className="w-4 h-4 text-emerald-400" />
+              <span className="text-[#1e1b1b] flex items-center space-x-1.5">
+                <DollarSign className="w-4 h-4 text-[#4a5d4a]" />
                 <span>Valor estimado de tu hora de trabajo:</span>
               </span>
-              <span className="text-emerald-400 font-mono text-sm bg-emerald-950/60 px-2.5 py-0.5 rounded border border-emerald-800">
+              <span className="text-[#4a5d4a] font-mono text-sm bg-white px-3 py-1 rounded border border-stone-300 shadow-sm">
                 ${hourlyValue.toLocaleString('es-AR')} / hr
               </span>
             </div>
@@ -90,18 +89,18 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = () => {
               step="500" 
               value={hourlyValue}
               onChange={(e) => setHourlyValue(parseInt(e.target.value))}
-              className="w-full accent-emerald-500 bg-zinc-800 rounded-lg h-2 cursor-pointer"
+              className="w-full accent-[#4a5d4a] bg-stone-200 rounded-lg h-2 cursor-pointer"
             />
           </div>
 
           {/* Slider 3: Errors in charging & stock differences */}
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs font-bold">
-              <span className="text-zinc-300 flex items-center space-x-1.5">
-                <AlertTriangle className="w-4 h-4 text-red-400" />
+              <span className="text-[#1e1b1b] flex items-center space-x-1.5">
+                <AlertTriangle className="w-4 h-4 text-amber-600" />
                 <span>Pérdidas mensuales x errores de cobro o desfasaje de stock:</span>
               </span>
-              <span className="text-red-400 font-mono text-sm bg-red-950/60 px-2.5 py-0.5 rounded border border-red-800">
+              <span className="text-amber-700 font-mono text-sm bg-white px-3 py-1 rounded border border-stone-300 shadow-sm">
                 ${chargingErrorsPerMonth.toLocaleString('es-AR')}
               </span>
             </div>
@@ -112,18 +111,18 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = () => {
               step="5000" 
               value={chargingErrorsPerMonth}
               onChange={(e) => setChargingErrorsPerMonth(parseInt(e.target.value))}
-              className="w-full accent-red-500 bg-zinc-800 rounded-lg h-2 cursor-pointer"
+              className="w-full accent-[#4a5d4a] bg-stone-200 rounded-lg h-2 cursor-pointer"
             />
           </div>
 
           {/* Slider 4: Lost sales because of slowness */}
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs font-bold">
-              <span className="text-zinc-300 flex items-center space-x-1.5">
-                <TrendingUp className="w-4 h-4 text-cyan-400" />
+              <span className="text-[#1e1b1b] flex items-center space-x-1.5">
+                <TrendingUp className="w-4 h-4 text-[#4a5d4a]" />
                 <span>Ventas no concretadas por demora o falta de catálogo rápido:</span>
               </span>
-              <span className="text-cyan-400 font-mono text-sm bg-cyan-950/60 px-2.5 py-0.5 rounded border border-cyan-800">
+              <span className="text-[#4a5d4a] font-mono text-sm bg-white px-3 py-1 rounded border border-stone-300 shadow-sm">
                 ${lostSalesPerMonth.toLocaleString('es-AR')}
               </span>
             </div>
@@ -134,58 +133,56 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = () => {
               step="10000" 
               value={lostSalesPerMonth}
               onChange={(e) => setLostSalesPerMonth(parseInt(e.target.value))}
-              className="w-full accent-cyan-500 bg-zinc-800 rounded-lg h-2 cursor-pointer"
+              className="w-full accent-[#4a5d4a] bg-stone-200 rounded-lg h-2 cursor-pointer"
             />
           </div>
 
         </div>
 
         {/* Results Card */}
-        <div className="lg:col-span-5 bg-gradient-to-b from-emerald-950/80 via-zinc-900 to-slate-950 border-2 border-emerald-500/40 rounded-2xl p-6 shadow-xl space-y-5">
+        <div className="lg:col-span-5 bg-white border-2 border-[#4a5d4a] rounded-2xl p-7 shadow-xl space-y-6">
           <div className="text-center space-y-1">
-            <span className="text-[11px] uppercase font-black tracking-widest text-emerald-400">
+            <span className="text-[11px] uppercase font-bold tracking-widest text-[#4a5d4a]">
               Ahorro Estimado Mensual
             </span>
-            <div className="text-3xl sm:text-4xl font-black text-emerald-300 font-mono tracking-tight">
-              ${totalMonthlySavings.toLocaleString('es-AR')} <span className="text-xs text-zinc-400 font-sans">/ mes</span>
+            <div className="text-3xl sm:text-4xl font-bold text-[#4a5d4a] font-mono tracking-tight">
+              ${totalMonthlySavings.toLocaleString('es-AR')} <span className="text-xs text-stone-500 font-sans">/ mes</span>
             </div>
-            <p className="text-xs text-zinc-400 font-medium pt-1">
-              Recuperás el costo del sistema en aprox. <strong className="text-white font-mono">{estimatedPaybackMonths} meses</strong>
+            <p className="text-xs text-stone-600 font-normal pt-1">
+              Recuperás el costo del sistema en aprox. <strong className="text-[#1e1b1b] font-mono font-bold">{estimatedPaybackMonths} meses</strong>
             </p>
           </div>
 
-          <div className="space-y-2.5 pt-3 border-t border-zinc-800 text-xs">
-            <div className="flex justify-between items-center text-zinc-300">
+          <div className="space-y-2.5 pt-4 border-t border-stone-200 text-xs">
+            <div className="flex justify-between items-center text-[#1e1b1b]/80">
               <span>Tiempo recuperado al mes:</span>
-              <span className="font-bold text-amber-400 font-mono">{monthlyHoursSaved} horas libres</span>
+              <span className="font-bold text-[#1e1b1b] font-mono">{monthlyHoursSaved} horas libres</span>
             </div>
-            <div className="flex justify-between items-center text-zinc-300">
+            <div className="flex justify-between items-center text-[#1e1b1b]/80">
               <span>Valor equivalente del tiempo:</span>
-              <span className="font-bold text-emerald-400 font-mono">${timeSavedMoney.toLocaleString('es-AR')}</span>
+              <span className="font-bold text-[#4a5d4a] font-mono">${timeSavedMoney.toLocaleString('es-AR')}</span>
             </div>
-            <div className="flex justify-between items-center text-zinc-300">
+            <div className="flex justify-between items-center text-[#1e1b1b]/80">
               <span>Fugas de dinero prevenidas:</span>
-              <span className="font-bold text-cyan-400 font-mono">${totalMonthlyLossPrevented.toLocaleString('es-AR')}</span>
+              <span className="font-bold text-[#4a5d4a] font-mono">${totalMonthlyLossPrevented.toLocaleString('es-AR')}</span>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-zinc-900/90 border border-zinc-800 text-[11px] text-zinc-400 flex items-start space-x-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-lg bg-[#fcf9f8] border border-stone-200 text-[11px] text-stone-600 flex items-start space-x-2">
+            <ShieldCheck className="w-4 h-4 text-[#4a5d4a] shrink-0 mt-0.5" />
             <span>El software trabaja 24/7 sin comisiones por transacción y te da control total desde cualquier lugar.</span>
           </div>
 
-          <motion.a
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+          <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center space-x-2 w-full py-3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-lg shadow-emerald-950/60 uppercase tracking-wider"
+            className="flex items-center justify-center space-x-2 w-full py-3.5 bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white font-bold text-xs uppercase tracking-wider rounded-sm shadow-md transition"
           >
-            <MessageCircle className="w-4 h-4 fill-slate-950" />
+            <MessageCircle className="w-4 h-4 fill-white" />
             <span>Aprovechar Ahorro por WhatsApp</span>
             <ArrowRight className="w-4 h-4" />
-          </motion.a>
+          </a>
         </div>
       </div>
     </motion.div>
