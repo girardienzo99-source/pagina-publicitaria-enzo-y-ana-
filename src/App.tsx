@@ -10,8 +10,6 @@ import { PdfCatalogBrochure } from './components/PdfCatalogBrochure';
 import { GlobalSystemSearchModal } from './components/GlobalSystemSearchModal';
 import { ProposalGeneratorModal } from './components/ProposalGeneratorModal';
 import { PlansAndModalitiesSection } from './components/PlansAndModalitiesSection';
-import { EditorialPitchDeckSection } from './components/EditorialPitchDeckSection';
-import { ModernVintageSection } from './components/ModernVintageSection';
 import { initialFlyerData } from './data/portfolioData';
 import { FlyerData, FlyerTheme, FlyerFormat } from './types';
 import { supabase, isSupabaseConfigured } from './lib/supabaseClient';
@@ -114,37 +112,6 @@ export default function App() {
                 onNavigateToPortfolio={() => setActiveTab('portfolio')}
                 onNavigateToCalculator={() => setActiveTab('calculator')}
                 onOpenPdfCatalog={() => setShowPdfCatalog(true)}
-                onNavigateToEditorial={() => setActiveTab('editorial')}
-              />
-            </motion.div>
-          )}
-
-          {activeTab === 'vintage' && (
-            <motion.div
-              key="vintage"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-            >
-              <ModernVintageSection
-                onNavigateToPortfolio={() => setActiveTab('portfolio')}
-                onNavigateToCalculator={() => setActiveTab('calculator')}
-              />
-            </motion.div>
-          )}
-
-          {activeTab === 'editorial' && (
-            <motion.div
-              key="editorial"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-            >
-              <EditorialPitchDeckSection
-                onNavigateToPortfolio={() => setActiveTab('portfolio')}
-                onNavigateToCalculator={() => setActiveTab('calculator')}
               />
             </motion.div>
           )}

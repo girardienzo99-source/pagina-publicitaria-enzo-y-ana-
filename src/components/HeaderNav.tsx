@@ -18,7 +18,7 @@ import {
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
 import brandLogo from '../assets/logo_brand.jpg';
 
-export type PublicTab = 'home' | 'editorial' | 'vintage' | 'services' | 'portfolio' | 'planes' | 'calculator' | 'admin';
+export type PublicTab = 'home' | 'portfolio' | 'planes' | 'calculator' | 'admin';
 
 interface HeaderNavProps {
   activeTab: PublicTab;
