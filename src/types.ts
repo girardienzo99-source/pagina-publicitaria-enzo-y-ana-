@@ -6,7 +6,8 @@ export type FlyerTheme =
   | 'neon-tech' 
   | 'clean-corporate' 
   | 'gastronomy-warm' 
-  | 'modern-emerald';
+  | 'modern-emerald'
+  | 'modern-vintage';
 
 export type FlyerFormat = 
   | 'poster-story' 

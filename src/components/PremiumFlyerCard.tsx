@@ -86,6 +86,18 @@ export const PremiumFlyerCard: React.FC<PremiumFlyerCardProps> = ({
           highlight: 'text-amber-400',
           iconColor: 'text-amber-400'
         };
+      case 'modern-vintage':
+      default:
+        return {
+          containerBg: 'from-[#1C050E] via-[#2B0918] to-[#14040A]',
+          border: 'border-rose-700/60 shadow-rose-950/80',
+          accentText: 'text-rose-300',
+          badgeBg: 'bg-rose-950/90 text-rose-200 border-rose-600/50',
+          cardBg: 'bg-[#18040B]/90 border-rose-900/40',
+          hookBg: 'bg-gradient-to-r from-rose-600 via-rose-500 to-rose-700 text-white',
+          highlight: 'text-amber-300',
+          iconColor: 'text-rose-400'
+        };
     }
   };
 

@@ -4,9 +4,10 @@
   --font-sans: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
   --font-heading: "Outfit", sans-serif;
   --font-serif: "Playfair Display", Georgia, serif;
+  --font-montserrat: "Montserrat", "Outfit", sans-serif;
 }
 
-/* Custom Color Utilities for Dark Burgundy, Emerald Pine & Vibrant Accents */
+/* Custom Color Utilities for Dark Burgundy, Emerald Pine, Modern Vintage & Vibrant Accents */
 :root {
   --color-burgundy-base: #14040a;
   --color-burgundy-card: rgba(34, 9, 20, 0.88);
@@ -21,6 +22,11 @@
   --color-pine-base: #13382c;
   --color-pine-light: #1b4a3b;
   --color-pine-border: rgba(52, 211, 153, 0.25);
+
+  /* Modern Vintage Palette */
+  --surface-vintage: #fcf9f8;
+  --primary-vintage: #4a5d4a;
+  --on-surface-vintage: #1e1b1b;
 }
 
 html, body {
@@ -35,9 +41,52 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Editorial Serif Font Utility */
+/* Modern Vintage Utility Classes */
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .font-editorial {
   font-family: 'Playfair Display', Georgia, serif;
+}
+
+.bg-vintage-surface {
+  background-color: var(--surface-vintage);
+  color: var(--on-surface-vintage);
+}
+
+.glass-card-vintage {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.btn-vintage-sage {
+  background-color: #4a5d4a;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-vintage-sage:hover {
+  background-color: #3b4b3b;
+  transform: translateY(-1px);
+}
+
+.btn-vintage-outline {
+  border: 1px solid #4a5d4a;
+  color: #4a5d4a;
+  background-color: transparent;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-vintage-outline:hover {
+  background-color: rgba(74, 93, 74, 0.08);
+  transform: translateY(-1px);
 }
 
 /* Universal Touch Target Guidelines (Min 44px for iOS & Android accessibility) */

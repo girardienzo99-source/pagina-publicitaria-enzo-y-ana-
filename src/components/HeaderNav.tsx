@@ -18,7 +18,7 @@ import {
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
 import brandLogo from '../assets/logo_brand.jpg';
 
-export type PublicTab = 'home' | 'editorial' | 'services' | 'portfolio' | 'planes' | 'calculator' | 'admin';
+export type PublicTab = 'home' | 'editorial' | 'vintage' | 'services' | 'portfolio' | 'planes' | 'calculator' | 'admin';
 
 interface HeaderNavProps {
   activeTab: PublicTab;
@@ -91,6 +91,18 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             >
               <Sparkles className="w-4 h-4 text-rose-300" />
               <span>Inicio</span>
+            </button>
+
+            <button
+              onClick={() => handleTabClick('vintage')}
+              className={`flex items-center space-x-2 px-3.5 min-h-[44px] rounded-xl text-sm font-bold transition-all ${
+                activeTab === 'vintage'
+                  ? 'bg-[#4a5d4a] text-white shadow-md border border-stone-300/50'
+                  : 'text-stone-200/90 hover:text-white hover:bg-stone-900/60'
+              }`}
+            >
+              <span className="text-xs">📜</span>
+              <span>Modern Vintage</span>
             </button>
 
             <button
@@ -203,6 +215,16 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             >
               <Sparkles className="w-5 h-5 text-rose-400" />
               <span>Inicio & Servicios</span>
+            </button>
+
+            <button
+              onClick={() => handleTabClick('vintage')}
+              className={`flex items-center space-x-3 px-4 min-h-[44px] rounded-xl text-base font-bold w-full text-left ${
+                activeTab === 'vintage' ? 'bg-[#4a5d4a] text-white border border-stone-300/40' : 'text-stone-200 hover:bg-stone-900/50'
+              }`}
+            >
+              <span className="text-lg">📜</span>
+              <span>Modern Vintage (Artesanía)</span>
             </button>
 
             <button
