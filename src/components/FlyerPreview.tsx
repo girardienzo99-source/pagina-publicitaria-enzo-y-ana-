@@ -19,13 +19,15 @@ interface FlyerPreviewProps {
   onNavigateToPortfolio: () => void;
   onNavigateToCalculator: () => void;
   onOpenPdfCatalog?: () => void;
+  onNavigateToEditorial?: () => void;
 }
 
 export const FlyerPreview: React.FC<FlyerPreviewProps> = ({
   flyerData,
   onNavigateToPortfolio,
   onNavigateToCalculator,
-  onOpenPdfCatalog
+  onOpenPdfCatalog,
+  onNavigateToEditorial
 }) => {
   const mainWhatsAppUrl = getWhatsAppUrl(
     'Hola Anahí y Enzo! Vi la página web de Río Cuarto Web y quisiera pedir asesoramiento y demo para mi negocio.'
@@ -33,6 +35,34 @@ export const FlyerPreview: React.FC<FlyerPreviewProps> = ({
 
   return (
     <div className="space-y-8 pb-8 max-w-6xl mx-auto">
+
+      {/* Pitch Deck Presentation Banner Callout */}
+      {onNavigateToEditorial && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-pine-deck border border-emerald-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl cursor-pointer hover:border-emerald-400/60 transition text-white"
+          onClick={onNavigateToEditorial}
+        >
+          <div className="flex items-center space-x-3 text-left">
+            <span className="text-2xl">🌿</span>
+            <div>
+              <p className="text-xs font-black uppercase text-white tracking-wider">
+                Nueva Presentación Editorial Pitch Deck
+              </p>
+              <p className="text-[11px] text-emerald-200/80">
+                Visualizá el catálogo en formato diapositivas ejecutivas verde pino con diseño de alta gama.
+              </p>
+            </div>
+          </div>
+          <button 
+            onClick={(e) => { e.stopPropagation(); onNavigateToEditorial(); }}
+            className="btn-pill-emerald text-xs font-bold shrink-0 min-h-[38px] px-4 cursor-pointer"
+          >
+            Ver Pitch Deck →
+          </button>
+        </motion.div>
+      )}
       
       {/* 1. Ultra-Clean Hero Section */}
       <LandingHeroSection

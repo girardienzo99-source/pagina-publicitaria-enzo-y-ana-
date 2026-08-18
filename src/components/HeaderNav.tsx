@@ -18,7 +18,7 @@ import {
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
 import brandLogo from '../assets/logo_brand.jpg';
 
-export type PublicTab = 'home' | 'services' | 'portfolio' | 'planes' | 'calculator' | 'admin';
+export type PublicTab = 'home' | 'editorial' | 'services' | 'portfolio' | 'planes' | 'calculator' | 'admin';
 
 interface HeaderNavProps {
   activeTab: PublicTab;
@@ -91,6 +91,18 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             >
               <Sparkles className="w-4 h-4 text-rose-300" />
               <span>Inicio</span>
+            </button>
+
+            <button
+              onClick={() => handleTabClick('editorial')}
+              className={`flex items-center space-x-2 px-3.5 min-h-[44px] rounded-xl text-sm font-bold transition-all ${
+                activeTab === 'editorial'
+                  ? 'bg-gradient-to-r from-emerald-700 to-teal-800 text-white shadow-md border border-emerald-400/50'
+                  : 'text-emerald-200/90 hover:text-white hover:bg-emerald-950/60'
+              }`}
+            >
+              <span className="text-xs">🌿</span>
+              <span>Pitch Deck</span>
             </button>
 
             <button
@@ -191,6 +203,16 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             >
               <Sparkles className="w-5 h-5 text-rose-400" />
               <span>Inicio & Servicios</span>
+            </button>
+
+            <button
+              onClick={() => handleTabClick('editorial')}
+              className={`flex items-center space-x-3 px-4 min-h-[44px] rounded-xl text-base font-bold w-full text-left ${
+                activeTab === 'editorial' ? 'bg-emerald-900/70 text-white border border-emerald-500/50' : 'text-emerald-200/90 hover:bg-emerald-950/50'
+              }`}
+            >
+              <span className="text-lg">🌿</span>
+              <span>Presentación Pitch Deck</span>
             </button>
 
             <button

@@ -3,9 +3,10 @@
 @theme {
   --font-sans: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
   --font-heading: "Outfit", sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
 }
 
-/* Custom Color Utilities for Dark Burgundy (Bordó Oscuro) & Soft Eye-Catching Accents */
+/* Custom Color Utilities for Dark Burgundy, Emerald Pine & Vibrant Accents */
 :root {
   --color-burgundy-base: #14040a;
   --color-burgundy-card: rgba(34, 9, 20, 0.88);
@@ -14,6 +15,12 @@
   --color-rose-vibrant: #d44d71;
   --color-champagne-soft: #f3c99f;
   --color-cyan-neon: #38bdf8;
+  
+  /* Pine Green Deck Palette */
+  --color-pine-deep: #0a2018;
+  --color-pine-base: #13382c;
+  --color-pine-light: #1b4a3b;
+  --color-pine-border: rgba(52, 211, 153, 0.25);
 }
 
 html, body {
@@ -28,6 +35,11 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Editorial Serif Font Utility */
+.font-editorial {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
 /* Universal Touch Target Guidelines (Min 44px for iOS & Android accessibility) */
 button, 
 a.btn, 
@@ -38,6 +50,58 @@ input[type="number"],
 input[type="password"], 
 select {
   min-height: 44px;
+}
+
+/* PINE GREEN EDITORIAL PITCH DECK STYLING */
+.bg-pine-deck {
+  background: radial-gradient(ellipse 90% 80% at 50% 0%, #1e5241 0%, #13382c 50%, #091d16 100%);
+}
+
+.card-pine-deck {
+  background: rgba(19, 56, 44, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+/* EDITORIAL PILL BUTTONS (Matching Pitch Deck Slides) */
+.btn-pill-emerald {
+  background-color: #10b981;
+  color: #ffffff;
+  font-weight: 800;
+  border-radius: 9999px;
+  padding: 0.65rem 1.75rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-pill-emerald:hover {
+  background-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px -4px rgba(16, 185, 129, 0.5);
+}
+
+.btn-pill-cyan {
+  background-color: #38bdf8;
+  color: #082f49;
+  font-weight: 800;
+  border-radius: 9999px;
+  padding: 0.65rem 1.75rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 10px 20px -5px rgba(56, 189, 248, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-pill-cyan:hover {
+  background-color: #0ea5e9;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px -4px rgba(56, 189, 248, 0.5);
 }
 
 /* Glassmorphism custom helper utilities & luxury textures */
