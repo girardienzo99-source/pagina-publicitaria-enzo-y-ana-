@@ -4,8 +4,8 @@ import {
   MessageCircle, 
   Sparkles, 
   CheckCircle2, 
-  Zap,
-  Code2
+  Zap, 
+  Check
 } from 'lucide-react';
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
 
@@ -23,77 +23,71 @@ export const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   );
 
   return (
-    <div className="relative space-y-6 py-4 sm:py-6 max-w-4xl mx-auto">
+    <div className="relative space-y-6 py-6 max-w-4xl mx-auto font-montserrat text-[#1e1b1b]">
       
-      {/* Vibrant Neon Backdrop Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-gradient-to-b from-rose-600/20 via-amber-500/10 to-transparent blur-3xl pointer-events-none -z-10" />
-
       {/* Main Compact Hero Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         
-        {/* Neon Badge */}
+        {/* Sage Badge */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-rose-950 via-rose-900 to-amber-950 text-amber-300 border border-amber-500/40 shadow-lg text-[11px] font-black uppercase tracking-wider"
+          className="inline-flex items-center space-x-2 px-4 py-1 rounded-full bg-[#4a5d4a]/10 text-[#4a5d4a] border border-[#4a5d4a]/20 text-xs font-bold uppercase tracking-wider"
         >
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+          <Sparkles className="w-3.5 h-3.5 text-[#4a5d4a]" />
           <span>RÍO CUARTO WEB • DISEÑO DIGITAL A MEDIDA</span>
         </motion.div>
 
-        {/* Punchy Neon Title */}
+        {/* Punchy Title */}
         <motion.h1 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight uppercase"
+          className="font-editorial text-3xl sm:text-5xl md:text-6xl font-bold text-[#1e1b1b] tracking-tight leading-tight"
         >
-          Río Cuarto Web <span className="text-cyan-400">Diseño Digital</span>{' '}
-          <span className="bg-gradient-to-r from-amber-300 via-rose-300 to-emerald-300 bg-clip-text text-transparent drop-shadow-md">
-            a Medida
-          </span>
+          Río Cuarto Web <br />
+          <span className="text-[#4a5d4a] italic font-normal">Diseño Digital a Medida</span>
         </motion.h1>
 
-        {/* Micro Subtitle (1 Short Line) */}
+        {/* Micro Subtitle */}
         <motion.p 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-xs sm:text-sm text-rose-100/90 max-w-xl mx-auto font-bold leading-snug"
+          className="text-sm sm:text-base text-[#1e1b1b]/70 max-w-xl mx-auto font-light leading-relaxed"
         >
-          ⚡ Caja ultrarrápida • 🧾 Factura ARCA (ex AFIP) • 📱 Control de Stock en Celular.
+          Caja ultrarrápida • Facturación ARCA (ex AFIP) • Control de Stock en Celular.
         </motion.p>
 
-        {/* 3 Ultra-Vibrant Micro-Pills */}
+        {/* 3 Micro-Pills */}
         <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
           {[
-            { text: 'Cero Comisiones por Venta', color: 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' },
-            { text: 'Facturación ARCA Oficial', color: 'bg-amber-950/80 text-amber-300 border-amber-500/40' },
-            { text: 'Soporte Directo de Programadores', color: 'bg-rose-950/80 text-rose-200 border-rose-500/40' }
+            'Cero Comisiones por Venta',
+            'Facturación ARCA Oficial',
+            'Soporte Directo de Programadores'
           ].map((pill, i) => (
-            <span key={i} className={`px-2.5 py-1 rounded-lg border text-[11px] font-black uppercase tracking-wide flex items-center space-x-1.5 shadow-md ${pill.color}`}>
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>{pill.text}</span>
+            <span key={i} className="px-3 py-1 rounded-full bg-white border border-stone-300 text-[11px] font-semibold uppercase tracking-wide flex items-center space-x-1.5 shadow-sm text-[#1e1b1b]">
+              <Check className="w-3.5 h-3.5 text-[#4a5d4a]" />
+              <span>{pill}</span>
             </span>
           ))}
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
           <a
             href={mainWhatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-7 min-h-[48px] rounded-xl btn-premium-emerald text-white font-black text-xs sm:text-sm uppercase tracking-wider"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-8 py-3.5 rounded-sm bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white font-bold text-xs uppercase tracking-wider shadow-md transition"
           >
-            <MessageCircle className="w-4.5 h-4.5 fill-white text-emerald-900" />
+            <MessageCircle className="w-4 h-4 fill-white" />
             <span>Hablar por WhatsApp ({OFFICIAL_PHONE_FORMATTED})</span>
           </a>
 
           <button
             onClick={onNavigateToCalculator}
-            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 min-h-[48px] rounded-xl btn-premium-gold text-white font-black text-xs uppercase tracking-wider"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-8 py-3.5 rounded-sm bg-white hover:bg-stone-50 text-[#1e1b1b] font-bold text-xs uppercase tracking-wider border border-stone-300 shadow-sm transition cursor-pointer"
           >
-            <Zap className="w-4 h-4 text-amber-100" />
+            <Zap className="w-4 h-4 text-[#4a5d4a]" />
             <span>Cotizar en 1 Minuto</span>
           </button>
         </div>

@@ -18,7 +18,7 @@ import { Lock } from 'lucide-react';
 export default function App() {
   const [activeTab, setActiveTab] = useState<PublicTab>('home');
   const [flyerData, setFlyerData] = useState<FlyerData>(initialFlyerData);
-  const [theme, setTheme] = useState<FlyerTheme>('ruby-red');
+  const [theme, setTheme] = useState<FlyerTheme>('modern-vintage');
   const [format, setFormat] = useState<FlyerFormat>('horizontal-banner');
   const [showPdfCatalog, setShowPdfCatalog] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);

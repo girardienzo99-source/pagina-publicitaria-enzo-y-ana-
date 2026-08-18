@@ -48,10 +48,8 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
   };
 
   const handleRemoveService = (index: number) => {
-    setFlyerData(prev => ({
-      ...prev,
-      mainServices: prev.mainServices.filter((_, i) => i !== index)
-    }));
+    const updated = flyerData.mainServices.filter((_, i) => i !== index);
+    setFlyerData(prev => ({ ...prev, mainServices: updated }));
   };
 
   const handleBenefitChange = (index: number, value: string) => {
@@ -63,57 +61,51 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
   const handleAddBenefit = () => {
     setFlyerData(prev => ({
       ...prev,
-      keyBenefits: [...prev.keyBenefits, 'Nueva ventaja competitiva']
+      keyBenefits: [...prev.keyBenefits, 'Nueva ventaja o beneficio clave']
     }));
   };
 
   const handleRemoveBenefit = (index: number) => {
-    setFlyerData(prev => ({
-      ...prev,
-      keyBenefits: prev.keyBenefits.filter((_, i) => i !== index)
-    }));
+    const updated = flyerData.keyBenefits.filter((_, i) => i !== index);
+    setFlyerData(prev => ({ ...prev, keyBenefits: updated }));
   };
 
   const handleResetToDefaults = () => {
-    if (confirm('¿Querés restablecer todos los datos de la publicidad a la información original de Enzo Girardi?')) {
+    if (confirm('¿Desea restablecer todos los textos a los valores iniciales predeterminados?')) {
       setFlyerData(initialFlyerData);
     }
   };
 
   return (
-    <div className="space-y-8 pb-12 max-w-4xl mx-auto">
+    <div className="space-y-6 font-montserrat text-[#1e1b1b]">
       
-      {/* Header */}
-      <div className="bg-gradient-to-r from-red-950/40 via-zinc-900 to-red-950/40 border border-red-500/30 rounded-3xl p-6 sm:p-8 text-center space-y-3">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-bold uppercase tracking-wider">
-          <Edit3 className="w-4 h-4" />
-          <span>Editor de Contenido Publicitario</span>
+      {/* Editor Controls Bar */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white border border-stone-300 rounded-3xl p-5 shadow-sm">
+        <div className="flex items-center space-x-2">
+          <Edit3 className="w-5 h-5 text-[#4a5d4a]" />
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e1b1b]">
+            Personalizador de Textos & Servicios
+          </h2>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Personalizá los Datos de tu Anuncio Comercial
-        </h1>
-        <p className="text-sm text-zinc-400 max-w-xl mx-auto">
-          Podés editar tus datos de contacto, frase principal, promociones y lista de programas para actualizar la presentación en tiempo real.
-        </p>
 
-        <div className="flex flex-wrap justify-center gap-3 pt-2">
+        <div className="flex items-center space-x-2 w-full sm:w-auto">
           <button
             onClick={onPreviewFlyer}
-            className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs sm:text-sm rounded-xl transition shadow-lg shadow-red-900/40"
+            className="flex items-center space-x-2 px-4 py-2.5 bg-white hover:bg-stone-50 text-[#1e1b1b] font-bold text-xs rounded-sm border border-stone-300 transition cursor-pointer"
           >
-            <Sparkles className="w-4 h-4" />
-            <span>Ver Anuncio Publicitario</span>
+            <Sparkles className="w-4 h-4 text-[#4a5d4a]" />
+            <span>Ver Anuncio</span>
           </button>
 
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className={`flex items-center space-x-2 px-5 py-2.5 text-xs sm:text-sm font-extrabold rounded-xl transition shadow-lg ${
+            className={`flex items-center space-x-2 px-5 py-2.5 text-xs font-bold rounded-sm transition shadow-sm cursor-pointer ${
               saveStatus === 'success'
-                ? 'bg-emerald-600 text-white shadow-emerald-950/50'
+                ? 'bg-[#4a5d4a] text-white'
                 : saveStatus === 'error'
-                ? 'bg-rose-700 text-white shadow-rose-950/50'
-                : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 shadow-amber-950/40'
+                ? 'bg-red-700 text-white'
+                : 'bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white'
             }`}
           >
             {isSaving ? (
@@ -138,7 +130,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
 
           <button
             onClick={handleResetToDefaults}
-            className="flex items-center space-x-2 px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-xs font-bold rounded-xl border border-zinc-800 transition"
+            className="flex items-center space-x-2 px-3.5 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold rounded-sm border border-stone-300 transition cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
             <span>Restablecer</span>
@@ -147,84 +139,84 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
       </div>
 
       {/* Form Fields */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+      <div className="bg-white border border-stone-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
         
         {/* Personal Details */}
         <div>
-          <h3 className="text-sm font-extrabold text-amber-400 uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
+          <h3 className="text-xs font-bold text-[#4a5d4a] uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">
             1. Datos Personales & Contacto
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                 Nombre y Apellido
               </label>
               <input
                 type="text"
                 value={flyerData.developerName}
                 onChange={e => setFlyerData({ ...flyerData, developerName: e.target.value })}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-amber-500 outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                 Título o Especialidad
               </label>
               <input
                 type="text"
                 value={flyerData.role}
                 onChange={e => setFlyerData({ ...flyerData, role: e.target.value })}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-amber-500 outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                 Teléfono / WhatsApp (Solo números para link directo)
               </label>
               <input
                 type="text"
                 value={flyerData.phone}
                 onChange={e => setFlyerData({ ...flyerData, phone: e.target.value })}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-amber-500 outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                 Teléfono Formateado (Para mostrar en el flyer)
               </label>
               <input
                 type="text"
                 value={flyerData.phoneFormatted}
                 onChange={e => setFlyerData({ ...flyerData, phoneFormatted: e.target.value })}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-amber-500 outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                 Correo Electrónico (Gmail)
               </label>
               <input
                 type="email"
                 value={flyerData.email}
                 onChange={e => setFlyerData({ ...flyerData, email: e.target.value })}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-amber-500 outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                 Ubicación o Zona de Cobertura
               </label>
               <input
                 type="text"
                 value={flyerData.location}
                 onChange={e => setFlyerData({ ...flyerData, location: e.target.value })}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-amber-500 outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
               />
             </div>
           </div>
@@ -232,57 +224,57 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
 
         {/* Slogan & Promotion */}
         <div>
-          <h3 className="text-sm font-extrabold text-amber-400 uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
+          <h3 className="text-xs font-bold text-[#4a5d4a] uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">
             2. Encabezado de Marketing & Promoción
           </h3>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                 Gancho de Atención (Encabezado Superior impactante)
               </label>
               <input
                 type="text"
                 value={flyerData.hookTitle || ''}
                 onChange={e => setFlyerData({ ...flyerData, hookTitle: e.target.value })}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-red-500 outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                 Slogan / Frase Principal de la Publicidad
               </label>
               <textarea
                 value={flyerData.slogan}
                 onChange={e => setFlyerData({ ...flyerData, slogan: e.target.value })}
                 rows={2}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-red-500 outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                   Insignia de Promoción / Oferta Especial
                 </label>
                 <input
                   type="text"
                   value={flyerData.promoBadge}
                   onChange={e => setFlyerData({ ...flyerData, promoBadge: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-red-500 outline-none"
+                  className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-[#1e1b1b]/80 mb-1">
                   Texto de Garantía y Confianza
                 </label>
                 <input
                   type="text"
                   value={flyerData.guaranteeText || ''}
                   onChange={e => setFlyerData({ ...flyerData, guaranteeText: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-red-500 outline-none"
+                  className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
                 />
               </div>
             </div>
@@ -291,14 +283,14 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
 
         {/* Main Services List */}
         <div>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-4">
-            <h3 className="text-sm font-extrabold text-amber-400 uppercase tracking-wider">
+          <div className="flex items-center justify-between border-b border-stone-200 pb-2 mb-4">
+            <h3 className="text-xs font-bold text-[#4a5d4a] uppercase tracking-wider">
               3. Programas y Servicios Ofrecidos
             </h3>
 
             <button
               onClick={handleAddService}
-              className="flex items-center space-x-1 text-xs font-bold text-emerald-400 hover:underline"
+              className="flex items-center space-x-1 text-xs font-bold text-[#4a5d4a] hover:underline cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Agregar Servicio</span>
@@ -312,11 +304,11 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                   type="text"
                   value={service}
                   onChange={e => handleServiceChange(idx, e.target.value)}
-                  className="flex-1 bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-amber-500 outline-none"
+                  className="flex-1 bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
                 />
                 <button
                   onClick={() => handleRemoveService(idx)}
-                  className="p-3 text-red-400 hover:bg-slate-950 rounded-xl border border-slate-800"
+                  className="p-3 text-red-600 hover:bg-red-50 rounded-sm border border-stone-300 cursor-pointer"
                   title="Eliminar"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -328,14 +320,14 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
 
         {/* Key Benefits */}
         <div>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-4">
-            <h3 className="text-sm font-extrabold text-amber-400 uppercase tracking-wider">
+          <div className="flex items-center justify-between border-b border-stone-200 pb-2 mb-4">
+            <h3 className="text-xs font-bold text-[#4a5d4a] uppercase tracking-wider">
               4. Beneficios Clave
             </h3>
 
             <button
               onClick={handleAddBenefit}
-              className="flex items-center space-x-1 text-xs font-bold text-emerald-400 hover:underline"
+              className="flex items-center space-x-1 text-xs font-bold text-[#4a5d4a] hover:underline cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Agregar Ventaja</span>
@@ -349,11 +341,11 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                   type="text"
                   value={benefit}
                   onChange={e => handleBenefitChange(idx, e.target.value)}
-                  className="flex-1 bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-amber-500 outline-none"
+                  className="flex-1 bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
                 />
                 <button
                   onClick={() => handleRemoveBenefit(idx)}
-                  className="p-3 text-red-400 hover:bg-slate-950 rounded-xl border border-slate-800"
+                  className="p-3 text-red-600 hover:bg-red-50 rounded-sm border border-stone-300 cursor-pointer"
                   title="Eliminar"
                 >
                   <Trash2 className="w-4 h-4" />
