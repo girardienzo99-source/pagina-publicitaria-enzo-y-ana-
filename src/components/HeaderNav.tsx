@@ -141,15 +141,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
               <span className="hidden xl:inline">Buscar</span>
             </button>
 
-            {/* Proposal Generator Button */}
-            <button
-              onClick={onOpenProposalModal}
-              className="hidden lg:flex items-center space-x-1.5 px-3 min-h-[44px] text-xs font-bold text-[#4a5d4a] bg-white hover:bg-stone-100 rounded-xl border border-[#4a5d4a]/40 transition shadow-sm"
-              title="Generar Propuesta Técnica Formal en PDF"
-            >
-              <FileCheck className="w-4 h-4 text-[#4a5d4a]" />
-              <span>Propuesta PDF</span>
-            </button>
+
 
             {/* Primary CTA - WhatsApp Demo */}
             <a
@@ -231,13 +223,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
               <span>Buscar Módulo o Función</span>
             </button>
 
-            <button
-              onClick={() => { onOpenProposalModal(); setMobileMenuOpen(false); }}
-              className="flex items-center space-x-3 px-4 min-h-[44px] rounded-xl text-sm font-bold text-[#4a5d4a] bg-white border border-[#4a5d4a]/40 w-full shadow-sm"
-            >
-              <FileCheck className="w-4 h-4 text-[#4a5d4a]" />
-              <span>Generar Propuesta PDF</span>
-            </button>
+
           </div>
         </div>
       )}
