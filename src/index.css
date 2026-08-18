@@ -32,8 +32,8 @@
 html, body {
   overflow-x: hidden;
   max-width: 100vw;
-  background-color: var(--color-burgundy-base);
-  color: #f8fafc;
+  background-color: var(--surface-vintage);
+  color: var(--on-surface-vintage);
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;

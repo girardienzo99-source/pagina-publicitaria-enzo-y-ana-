@@ -71,18 +71,18 @@ export default function App() {
 
   if (isDbLoading) {
     return (
-      <div className="min-h-screen bg-[#14040A] flex flex-col items-center justify-center text-white space-y-4">
-        <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-cyan-200/80 font-bold uppercase tracking-wider text-xs">Cargando presentación de Río Cuarto Web...</p>
+      <div className="min-h-screen bg-[#fcf9f8] flex flex-col items-center justify-center text-[#1e1b1b] space-y-4">
+        <div className="w-12 h-12 border-4 border-[#4a5d4a] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-[#4a5d4a] font-bold uppercase tracking-wider text-xs">Cargando presentación de Río Cuarto Web...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#14040A] text-slate-100 font-sans selection:bg-rose-700 selection:text-white pb-28 relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#fcf9f8] text-[#1e1b1b] font-sans selection:bg-[#4a5d4a] selection:text-white pb-28 relative overflow-x-hidden">
       
-      {/* Background Deep Burgundy Radial Accent */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_85%_75%_at_50%_-20%,rgba(163,40,75,0.35),rgba(20,4,10,1))] pointer-events-none" />
+      {/* Background Luminous Ivory Subtle Atmosphere */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_85%_75%_at_50%_-10%,rgba(74,93,74,0.06),rgba(252,249,248,1))] pointer-events-none" />
 
       {/* Main Header Nav */}
       <HeaderNav
