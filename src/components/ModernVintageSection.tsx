@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
 import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.jpg';
+import posGastronomicoImg from '../assets/pos_gastronomico.jpg';
 import facturacionArcaImg from '../assets/facturacion_arca.jpg';
 import indumentariaStockImg from '../assets/indumentaria_stock.jpg';
 
@@ -172,11 +173,11 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
           </div>
 
           <div className="lg:col-span-6">
-            <div className="rounded-2xl overflow-hidden shadow-xl border border-stone-200">
+            <div className="rounded-2xl overflow-hidden shadow-xl border border-stone-200 bg-stone-100 flex items-center justify-center">
               <img 
-                src={facturacionArcaImg} 
-                alt="Facturación Electrónica ARCA Puesto de Trabajo" 
-                className="w-full h-64 sm:h-80 object-cover"
+                src={sistemaGastronomicoLaptopImg} 
+                alt="Sistema de Gestión y Facturación en Notebook" 
+                className="w-full h-80 sm:h-96 lg:h-[460px] object-cover object-[center_55%]"
               />
             </div>
           </div>
@@ -187,9 +188,9 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
           <div className="lg:col-span-6 order-2 lg:order-1">
             <div className="rounded-2xl overflow-hidden shadow-xl border border-stone-200">
               <img 
-                src={sistemaGastronomicoLaptopImg} 
-                alt="El Patrón - Gestión Gastronómica en Notebook" 
-                className="w-full h-64 sm:h-80 object-cover object-center"
+                src={posGastronomicoImg} 
+                alt="El Patrón - Gestión Gastronómica Mozos y Salón" 
+                className="w-full h-64 sm:h-80 lg:h-96 object-cover object-top"
               />
             </div>
           </div>
