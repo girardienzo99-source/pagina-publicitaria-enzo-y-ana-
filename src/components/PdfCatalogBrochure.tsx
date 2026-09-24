@@ -28,6 +28,7 @@ import {
   ANAHI_EMAIL, 
   ENZO_EMAIL 
 } from '../lib/whatsapp';
+import { downloadPdfFromElement } from '../lib/pdfDownloader';
 
 interface PdfCatalogBrochureProps {
   flyerData: FlyerData;
@@ -40,26 +41,11 @@ export const PdfCatalogBrochure: React.FC<PdfCatalogBrochureProps> = ({ flyerDat
   );
 
   const handleDirectPdfDownload = async () => {
-    const element = document.querySelector('.printable-catalog') || document.querySelector('.pdf-container');
+    const element = (document.querySelector('.printable-catalog') || document.querySelector('.pdf-container')) as HTMLElement;
     if (!element) return;
 
     try {
-      if (!(window as any).html2pdf) {
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-        document.head.appendChild(script);
-        await new Promise((resolve) => { script.onload = resolve; });
-      }
-
-      const opt = {
-        margin:       [6, 6, 6, 6],
-        filename:     'Catalogo_Sistemas_RioCuartoWeb.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#fcf9f8', logging: false },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      await (window as any).html2pdf().set(opt).from(element).save();
+      await downloadPdfFromElement(element, 'Catalogo_Sistemas_RioCuartoWeb.pdf', [6, 6, 6, 6]);
     } catch (err) {
       console.error('Error al generar PDF directo:', err);
       window.print();

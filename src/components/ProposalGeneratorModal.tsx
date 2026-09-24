@@ -31,6 +31,7 @@ import {
   ANAHI_EMAIL, 
   ENZO_EMAIL 
 } from '../lib/whatsapp';
+import { downloadPdfFromElement } from '../lib/pdfDownloader';
 
 interface ProposalGeneratorModalProps {
   isOpen: boolean;
@@ -101,32 +102,17 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
     setIsGeneratingPdf(true);
     await saveLeadToSupabase();
 
-    const element = document.querySelector('.printable-proposal');
+    const element = document.querySelector('.printable-proposal') as HTMLElement;
     if (!element) {
       setIsGeneratingPdf(false);
       return;
     }
 
     try {
-      if (!(window as any).html2pdf) {
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-        document.head.appendChild(script);
-        await new Promise((resolve) => { script.onload = resolve; });
-      }
-
       const cleanFileName = `Presupuesto_${clientBusiness.replace(/[^a-zA-Z0-9]/g, '_')}_RioCuartoWeb.pdf`;
-      const opt = {
-        margin:       [8, 8, 8, 8],
-        filename:     cleanFileName,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#ffffff' },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      await (window as any).html2pdf().set(opt).from(element).save();
+      await downloadPdfFromElement(element, cleanFileName, [8, 8, 8, 8]);
     } catch (err) {
-      console.error('Error generando PDF directo con html2pdf:', err);
+      console.error('Error generando PDF directo:', err);
       window.print();
     } finally {
       setIsGeneratingPdf(false);
