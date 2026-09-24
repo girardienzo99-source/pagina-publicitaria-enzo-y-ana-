@@ -10,6 +10,9 @@ import {
   Sparkles
 } from 'lucide-react';
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
+import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.jpg';
+import facturacionArcaImg from '../assets/facturacion_arca.jpg';
+import indumentariaStockImg from '../assets/indumentaria_stock.jpg';
 
 interface ModernVintageSectionProps {
   onNavigateToPortfolio?: () => void;
@@ -171,7 +174,7 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
           <div className="lg:col-span-6">
             <div className="rounded-2xl overflow-hidden shadow-xl border border-stone-200">
               <img 
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=900" 
+                src={facturacionArcaImg} 
                 alt="Facturación Electrónica ARCA Puesto de Trabajo" 
                 className="w-full h-64 sm:h-80 object-cover"
               />
@@ -184,9 +187,9 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
           <div className="lg:col-span-6 order-2 lg:order-1">
             <div className="rounded-2xl overflow-hidden shadow-xl border border-stone-200">
               <img 
-                src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=900" 
-                alt="Gestión Gastronómica Mozos y Salón" 
-                className="w-full h-64 sm:h-80 object-cover"
+                src={sistemaGastronomicoLaptopImg} 
+                alt="El Patrón - Gestión Gastronómica en Notebook" 
+                className="w-full h-64 sm:h-80 object-cover object-center"
               />
             </div>
           </div>
@@ -241,7 +244,7 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
           <div className="lg:col-span-6">
             <div className="rounded-2xl overflow-hidden shadow-xl border border-stone-200">
               <img 
-                src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=900" 
+                src={indumentariaStockImg} 
                 alt="Control de Stock y Código de Barras" 
                 className="w-full h-64 sm:h-80 object-cover"
               />

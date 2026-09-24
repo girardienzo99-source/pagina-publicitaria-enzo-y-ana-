@@ -2,6 +2,7 @@ import { FlyerData, SystemModule, IndustryOption } from '../types';
 import posGastronomicoImg from '../assets/pos_gastronomico.jpg';
 import facturacionArcaImg from '../assets/facturacion_arca.jpg';
 import indumentariaStockImg from '../assets/indumentaria_stock.jpg';
+import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.jpg';
 
 export const initialFlyerData: FlyerData = {
   developerName: 'Río Cuarto Web',
@@ -43,8 +44,9 @@ export const portfolioModules: SystemModule[] = [
     subtitle: 'Casa de Comidas y Vinos / Resto Bar POS',
     description: 'Sistema completo para restaurantes y bares con distribución de mesas interactiva, comandas para mozos en turno, despacho en cocina, caja y menú digital.',
     badge: 'GASTRONOMÍA PREMIUM',
-    imageUrl: posGastronomicoImg,
+    imageUrl: sistemaGastronomicoLaptopImg,
     screenshots: [
+      posGastronomicoImg,
       'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80'
     ],
