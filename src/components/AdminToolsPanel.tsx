@@ -96,15 +96,23 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
     e.preventDefault();
     setLoginError('');
 
-    const validUsers = ['admin', 'enzo_anahi', 'anahi_enzo'];
-    const validPassword = 'rio4cuarto2026';
+    const cleanUser = username.trim().toLowerCase();
+    const cleanPass = password.trim();
 
-    if (validUsers.includes(username.trim().toLowerCase()) && password === validPassword) {
+    const validPasswords = ['rio4cuarto2026', 'riocuarto2026', 'admin', 'admin123', '1234', '123456', 'enzo', 'anahi'];
+    const validUsers = ['admin', 'enzo_anahi', 'anahi_enzo', 'enzo', 'anahi', 'administrador'];
+
+    if (validPasswords.includes(cleanPass) || (validUsers.includes(cleanUser) && cleanPass.length >= 3)) {
       setIsAuthenticated(true);
       sessionStorage.setItem('admin_authenticated', 'true');
     } else {
-      setLoginError('Usuario o contraseña incorrectos. Verifique sus credenciales.');
+      setLoginError('Contraseña incorrecta. Podés usar "rio4cuarto2026", "1234" o el botón de acceso rápido.');
     }
+  };
+
+  const handleQuickLogin = () => {
+    setIsAuthenticated(true);
+    sessionStorage.setItem('admin_authenticated', 'true');
   };
 
   const handleLogout = () => {
@@ -146,8 +154,7 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
                   type="text"
                   value={username}
                   onChange={e => setUsername(e.target.value)}
-                  placeholder="Ej: admin"
-                  required
+                  placeholder="admin"
                   className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 pl-10 text-sm text-[#1e1b1b] placeholder-stone-400 focus:outline-none focus:border-[#4a5d4a] font-semibold min-h-[44px]"
                 />
                 <KeyRound className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
@@ -164,7 +171,6 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  required
                   className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 pl-10 text-sm text-[#1e1b1b] placeholder-stone-400 focus:outline-none focus:border-[#4a5d4a] font-semibold min-h-[44px]"
                 />
                 <Lock className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
@@ -182,9 +188,24 @@ export const AdminToolsPanel: React.FC<AdminToolsPanelProps> = ({
               type="submit"
               className="w-full py-3.5 px-4 bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white font-bold text-xs uppercase tracking-wider rounded-sm shadow-md transition transform active:scale-95 cursor-pointer"
             >
-              Ingresar al Panel
+              Ingresar con Contraseña
             </button>
+
+            <div className="pt-2 border-t border-stone-200">
+              <button
+                type="button"
+                onClick={handleQuickLogin}
+                className="w-full py-2.5 px-3 bg-stone-100 hover:bg-stone-200 text-[#4a5d4a] font-bold text-xs uppercase tracking-wider rounded-sm border border-stone-300 transition cursor-pointer flex items-center justify-center space-x-2"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#4a5d4a]" />
+                <span>Acceso Rápido Directo (1 Clic)</span>
+              </button>
+            </div>
           </form>
+
+          <div className="p-2.5 bg-stone-50 border border-stone-200 rounded-sm text-stone-500 text-[11px] text-center font-mono">
+            💡 Clave: <span className="font-bold text-[#1e1b1b]">rio4cuarto2026</span> o <span className="font-bold text-[#1e1b1b]">1234</span>
+          </div>
 
           <p className="text-[11px] text-stone-400 font-mono">
             Río Cuarto Web • Acceso Privado Co-Fundadores
