@@ -1,19 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { HeaderNav, PublicTab } from './components/HeaderNav';
 import { FlyerPreview } from './components/FlyerPreview';
-import { PortfolioShowcase } from './components/PortfolioShowcase';
-import { InteractiveQuoteCalculator } from './components/InteractiveQuoteCalculator';
-import { AdminToolsPanel } from './components/AdminToolsPanel';
 import { DirectContactBar } from './components/DirectContactBar';
-import { PdfCatalogBrochure } from './components/PdfCatalogBrochure';
-import { GlobalSystemSearchModal } from './components/GlobalSystemSearchModal';
-import { ProposalGeneratorModal } from './components/ProposalGeneratorModal';
-import { PlansAndModalitiesSection } from './components/PlansAndModalitiesSection';
 import { initialFlyerData } from './data/portfolioData';
 import { FlyerData, FlyerTheme, FlyerFormat } from './types';
 import { supabase, isSupabaseConfigured } from './lib/supabaseClient';
 import { Lock } from 'lucide-react';
+
+// Lazy loading inteligente para módulos pesados (jspdf, html2canvas, paneles secundarios)
+// Permite que la página principal cargue de forma instantánea sin esperar librerías de 500KB+
+const PortfolioShowcase = lazy(() => 
+  import('./components/PortfolioShowcase').then(m => ({ default: m.PortfolioShowcase }))
+);
+const InteractiveQuoteCalculator = lazy(() => 
+  import('./components/InteractiveQuoteCalculator').then(m => ({ default: m.InteractiveQuoteCalculator }))
+);
+const PlansAndModalitiesSection = lazy(() => 
+  import('./components/PlansAndModalitiesSection').then(m => ({ default: m.PlansAndModalitiesSection }))
+);
+const AdminToolsPanel = lazy(() => 
+  import('./components/AdminToolsPanel').then(m => ({ default: m.AdminToolsPanel }))
+);
+const PdfCatalogBrochure = lazy(() => 
+  import('./components/PdfCatalogBrochure').then(m => ({ default: m.PdfCatalogBrochure }))
+);
+const GlobalSystemSearchModal = lazy(() => 
+  import('./components/GlobalSystemSearchModal').then(m => ({ default: m.GlobalSystemSearchModal }))
+);
+const ProposalGeneratorModal = lazy(() => 
+  import('./components/ProposalGeneratorModal').then(m => ({ default: m.ProposalGeneratorModal }))
+);
+
+// Fallback mínimo ultraligero mientras se abren tabs secundarias
+const TabLoadingFallback = () => (
+  <div className="py-20 flex flex-col items-center justify-center text-center space-y-3">
+    <div className="w-8 h-8 border-3 border-[#4a5d4a] border-t-transparent rounded-full animate-spin" />
+    <span className="text-xs uppercase tracking-wider text-stone-500 font-semibold">Cargando sección...</span>
+  </div>
+);
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<PublicTab>('home');
@@ -23,9 +48,10 @@ export default function App() {
   const [showPdfCatalog, setShowPdfCatalog] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const [showProposalModal, setShowProposalModal] = useState<boolean>(false);
-  const [isDbLoading, setIsDbLoading] = useState<boolean>(isSupabaseConfigured);
 
+  // Carga asíncrona no bloqueante de Supabase (la página se muestra de inmediato sin spinner)
   useEffect(() => {
+    let isMounted = true;
     async function loadFlyerConfig() {
       if (!isSupabaseConfigured || !supabase) return;
       try {
@@ -36,20 +62,19 @@ export default function App() {
           .limit(1)
           .single();
 
-        if (!error && data && data.config) {
+        if (isMounted && !error && data && data.config) {
           setFlyerData(prev => ({
             ...prev,
             ...data.config
           }));
         }
       } catch (err) {
-        console.error('Error cargando configuración de Supabase:', err);
-      } finally {
-        setIsDbLoading(false);
+        console.warn('Configuración cargada desde caché local:', err);
       }
     }
 
     loadFlyerConfig();
+    return () => { isMounted = false; };
   }, []);
 
   const saveFlyerConfig = async (updatedData: FlyerData): Promise<boolean> => {
@@ -66,15 +91,6 @@ export default function App() {
       return false;
     }
   };
-
-  if (isDbLoading) {
-    return (
-      <div className="min-h-screen bg-[#fcf9f8] flex flex-col items-center justify-center text-[#1e1b1b] space-y-4">
-        <div className="w-12 h-12 border-4 border-[#4a5d4a] border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-[#4a5d4a] font-bold uppercase tracking-wider text-xs">Cargando presentación de Río Cuarto Web...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#fcf9f8] text-[#1e1b1b] font-sans selection:bg-[#4a5d4a] selection:text-white pb-28 relative overflow-x-hidden">
@@ -101,7 +117,7 @@ export default function App() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
               <FlyerPreview
                 flyerData={flyerData}
@@ -122,12 +138,14 @@ export default function App() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
-              <PortfolioShowcase
-                phone={flyerData.phone}
-                onOpenPdfCatalog={() => setShowPdfCatalog(true)}
-              />
+              <Suspense fallback={<TabLoadingFallback />}>
+                <PortfolioShowcase
+                  phone={flyerData.phone}
+                  onOpenPdfCatalog={() => setShowPdfCatalog(true)}
+                />
+              </Suspense>
             </motion.div>
           )}
 
@@ -137,9 +155,11 @@ export default function App() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
-              <PlansAndModalitiesSection phone={flyerData.phone} />
+              <Suspense fallback={<TabLoadingFallback />}>
+                <PlansAndModalitiesSection phone={flyerData.phone} />
+              </Suspense>
             </motion.div>
           )}
 
@@ -149,9 +169,11 @@ export default function App() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
-              <InteractiveQuoteCalculator phone={flyerData.phone} />
+              <Suspense fallback={<TabLoadingFallback />}>
+                <InteractiveQuoteCalculator phone={flyerData.phone} />
+              </Suspense>
             </motion.div>
           )}
 
@@ -161,20 +183,22 @@ export default function App() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
-              <AdminToolsPanel
-                flyerData={flyerData}
-                setFlyerData={setFlyerData}
-                theme={theme}
-                setTheme={setTheme}
-                format={format}
-                setFormat={setFormat}
-                onPreviewFlyer={() => setActiveTab('home')}
-                onSaveConfig={saveFlyerConfig}
-                onOpenPdfCatalog={() => setShowPdfCatalog(true)}
-                onOpenProposalModal={() => setShowProposalModal(true)}
-              />
+              <Suspense fallback={<TabLoadingFallback />}>
+                <AdminToolsPanel
+                  flyerData={flyerData}
+                  setFlyerData={setFlyerData}
+                  theme={theme}
+                  setTheme={setTheme}
+                  format={format}
+                  setFormat={setFormat}
+                  onPreviewFlyer={() => setActiveTab('home')}
+                  onSaveConfig={saveFlyerConfig}
+                  onOpenPdfCatalog={() => setShowPdfCatalog(true)}
+                  onOpenProposalModal={() => setShowProposalModal(true)}
+                />
+              </Suspense>
             </motion.div>
           )}
         </AnimatePresence>
@@ -199,28 +223,38 @@ export default function App() {
         email={flyerData.email}
       />
 
-      {/* PDF Catalog Printable Modal */}
+      {/* PDF Catalog Printable Modal (Lazy) */}
       {showPdfCatalog && (
-        <PdfCatalogBrochure
-          flyerData={flyerData}
-          onClose={() => setShowPdfCatalog(false)}
-        />
+        <Suspense fallback={null}>
+          <PdfCatalogBrochure
+            flyerData={flyerData}
+            onClose={() => setShowPdfCatalog(false)}
+          />
+        </Suspense>
       )}
 
-      {/* Universal Search Modal */}
-      <GlobalSystemSearchModal
-        isOpen={showSearchModal}
-        onClose={() => setShowSearchModal(false)}
-        onSelectSystem={() => setActiveTab('portfolio')}
-      />
+      {/* Universal Search Modal (Lazy) */}
+      {showSearchModal && (
+        <Suspense fallback={null}>
+          <GlobalSystemSearchModal
+            isOpen={showSearchModal}
+            onClose={() => setShowSearchModal(false)}
+            onSelectSystem={() => setActiveTab('portfolio')}
+          />
+        </Suspense>
+      )}
 
-      {/* Formal Technical Proposal Modal */}
-      <ProposalGeneratorModal
-        isOpen={showProposalModal}
-        onClose={() => setShowProposalModal(false)}
-        phone={flyerData.phone}
-        email={flyerData.email}
-      />
+      {/* Formal Technical Proposal Modal (Lazy) */}
+      {showProposalModal && (
+        <Suspense fallback={null}>
+          <ProposalGeneratorModal
+            isOpen={showProposalModal}
+            onClose={() => setShowProposalModal(false)}
+            phone={flyerData.phone}
+            email={flyerData.email}
+          />
+        </Suspense>
+      )}
 
     </div>
   );

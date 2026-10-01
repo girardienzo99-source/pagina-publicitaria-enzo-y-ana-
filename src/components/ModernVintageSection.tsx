@@ -113,6 +113,8 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
             <img 
               src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1000" 
               alt="Artesanía Digital - Río Cuarto Web" 
+              loading="eager"
+              decoding="async"
               className="w-full h-80 sm:h-96 object-cover"
             />
           </div>
@@ -178,6 +180,8 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
               <img 
                 src={sistemaGastronomicoLaptopImg} 
                 alt="Sistema de Gestión y Facturación en Notebook" 
+                loading="lazy"
+                decoding="async"
                 className="w-full h-80 sm:h-96 lg:h-[460px] object-cover object-[center_55%]"
               />
             </div>
@@ -272,6 +276,8 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
                   <img 
                     src={indumentariaStockImg} 
                     alt="El Ferretero Río Cuarto - Catálogo Web, Carrito y Control de Stock" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-[1.03]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
