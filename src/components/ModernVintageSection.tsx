@@ -10,6 +10,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
+import { GastronomicVideoPlayer } from './GastronomicVideoPlayer';
 import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.jpg';
 import posGastronomicoImg from '../assets/pos_gastronomico.jpg';
 import facturacionArcaImg from '../assets/facturacion_arca.jpg';
@@ -186,13 +187,10 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
         {/* MÓDULO 02: POS y Gestión Gastronómica */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-6 order-2 lg:order-1">
-            <div className="rounded-2xl overflow-hidden shadow-xl border border-stone-200">
-              <img 
-                src={posGastronomicoImg} 
-                alt="El Patrón - Gestión Gastronómica Mozos y Salón" 
-                className="w-full h-64 sm:h-80 lg:h-96 object-cover object-top"
-              />
-            </div>
+            <GastronomicVideoPlayer 
+              videoSrc="/assets/video_patron.mp4"
+              posterSrc={posGastronomicoImg}
+            />
           </div>
 
           <div className="lg:col-span-6 space-y-4 order-1 lg:order-2">
