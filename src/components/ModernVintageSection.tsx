@@ -14,7 +14,7 @@ import { GastronomicVideoPlayer } from './GastronomicVideoPlayer';
 import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.jpg';
 import posGastronomicoImg from '../assets/pos_gastronomico.jpg';
 import facturacionArcaImg from '../assets/facturacion_arca.jpg';
-import indumentariaStockImg from '../assets/indumentaria_stock.jpg';
+import ferreteriaImg from '../assets/ferreteria.jpg';
 
 interface ModernVintageSectionProps {
   onNavigateToPortfolio?: () => void;
@@ -263,19 +263,19 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
                   {/* Barra de dirección URL */}
                   <div className="hidden sm:flex items-center space-x-2 bg-stone-900/90 border border-stone-700/80 px-3 py-1 rounded-full text-[10px] text-stone-300">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="font-mono text-stone-300">elferretero.com.ar/catalogo</span>
+                    <span className="font-mono text-stone-300">ferreteria.com.ar/catalogo</span>
                   </div>
 
                   <span className="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-stone-200">
-                    El Ferretero • Río Cuarto
+                    Ferretería
                   </span>
                 </div>
 
                 {/* Imagen del Sistema / Catálogo */}
                 <div className="relative aspect-[16/9] sm:aspect-[2.05/1] w-full bg-stone-950 overflow-hidden rounded-b-[1.3rem]">
                   <img 
-                    src={indumentariaStockImg} 
-                    alt="El Ferretero Río Cuarto - Catálogo Web, Carrito y Control de Stock" 
+                    src={ferreteriaImg} 
+                    alt="Ferretería - Catálogo Web, Carrito y Control de Stock" 
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-[1.03]"
