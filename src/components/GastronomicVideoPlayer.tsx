@@ -158,7 +158,7 @@ export const GastronomicVideoPlayer: React.FC<GastronomicVideoPlayerProps> = ({
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase text-stone-200">
-              El Patrón <span className="text-[#8ba38b] font-normal">• Salón & Mozos</span>
+              Castaño Resto Bar <span className="text-[#8ba38b] font-normal">• Salón & Mozos POS</span>
             </span>
           </div>
 
@@ -192,8 +192,8 @@ export const GastronomicVideoPlayer: React.FC<GastronomicVideoPlayerProps> = ({
           </button>
         </div>
 
-        {/* Pantalla del Reproductor de Video */}
-        <div className="relative aspect-video w-full bg-stone-950 overflow-hidden rounded-b-[1.3rem] flex items-center justify-center">
+        {/* Pantalla del Reproductor / Imagen con Bordes Premium */}
+        <div className="relative aspect-[16/9] sm:aspect-[2.05/1] w-full bg-stone-950 overflow-hidden rounded-b-[1.3rem] flex items-center justify-center">
           
           {/* Si el video carga correctamente */}
           {!hasVideoError ? (
@@ -207,14 +207,14 @@ export const GastronomicVideoPlayer: React.FC<GastronomicVideoPlayerProps> = ({
               playsInline
               onLoadedData={() => setVideoLoaded(true)}
               onError={() => setHasVideoError(true)}
-              className="w-full h-full object-cover object-center transition duration-700"
+              className="w-full h-full object-cover object-left-top transition duration-700"
             />
           ) : (
-            // Fallback con la imagen y aviso elegante si el video aún no fue subido
+            // Fallback con la imagen real de Castaño Resto Bar
             <img
               src={posterSrc}
-              alt="El Patrón - Gestión Gastronómica Mozos y Salón"
-              className="w-full h-full object-cover object-top"
+              alt="Castaño Resto Bar - Gestión Gastronómica Mozos, Mesas y Comandas"
+              className="w-full h-full object-cover object-left-top transition-transform duration-700 hover:scale-[1.03]"
             />
           )}
 
@@ -224,21 +224,23 @@ export const GastronomicVideoPlayer: React.FC<GastronomicVideoPlayerProps> = ({
           {/* Badge Flotante Glassmorphism en la esquina inferior izquierda */}
           <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 glass-card-vintage px-3 py-1.5 rounded-full border border-white/20 text-white text-[10px] sm:text-xs font-medium flex items-center space-x-2 shadow-xl backdrop-blur-md bg-black/50">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span className="tracking-wide">Comandas y Mesas en Tiempo Real</span>
+            <span className="tracking-wide">Comandas, Mesas y Carta Digital en Vivo</span>
           </div>
 
-          {/* Botón Flotante de Pausa / Reproducción en la esquina inferior derecha */}
-          <button
-            onClick={togglePlayPause}
-            className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 flex items-center justify-center shadow-xl backdrop-blur-md transition transform hover:scale-105 active:scale-95"
-            title={isPlaying ? 'Pausar video' : 'Reproducir video'}
-          >
-            {isPlaying ? (
-              <Pause className="w-3.5 h-3.5" />
-            ) : (
-              <Play className="w-3.5 h-3.5 translate-x-0.5" />
-            )}
-          </button>
+          {/* Botón Flotante de Pausa / Reproducción (solo si el video está activo) */}
+          {videoLoaded && !hasVideoError && (
+            <button
+              onClick={togglePlayPause}
+              className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 flex items-center justify-center shadow-xl backdrop-blur-md transition transform hover:scale-105 active:scale-95"
+              title={isPlaying ? 'Pausar video' : 'Reproducir video'}
+            >
+              {isPlaying ? (
+                <Pause className="w-3.5 h-3.5" />
+              ) : (
+                <Play className="w-3.5 h-3.5 translate-x-0.5" />
+              )}
+            </button>
+          )}
         </div>
 
       </div>
