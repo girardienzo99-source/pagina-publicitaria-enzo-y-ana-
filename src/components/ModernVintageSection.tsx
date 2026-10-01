@@ -216,37 +216,74 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
           </div>
         </div>
 
-        {/* MÓDULO 03: Control de Stock e Inventario */}
+        {/* MÓDULO 03: Tiendas Online, Catálogo Web y Control de Stock */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-6 space-y-4">
             <span className="inline-block px-3 py-1 rounded-full bg-[#4a5d4a]/15 text-[#4a5d4a] text-[11px] font-bold uppercase tracking-wider">
               MÓDULO 03
             </span>
             <h3 className="font-editorial text-3xl sm:text-4xl font-bold text-[#1e1b1b]">
-              Control de Stock e Inventario
+              Tiendas Online, Catálogo & Stock
             </h3>
             <p className="text-xs sm:text-sm text-[#1e1b1b]/70 leading-relaxed">
-              Mantené una visibilidad perfecta sobre tus productos. Soporte multidepósito, alertas automáticas de reposición, matriz de talles/colores e informes de valuación.
+              Catálogo web moderno y autoadministrable para ferreterías, corralones y comercios. Carrito de pedidos directos por WhatsApp, control de inventario, matriz de categorías y precios en tiempo real.
             </p>
             <ul className="space-y-2 pt-2 text-xs font-semibold text-[#1e1b1b]/90">
               <li className="flex items-center space-x-2">
                 <Check className="w-4 h-4 text-[#4a5d4a]" />
-                <span>Soporte para Lector de Código de Barras y Talles</span>
+                <span>Catálogo Web con Carrito y Pedidos directos a WhatsApp</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Check className="w-4 h-4 text-[#4a5d4a]" />
-                <span>Gestión de Proveedores, Compras y Remitos</span>
+                <span>Control de Stock, Categorías (Seguridad, Electricidad) y Ofertas</span>
               </li>
             </ul>
           </div>
 
           <div className="lg:col-span-6">
-            <div className="rounded-2xl overflow-hidden shadow-xl border border-stone-200">
-              <img 
-                src={indumentariaStockImg} 
-                alt="Control de Stock y Código de Barras" 
-                className="w-full h-64 sm:h-80 object-cover"
-              />
+            <div className="relative group">
+              {/* Resplandor ambiental de fondo */}
+              <div className="absolute -inset-1.5 bg-gradient-to-r from-amber-600/20 via-[#4a5d4a]/20 to-stone-400/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition duration-700 -z-10" />
+
+              {/* Chasis de Ventana Browser E-Commerce */}
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#2a2626] via-[#1d1a1a] to-[#121111] p-1.5 sm:p-2.5 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.1)] border border-stone-800">
+                
+                {/* Barra Superior Estilo Navegador Premium */}
+                <div className="bg-[#242020] px-4 py-2.5 sm:py-3 rounded-t-[1.3rem] border-b border-stone-800 flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ef4444]/80 shadow-sm" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#f59e0b]/80 shadow-sm" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#10b981]/80 shadow-sm" />
+                  </div>
+
+                  {/* Barra de dirección URL */}
+                  <div className="hidden sm:flex items-center space-x-2 bg-stone-900/90 border border-stone-700/80 px-3 py-1 rounded-full text-[10px] text-stone-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="font-mono text-stone-300">elferretero.com.ar/catalogo</span>
+                  </div>
+
+                  <span className="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-stone-200">
+                    El Ferretero • Río Cuarto
+                  </span>
+                </div>
+
+                {/* Imagen del Sistema / Catálogo */}
+                <div className="relative aspect-[16/9] sm:aspect-[2.05/1] w-full bg-stone-950 overflow-hidden rounded-b-[1.3rem]">
+                  <img 
+                    src={indumentariaStockImg} 
+                    alt="El Ferretero Río Cuarto - Catálogo Web, Carrito y Control de Stock" 
+                    className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-[1.03]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+
+                  {/* Badge flotante inferior */}
+                  <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 glass-card-vintage px-3 py-1.5 rounded-full border border-white/20 text-white text-[10px] sm:text-xs font-medium flex items-center space-x-2 shadow-xl backdrop-blur-md bg-black/50">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span className="tracking-wide">Catálogo Online, Carrito y Pedidos WhatsApp</span>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
