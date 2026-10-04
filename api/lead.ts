@@ -10,7 +10,7 @@
  *                               confirm the address once)
  * Destination email: LEAD_NOTIFY_EMAIL (comma separated). Defaults to the team inbox.
  */
-import { clientIp, cleanText, escapeHtml, json, rateLimit, readJson } from './_lib/http';
+import { clientIp, cleanText, escapeHtml, json, rateLimit, readJson, createNodeHandler } from './_lib/http';
 
 const DEFAULT_NOTIFY_EMAIL = 'enzogirardi84@gmail.com';
 const SITE_URL = process.env.SITE_URL || 'https://riocuarto-web.online';
@@ -166,3 +166,5 @@ export async function POST(request: Request): Promise<Response> {
 export function GET(): Response {
   return json(405, { ok: false, error: 'Método no permitido.' }, { allow: 'POST' });
 }
+
+export default createNodeHandler({ POST, GET });

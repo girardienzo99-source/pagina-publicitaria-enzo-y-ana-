@@ -5,7 +5,7 @@
  * The password lives only on the server (Vercel env var ADMIN_PASSWORD), never in the
  * browser bundle. Sessions are HMAC-signed with ADMIN_SESSION_SECRET and expire in 8h.
  */
-import { bearerToken, clientIp, json, rateLimit, readJson, safeEqual, signSession, verifySession } from './_lib/http';
+import { bearerToken, clientIp, createNodeHandler, json, rateLimit, readJson, safeEqual, signSession, verifySession } from './_lib/http';
 
 export async function POST(request: Request): Promise<Response> {
   const ip = clientIp(request);
@@ -39,3 +39,5 @@ export function GET(request: Request): Response {
     ? json(200, { ok: true })
     : json(401, { ok: false });
 }
+
+export default createNodeHandler({ POST, GET });

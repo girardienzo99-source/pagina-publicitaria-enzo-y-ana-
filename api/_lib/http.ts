@@ -117,3 +117,77 @@ export function bearerToken(request: Request): string | null {
   const header = request.headers.get('authorization') || '';
   return header.startsWith('Bearer ') ? header.slice(7) : null;
 }
+
+export function createNodeHandler(handlers: { [method: string]: (req: Request) => Promise<Response> | Response }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return async function (req: any, res: any) {
+    const method = (req.method || 'GET').toUpperCase();
+    const handler = handlers[method];
+    if (!handler) {
+      if (typeof res.setHeader === 'function') {
+        res.setHeader('Allow', Object.keys(handlers).join(', '));
+      }
+      return typeof res.status === 'function'
+        ? res.status(405).json({ ok: false, error: 'Método no permitido.' })
+        : res.end('Method Not Allowed');
+    }
+
+    try {
+      const protocol = req.headers['x-forwarded-proto'] || 'https';
+      const host = req.headers['x-forwarded-host'] || req.headers.host || 'localhost';
+      const url = `${protocol}://${host}${req.url}`;
+
+      const headers = new Headers();
+      for (const [key, value] of Object.entries(req.headers)) {
+        if (typeof value === 'string') headers.set(key, value);
+        else if (Array.isArray(value)) value.forEach(v => headers.append(key, v));
+      }
+
+      let body: string | undefined = undefined;
+      if (!['GET', 'HEAD'].includes(method)) {
+        if (typeof req.body === 'object' && req.body !== null) {
+          body = JSON.stringify(req.body);
+          if (!headers.has('content-type')) {
+            headers.set('content-type', 'application/json');
+          }
+        } else if (typeof req.body === 'string') {
+          body = req.body;
+        }
+      }
+
+      const webRequest = new Request(url, {
+        method,
+        headers,
+        body,
+      });
+
+      const webResponse = await handler(webRequest);
+      if (typeof res.status === 'function') {
+        res.status(webResponse.status);
+      } else {
+        res.statusCode = webResponse.status;
+      }
+
+      webResponse.headers.forEach((value, key) => {
+        if (typeof res.setHeader === 'function') {
+          res.setHeader(key, value);
+        }
+      });
+
+      const text = await webResponse.text();
+      if (typeof res.send === 'function') {
+        res.send(text);
+      } else {
+        res.end(text);
+      }
+    } catch (err) {
+      console.error('[vercel serverless error]', err);
+      if (typeof res.status === 'function') {
+        res.status(500).json({ ok: false, error: 'Error interno del servidor.' });
+      } else {
+        res.statusCode = 500;
+        res.end('Internal Server Error');
+      }
+    }
+  };
+}
