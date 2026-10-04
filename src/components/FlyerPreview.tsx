@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { FlyerData, FlyerTheme, FlyerFormat } from '../types';
 import { ModernVintageSection } from './ModernVintageSection';
 

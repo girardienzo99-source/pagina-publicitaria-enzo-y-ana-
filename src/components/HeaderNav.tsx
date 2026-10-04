@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
 import { 
-  Code2, 
   LayoutGrid, 
   Calculator, 
-  Settings, 
   Sparkles, 
   MessageCircle, 
-  FileText, 
   Search, 
-  FileCheck, 
   Layers, 
   Menu, 
-  X,
-  HelpCircle,
-  Briefcase
+  X 
 } from 'lucide-react';
-import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
-import brandLogo from '../assets/logo_brand.jpg';
+import { getWhatsAppUrl } from '../lib/whatsapp';
+import brandLogo from '../assets/logo_brand.webp';
 
 export type PublicTab = 'home' | 'portfolio' | 'planes' | 'calculator' | 'admin';
 

@@ -1,20 +1,14 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { 
   MessageCircle, 
   Check, 
-  CheckCircle2, 
-  ArrowRight,
-  ShieldCheck,
-  Building,
   Sparkles
 } from 'lucide-react';
-import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
+import { getWhatsAppUrl } from '../lib/whatsapp';
 import { GastronomicVideoPlayer } from './GastronomicVideoPlayer';
-import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.jpg';
-import posGastronomicoImg from '../assets/pos_gastronomico.jpg';
-import facturacionArcaImg from '../assets/facturacion_arca.jpg';
-import ferreteriaImg from '../assets/ferreteria.jpg';
+import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.webp';
+import posGastronomicoImg from '../assets/pos_gastronomico.webp';
+import ferreteriaImg from '../assets/ferreteria.webp';
 
 interface ModernVintageSectionProps {
   onNavigateToPortfolio?: () => void;
@@ -25,11 +19,20 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
   onNavigateToPortfolio,
   onNavigateToCalculator
 }) => {
-  const whatsappAnahiUrl = 'https://wa.me/5493584860640?text=Hola%20Anah%C3%AD!%20Vi%20el%20dise%C3%B1o%20de%20R%C3%ADo%20Cuarto%20Web%20y%20quisiera%20pedir%20asesoramiento%20para%20mi%20negocio.';
-  const whatsappEnzoUrl = 'https://wa.me/5493584302024?text=Hola%20Enzo!%20Vi%20el%20dise%C3%B1o%20de%20R%C3%ADo%20Cuarto%20Web%20y%20quisiera%20pedir%20asesoramiento%20para%20mi%20negocio.';
+  const whatsappAnahiUrl = getWhatsAppUrl(
+    'Hola Anahí! Vi el diseño de Río Cuarto Web y quisiera pedir asesoramiento para mi negocio.',
+    'anahi'
+  );
+  const whatsappEnzoUrl = getWhatsAppUrl(
+    'Hola Enzo! Vi el diseño de Río Cuarto Web y quisiera pedir asesoramiento para mi negocio.',
+    'enzo'
+  );
   
   const getPlanWhatsAppUrl = (planName: string) => {
-    return `https://wa.me/5493584302024?text=Hola%20Enzo%20y%20Anah%C3%AD!%20Me%20interesa%20el%20plan%20"${planName}"%20de%20R%C3%ADo%20Cuarto%20Web.`;
+    return getWhatsAppUrl(
+      `Hola Enzo y Anahí! Me interesa el plan "${planName}" de Río Cuarto Web.`,
+      'enzo'
+    );
   };
 
   return (

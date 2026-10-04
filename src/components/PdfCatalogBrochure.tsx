@@ -4,7 +4,6 @@ import {
   Printer, 
   X, 
   Download, 
-  CheckCircle2, 
   MessageCircle, 
   Sparkles, 
   ShieldCheck, 
@@ -12,11 +11,7 @@ import {
   Layers, 
   Phone, 
   Mail, 
-  MapPin, 
-  Check,
-  Zap,
-  Globe,
-  ExternalLink
+  Check
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { FlyerData } from '../types';

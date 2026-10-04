@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, X, ArrowRight, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Search, X, ArrowRight, Sparkles, AlertCircle } from 'lucide-react';
 import { portfolioModules } from '../data/portfolioData';
 
 interface GlobalSystemSearchModalProps {

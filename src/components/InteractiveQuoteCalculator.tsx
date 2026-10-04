@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { 
   Calculator, 
   Check, 
@@ -11,15 +11,12 @@ import {
   Send, 
   ArrowRight, 
   ArrowLeft,
-  DollarSign,
-  HelpCircle,
   Zap,
-  Loader2,
-  FileText
+  Loader2
 } from 'lucide-react';
 import { industryOptions } from '../data/portfolioData';
-import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
-import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';
+import { getWhatsAppUrl } from '../lib/whatsapp';
+import { submitLead } from '../lib/leads';
 
 interface InteractiveQuoteCalculatorProps {
   phone: string;
@@ -38,6 +35,7 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
   const [clientBusiness, setClientBusiness] = useState<string>('');
   const [clientContact, setClientContact] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [honeypot, setHoneypot] = useState<string>('');
 
   const availableFeatures = [
     { 
@@ -93,31 +91,26 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
   const estimatedDays = Math.max(3, selectedFeatures.length * 2.2);
   const estimatedPriceBase = 180000 + (selectedFeatures.length * baseCostPerFeature);
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
+    if (isSubmitting) return;
     setIsSubmitting(true);
 
-    if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('leads').insert({
-          client_business: clientBusiness.trim() || 'Consulta Cotizador Didáctico',
-          client_contact: clientContact.trim() || 'Interesado Anónimo',
-          industry: selectedIndustry,
-          selected_features: selectedFeatures,
-          timeline: timeline,
-          notes: additionalNotes.trim(),
-          estimated_days: Math.round(estimatedDays),
-          status: 'nuevo'
-        });
-      } catch (err) {
-        console.error('Error guardando lead en Supabase:', err);
-      }
-    }
+    // Must run synchronously inside the click, otherwise browsers block the new tab.
+    const whatsappUrl = getWhatsAppUrl(generateWhatsAppMessageText());
+    const opened = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    if (!opened) window.location.href = whatsappUrl;
 
-    setIsSubmitting(false);
-
-    const message = generateWhatsAppMessageText();
-    const whatsappUrl = getWhatsAppUrl(message);
-    window.open(whatsappUrl, '_blank');
+    void submitLead({
+      source: 'cotizador',
+      business: clientBusiness,
+      contact: clientContact,
+      industry: currentIndustryObj.name,
+      features: availableFeatures.filter(f => selectedFeatures.includes(f.id)).map(f => f.label),
+      timeline,
+      notes: additionalNotes,
+      estimate: `~$${estimatedPriceBase.toLocaleString('es-AR')} ARS / ~${Math.round(estimatedDays)} días`,
+      website: honeypot,
+    }).finally(() => setIsSubmitting(false));
   };
 
   const generateWhatsAppMessageText = () => {
@@ -403,6 +396,19 @@ export const InteractiveQuoteCalculator: React.FC<InteractiveQuoteCalculatorProp
                   placeholder="Ej: Tengo 2 empleados en caja, necesito que funcione en tablet y computadoras..."
                   rows={2}
                   className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-sm text-[#1e1b1b] placeholder-stone-400 focus:outline-none focus:border-[#4a5d4a] transition min-h-[44px]"
+                />
+              </div>
+
+              {/* Anti-spam honeypot: hidden from people and assistive tech, bots tend to fill it. */}
+              <div aria-hidden="true" className="absolute -left-[9999px] w-px h-px overflow-hidden">
+                <label htmlFor="quote-website">Sitio web</label>
+                <input
+                  id="quote-website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={e => setHoneypot(e.target.value)}
                 />
               </div>
 

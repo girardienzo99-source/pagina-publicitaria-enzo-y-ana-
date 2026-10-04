@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, Play, Pause, Sparkles, Music } from 'lucide-react';
-import posGastronomicoFallback from '../assets/pos_gastronomico.jpg';
+import { Volume2, Play, Pause, Sparkles, Music } from 'lucide-react';
+import posGastronomicoFallback from '../assets/pos_gastronomico.webp';
 
 interface GastronomicVideoPlayerProps {
   videoSrc?: string;

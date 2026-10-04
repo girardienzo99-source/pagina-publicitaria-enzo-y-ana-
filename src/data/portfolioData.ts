@@ -1,8 +1,7 @@
 import { FlyerData, SystemModule, IndustryOption } from '../types';
-import posGastronomicoImg from '../assets/pos_gastronomico.jpg';
-import facturacionArcaImg from '../assets/facturacion_arca.jpg';
-import indumentariaStockImg from '../assets/indumentaria_stock.jpg';
-import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.jpg';
+import posGastronomicoImg from '../assets/pos_gastronomico.webp';
+import ferreteriaImg from '../assets/ferreteria.webp';
+import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.webp';
 
 export const initialFlyerData: FlyerData = {
   developerName: 'Río Cuarto Web',
@@ -133,7 +132,7 @@ export const portfolioModules: SystemModule[] = [
     subtitle: 'Ropa Urbana & Sneakers Store',
     description: 'Sistema de gestión de inventario y punto de venta para locales de ropa. Control riguroso de stock, matriz de talles y colores, e historial de ventas.',
     badge: 'TIENDA DE ROPA',
-    imageUrl: indumentariaStockImg,
+    imageUrl: ferreteriaImg,
     screenshots: [
       'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80'
@@ -205,7 +204,7 @@ export const portfolioModules: SystemModule[] = [
     subtitle: 'Control de Stock, Cuentas Corrientes & Presupuestos PDF',
     description: 'Sistema integral para ferreterías, buloneras y corralones. Búsqueda instantánea por código de barras o descripción, manejo de cuentas corrientes de clientes con límite de crédito y emisión de presupuestos y remitos.',
     badge: 'FERRETERÍA & CORRALÓN',
-    imageUrl: facturacionArcaImg,
+    imageUrl: ferreteriaImg,
     screenshots: [
       'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80'

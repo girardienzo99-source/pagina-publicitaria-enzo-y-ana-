@@ -4,29 +4,17 @@ import {
   Utensils, 
   ShoppingBag, 
   Layers, 
-  ExternalLink, 
   CheckCircle, 
   Sparkles, 
   MessageCircle, 
-  Users, 
-  Clock, 
-  DollarSign, 
-  Package, 
-  ShieldCheck, 
   Grid, 
-  ChefHat, 
-  Wine, 
-  Tag, 
-  Search, 
-  Filter,
-  Check,
-  Plus,
-  Activity,
-  Wrench,
+  Activity, 
+  Wrench, 
   ShoppingCart
 } from 'lucide-react';
 import { portfolioModules } from '../data/portfolioData';
 import { SystemModule } from '../types';
+import { getWhatsAppUrl } from '../lib/whatsapp';
 import { RoiCalculatorSection } from './RoiCalculatorSection';
 import { PlansAndModalitiesSection } from './PlansAndModalitiesSection';
 import { TestimonialsSection } from './TestimonialsSection';
@@ -47,7 +35,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ phone, onO
 
   const getWhatsAppRequestUrl = (moduleTitle: string) => {
     const text = `Hola Anahí y Enzo! Estuve viendo en su sitio el proyecto "${moduleTitle}". Quisiera pedirles presupuesto y asesoramiento para implementar algo similar en mi negocio.`;
-    return `https://wa.me/5493584860640?text=${encodeURIComponent(text)}`;
+    return getWhatsAppUrl(text, 'anahi');
   };
 
   return (
@@ -90,7 +78,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ phone, onO
           <motion.a
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            href={`https://wa.me/549${phone}?text=Hola%20Anah%C3%AD%20y%20Enzo!%20Estuve%20viendo%20los%20proyectos%20de%20R%C3%ADo%20Cuarto%20Web%20y%20quisiera%20pedir%20presupuesto.`}
+            href={getWhatsAppUrl('Hola Anahí y Enzo! Estuve viendo los proyectos de Río Cuarto Web y quisiera pedir presupuesto.')}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center space-x-2.5 px-6 py-3.5 rounded-sm bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white font-bold text-xs uppercase tracking-wider shadow-md transition"

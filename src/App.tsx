@@ -1,191 +1,163 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect, useCallback, Suspense, lazy, type ReactNode } from 'react';
+import { motion, AnimatePresence, MotionConfig } from 'motion/react';
+import { Lock } from 'lucide-react';
 import { HeaderNav, PublicTab } from './components/HeaderNav';
 import { FlyerPreview } from './components/FlyerPreview';
 import { DirectContactBar } from './components/DirectContactBar';
 import { initialFlyerData } from './data/portfolioData';
 import { FlyerData, FlyerTheme, FlyerFormat } from './types';
-import { supabase, isSupabaseConfigured } from './lib/supabaseClient';
-import { Lock } from 'lucide-react';
+import { loadStoredFlyerConfig, saveFlyerConfig as persistFlyerConfig } from './lib/flyerStorage';
 
-// Lazy loading inteligente para módulos pesados (jspdf, html2canvas, paneles secundarios)
-// Permite que la página principal cargue de forma instantánea sin esperar librerías de 500KB+
-const PortfolioShowcase = lazy(() => 
+// Secondary tabs and modals are code-split so the home page paints first.
+const PortfolioShowcase = lazy(() =>
   import('./components/PortfolioShowcase').then(m => ({ default: m.PortfolioShowcase }))
 );
-const InteractiveQuoteCalculator = lazy(() => 
+const InteractiveQuoteCalculator = lazy(() =>
   import('./components/InteractiveQuoteCalculator').then(m => ({ default: m.InteractiveQuoteCalculator }))
 );
-const PlansAndModalitiesSection = lazy(() => 
+const PlansAndModalitiesSection = lazy(() =>
   import('./components/PlansAndModalitiesSection').then(m => ({ default: m.PlansAndModalitiesSection }))
 );
-const AdminToolsPanel = lazy(() => 
+const AdminToolsPanel = lazy(() =>
   import('./components/AdminToolsPanel').then(m => ({ default: m.AdminToolsPanel }))
 );
-const PdfCatalogBrochure = lazy(() => 
+const PdfCatalogBrochure = lazy(() =>
   import('./components/PdfCatalogBrochure').then(m => ({ default: m.PdfCatalogBrochure }))
 );
-const GlobalSystemSearchModal = lazy(() => 
+const GlobalSystemSearchModal = lazy(() =>
   import('./components/GlobalSystemSearchModal').then(m => ({ default: m.GlobalSystemSearchModal }))
 );
-const ProposalGeneratorModal = lazy(() => 
+const ProposalGeneratorModal = lazy(() =>
   import('./components/ProposalGeneratorModal').then(m => ({ default: m.ProposalGeneratorModal }))
 );
 
-// Fallback mínimo ultraligero mientras se abren tabs secundarias
 const TabLoadingFallback = () => (
-  <div className="py-20 flex flex-col items-center justify-center text-center space-y-3">
-    <div className="w-8 h-8 border-3 border-[#4a5d4a] border-t-transparent rounded-full animate-spin" />
-    <span className="text-xs uppercase tracking-wider text-stone-500 font-semibold">Cargando sección...</span>
+  <div className="py-20 flex flex-col items-center justify-center text-center space-y-3" role="status" aria-live="polite">
+    <div className="w-8 h-8 border-[3px] border-[#4a5d4a] border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+    <span className="text-xs uppercase tracking-wider text-stone-600 font-semibold">Cargando sección…</span>
   </div>
 );
 
+const TabPanel = ({ id, children }: { id: string; children: ReactNode }) => (
+  <motion.div
+    key={id}
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -12 }}
+    transition={{ duration: 0.2, ease: 'easeOut' }}
+  >
+    <Suspense fallback={<TabLoadingFallback />}>{children}</Suspense>
+  </motion.div>
+);
+
+const TABS: PublicTab[] = ['home', 'portfolio', 'planes', 'calculator', 'admin'];
+const TAB_TITLES: Record<PublicTab, string> = {
+  home: 'Río Cuarto Web — Diseño Digital a Medida | Anahí Gilardi & Enzo Girardi',
+  portfolio: 'Proyectos y sistemas realizados | Río Cuarto Web',
+  planes: 'Planes y modalidades | Río Cuarto Web',
+  calculator: 'Cotizador de software a medida | Río Cuarto Web',
+  admin: 'Panel interno | Río Cuarto Web',
+};
+
+const tabFromHash = (): PublicTab => {
+  const hash = window.location.hash.replace('#', '') as PublicTab;
+  return TABS.includes(hash) ? hash : 'home';
+};
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState<PublicTab>('home');
-  const [flyerData, setFlyerData] = useState<FlyerData>(initialFlyerData);
+  const [activeTab, setActiveTabState] = useState<PublicTab>(tabFromHash);
+  const [flyerData, setFlyerData] = useState<FlyerData>(() => loadStoredFlyerConfig(initialFlyerData));
   const [theme, setTheme] = useState<FlyerTheme>('modern-vintage');
   const [format, setFormat] = useState<FlyerFormat>('horizontal-banner');
-  const [showPdfCatalog, setShowPdfCatalog] = useState<boolean>(false);
-  const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
-  const [showProposalModal, setShowProposalModal] = useState<boolean>(false);
+  const [showPdfCatalog, setShowPdfCatalog] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showProposalModal, setShowProposalModal] = useState(false);
 
-  // Carga asíncrona no bloqueante de Supabase (la página se muestra de inmediato sin spinner)
-  useEffect(() => {
-    let isMounted = true;
-    async function loadFlyerConfig() {
-      if (!isSupabaseConfigured || !supabase) return;
-      try {
-        const { data, error } = await supabase
-          .from('flyer_config')
-          .select('config')
-          .order('updated_at', { ascending: false })
-          .limit(1)
-          .single();
-
-        if (isMounted && !error && data && data.config) {
-          setFlyerData(prev => ({
-            ...prev,
-            ...data.config
-          }));
-        }
-      } catch (err) {
-        console.warn('Configuración cargada desde caché local:', err);
-      }
+  // Keep the active tab in the URL so the back button and shared links (#planes, #calculator…) work.
+  const setActiveTab = useCallback((tab: PublicTab) => {
+    setActiveTabState(tab);
+    const nextHash = tab === 'home' ? '' : `#${tab}`;
+    if (window.location.hash !== nextHash) {
+      history.pushState(null, '', nextHash || window.location.pathname);
     }
-
-    loadFlyerConfig();
-    return () => { isMounted = false; };
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const saveFlyerConfig = async (updatedData: FlyerData): Promise<boolean> => {
-    if (!isSupabaseConfigured || !supabase) return false;
-    try {
-      const { error } = await supabase
-        .from('flyer_config')
-        .insert({ config: updatedData });
+  useEffect(() => {
+    const onPopState = () => setActiveTabState(tabFromHash());
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
-      if (error) throw error;
-      return true;
-    } catch (err) {
-      console.error('Error al guardar en Supabase:', err);
-      return false;
-    }
-  };
+  useEffect(() => {
+    document.title = TAB_TITLES[activeTab];
+  }, [activeTab]);
+
+  const saveFlyerConfig = async (updatedData: FlyerData): Promise<boolean> => persistFlyerConfig(updatedData);
+  const openPdfCatalog = () => setShowPdfCatalog(true);
+  const openProposalModal = () => setShowProposalModal(true);
 
   return (
-    <div className="min-h-screen bg-[#fcf9f8] text-[#1e1b1b] font-sans selection:bg-[#4a5d4a] selection:text-white pb-28 relative overflow-x-hidden">
-      
-      {/* Background Luminous Ivory Subtle Atmosphere */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_85%_75%_at_50%_-10%,rgba(74,93,74,0.06),rgba(252,249,248,1))] pointer-events-none" />
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-[#fcf9f8] text-[#1e1b1b] font-sans selection:bg-[#4a5d4a] selection:text-white pb-28 relative overflow-x-hidden">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#4a5d4a] focus:text-white focus:rounded-md focus:font-bold"
+        >
+          Saltar al contenido
+        </a>
 
-      {/* Main Header Nav */}
-      <HeaderNav
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onOpenPdfCatalog={() => setShowPdfCatalog(true)}
-        onOpenSearchModal={() => setShowSearchModal(true)}
-        onOpenProposalModal={() => setShowProposalModal(true)}
-        isAdminActive={activeTab === 'admin'}
-      />
+        <div
+          className="fixed inset-0 bg-[radial-gradient(ellipse_85%_75%_at_50%_-10%,rgba(74,93,74,0.06),rgba(252,249,248,1))] pointer-events-none"
+          aria-hidden="true"
+        />
 
-      {/* Main Content Area with Animated Tab Transitions */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <AnimatePresence mode="wait">
-          {activeTab === 'home' && (
-            <motion.div
-              key="home"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <FlyerPreview
-                flyerData={flyerData}
-                theme={theme}
-                setTheme={setTheme}
-                format={format}
-                setFormat={setFormat}
-                onNavigateToPortfolio={() => setActiveTab('portfolio')}
-                onNavigateToCalculator={() => setActiveTab('calculator')}
-                onOpenPdfCatalog={() => setShowPdfCatalog(true)}
-              />
-            </motion.div>
-          )}
+        <HeaderNav
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          onOpenPdfCatalog={openPdfCatalog}
+          onOpenSearchModal={() => setShowSearchModal(true)}
+          onOpenProposalModal={openProposalModal}
+          isAdminActive={activeTab === 'admin'}
+        />
 
-          {activeTab === 'portfolio' && (
-            <motion.div
-              key="portfolio"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <Suspense fallback={<TabLoadingFallback />}>
-                <PortfolioShowcase
-                  phone={flyerData.phone}
-                  onOpenPdfCatalog={() => setShowPdfCatalog(true)}
+        <main id="main-content" tabIndex={-1} className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 outline-none">
+          <AnimatePresence mode="wait">
+            {activeTab === 'home' && (
+              <TabPanel key="home" id="home">
+                <FlyerPreview
+                  flyerData={flyerData}
+                  theme={theme}
+                  setTheme={setTheme}
+                  format={format}
+                  setFormat={setFormat}
+                  onNavigateToPortfolio={() => setActiveTab('portfolio')}
+                  onNavigateToCalculator={() => setActiveTab('calculator')}
+                  onOpenPdfCatalog={openPdfCatalog}
                 />
-              </Suspense>
-            </motion.div>
-          )}
+              </TabPanel>
+            )}
 
-          {activeTab === 'planes' && (
-            <motion.div
-              key="planes"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <Suspense fallback={<TabLoadingFallback />}>
+            {activeTab === 'portfolio' && (
+              <TabPanel key="portfolio" id="portfolio">
+                <PortfolioShowcase phone={flyerData.phone} onOpenPdfCatalog={openPdfCatalog} />
+              </TabPanel>
+            )}
+
+            {activeTab === 'planes' && (
+              <TabPanel key="planes" id="planes">
                 <PlansAndModalitiesSection phone={flyerData.phone} />
-              </Suspense>
-            </motion.div>
-          )}
+              </TabPanel>
+            )}
 
-          {activeTab === 'calculator' && (
-            <motion.div
-              key="calculator"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <Suspense fallback={<TabLoadingFallback />}>
+            {activeTab === 'calculator' && (
+              <TabPanel key="calculator" id="calculator">
                 <InteractiveQuoteCalculator phone={flyerData.phone} />
-              </Suspense>
-            </motion.div>
-          )}
+              </TabPanel>
+            )}
 
-          {activeTab === 'admin' && (
-            <motion.div
-              key="admin"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <Suspense fallback={<TabLoadingFallback />}>
+            {activeTab === 'admin' && (
+              <TabPanel key="admin" id="admin">
                 <AdminToolsPanel
                   flyerData={flyerData}
                   setFlyerData={setFlyerData}
@@ -195,67 +167,54 @@ export default function App() {
                   setFormat={setFormat}
                   onPreviewFlyer={() => setActiveTab('home')}
                   onSaveConfig={saveFlyerConfig}
-                  onOpenPdfCatalog={() => setShowPdfCatalog(true)}
-                  onOpenProposalModal={() => setShowProposalModal(true)}
+                  onOpenPdfCatalog={openPdfCatalog}
+                  onOpenProposalModal={openProposalModal}
                 />
-              </Suspense>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+              </TabPanel>
+            )}
+          </AnimatePresence>
+        </main>
 
-      {/* Discreet Footer Link for Internal Admin Panel Access */}
-      <footer className="relative z-10 border-t border-stone-200 mt-12 pt-8 pb-16 text-center text-xs text-stone-500 space-y-2 font-montserrat">
-        <p>Río Cuarto Web — Anahí Gilardi & Enzo Girardi (Programadores) © 2026. Todos los derechos reservados.</p>
-        <button
-          onClick={() => setActiveTab('admin')}
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-stone-100 text-[#4a5d4a] border border-stone-300 shadow-sm text-[11px] font-bold transition cursor-pointer"
-        >
-          <Lock className="w-3 h-3 text-[#4a5d4a]" />
-          <span>Acceso Panel Interno de Administración</span>
-        </button>
-      </footer>
+        <footer className="relative z-10 border-t border-stone-200 mt-12 pt-8 pb-16 text-center text-xs text-stone-600 space-y-3 font-montserrat">
+          <p>Río Cuarto Web — Anahí Gilardi &amp; Enzo Girardi (Programadores) © {new Date().getFullYear()}. Todos los derechos reservados.</p>
+          <button
+            onClick={() => setActiveTab('admin')}
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-stone-100 text-[#4a5d4a] border border-stone-300 shadow-sm text-[11px] font-bold transition"
+          >
+            <Lock className="w-3 h-3" aria-hidden="true" />
+            <span>Acceso interno</span>
+          </button>
+        </footer>
 
-      {/* Floating Bottom Contact Bar */}
-      <DirectContactBar
-        phone={flyerData.phone}
-        phoneFormatted={flyerData.phoneFormatted}
-        email={flyerData.email}
-      />
+        <DirectContactBar phone={flyerData.phone} phoneFormatted={flyerData.phoneFormatted} email={flyerData.email} />
 
-      {/* PDF Catalog Printable Modal (Lazy) */}
-      {showPdfCatalog && (
-        <Suspense fallback={null}>
-          <PdfCatalogBrochure
-            flyerData={flyerData}
-            onClose={() => setShowPdfCatalog(false)}
-          />
-        </Suspense>
-      )}
+        {showPdfCatalog && (
+          <Suspense fallback={null}>
+            <PdfCatalogBrochure flyerData={flyerData} onClose={() => setShowPdfCatalog(false)} />
+          </Suspense>
+        )}
 
-      {/* Universal Search Modal (Lazy) */}
-      {showSearchModal && (
-        <Suspense fallback={null}>
-          <GlobalSystemSearchModal
-            isOpen={showSearchModal}
-            onClose={() => setShowSearchModal(false)}
-            onSelectSystem={() => setActiveTab('portfolio')}
-          />
-        </Suspense>
-      )}
+        {showSearchModal && (
+          <Suspense fallback={null}>
+            <GlobalSystemSearchModal
+              isOpen={showSearchModal}
+              onClose={() => setShowSearchModal(false)}
+              onSelectSystem={() => setActiveTab('portfolio')}
+            />
+          </Suspense>
+        )}
 
-      {/* Formal Technical Proposal Modal (Lazy) */}
-      {showProposalModal && (
-        <Suspense fallback={null}>
-          <ProposalGeneratorModal
-            isOpen={showProposalModal}
-            onClose={() => setShowProposalModal(false)}
-            phone={flyerData.phone}
-            email={flyerData.email}
-          />
-        </Suspense>
-      )}
-
-    </div>
+        {showProposalModal && (
+          <Suspense fallback={null}>
+            <ProposalGeneratorModal
+              isOpen={showProposalModal}
+              onClose={() => setShowProposalModal(false)}
+              phone={flyerData.phone}
+              email={flyerData.email}
+            />
+          </Suspense>
+        )}
+      </div>
+    </MotionConfig>
   );
 }

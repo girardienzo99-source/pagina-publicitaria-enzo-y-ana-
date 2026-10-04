@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useRef } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { 
   FileText, 
   Printer, 
@@ -8,28 +8,20 @@ import {
   ShieldCheck, 
   Download,
   Loader2,
-  Calendar,
   Clock,
   DollarSign,
   Check,
   Building,
-  User,
-  Phone,
-  Mail,
-  Award,
-  CheckCircle2,
-  Layers,
-  FileCheck
+  Layers
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { portfolioModules } from '../data/portfolioData';
-import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
+import { submitLead } from '../lib/leads';
 import { 
   getWhatsAppUrl, 
   ANAHI_PHONE_FORMATTED, 
   ENZO_PHONE_FORMATTED, 
-  ANAHI_EMAIL, 
-  ENZO_EMAIL 
+  ANAHI_EMAIL 
 } from '../lib/whatsapp';
 import { downloadPdfFromElement } from '../lib/pdfDownloader';
 
@@ -46,6 +38,7 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
   onClose,
   defaultSystemId,
 }) => {
+  const leadSentRef = useRef<boolean>(false);
   const [selectedSysId, setSelectedSysId] = useState<string>(defaultSystemId || portfolioModules[0].id);
   const [selectedPlan, setSelectedPlan] = useState<string>('Plan Pro Multicaja & ARCA (ex AFIP)');
   const [clientBusiness, setClientBusiness] = useState<string>('Comercio / Empresa Local');
@@ -67,27 +60,23 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
     `Hola Anahí y Enzo! Recibí la propuesta formal de presupuesto "${proposalFolio}" para "${clientBusiness}" por un valor de $${customPrice} ARS y quisiera coordinar el inicio del proyecto.`
   );
 
-  const saveLeadToSupabase = async () => {
-    if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('leads').insert({
-          client_business: clientBusiness,
-          client_contact: clientContact,
-          industry: currentSystem.rubro,
-          selected_features: currentSystem.features,
-          timeline: `${deliveryDays} días`,
-          notes: `Propuesta formal ($${customPrice} ARS) - ${selectedPlan} - ${currentSystem.title}. Pago: ${paymentTerms}. Notas: ${specialNotes}`,
-          estimated_days: 7,
-          status: 'propuesta_formal'
-        });
-      } catch (err) {
-        console.error('Error guardando lead de propuesta:', err);
-      }
-    }
+  const notifyProposal = () => {
+    if (leadSentRef.current) return;
+    leadSentRef.current = true;
+    void submitLead({
+      source: 'propuesta',
+      business: clientBusiness,
+      contact: clientContact,
+      industry: currentSystem.rubro,
+      features: currentSystem.features,
+      timeline: `${deliveryDays} días`,
+      estimate: `$${customPrice} ARS`,
+      notes: `${selectedPlan} - ${currentSystem.title}. Pago: ${paymentTerms}. Notas: ${specialNotes}`,
+    });
   };
 
   const handlePrint = async () => {
-    await saveLeadToSupabase();
+    notifyProposal();
     try {
       if (typeof window !== 'undefined') {
         window.print();
@@ -100,7 +89,7 @@ export const ProposalGeneratorModal: React.FC<ProposalGeneratorModalProps> = ({
 
   const handleDirectPdfDownload = async () => {
     setIsGeneratingPdf(true);
-    await saveLeadToSupabase();
+    notifyProposal();
 
     const element = document.querySelector('.printable-proposal') as HTMLElement;
     if (!element) {

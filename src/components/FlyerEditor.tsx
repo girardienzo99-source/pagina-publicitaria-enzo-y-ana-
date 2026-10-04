@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FlyerData } from '../types';
 import { Edit3, Plus, Trash2, RotateCcw, Check, Sparkles, Save, Loader2 } from 'lucide-react';
 import { initialFlyerData } from '../data/portfolioData';
-import { isSupabaseConfigured } from '../lib/supabaseClient';
 
 interface FlyerEditorProps {
   flyerData: FlyerData;
@@ -122,9 +121,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 ? '¡Guardado con Éxito!'
                 : saveStatus === 'error'
                 ? 'Error al Guardar'
-                : isSupabaseConfigured
-                ? 'Guardar en Base de Datos'
-                : 'Guardar Localmente'}
+                : 'Guardar en este navegador'}
             </span>
           </button>
 
@@ -156,7 +153,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 type="text"
                 value={flyerData.developerName}
                 onChange={e => setFlyerData({ ...flyerData, developerName: e.target.value })}
-                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
               />
             </div>
 
@@ -168,7 +165,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 type="text"
                 value={flyerData.role}
                 onChange={e => setFlyerData({ ...flyerData, role: e.target.value })}
-                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
               />
             </div>
 
@@ -180,7 +177,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 type="text"
                 value={flyerData.phone}
                 onChange={e => setFlyerData({ ...flyerData, phone: e.target.value })}
-                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
               />
             </div>
 
@@ -192,7 +189,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 type="text"
                 value={flyerData.phoneFormatted}
                 onChange={e => setFlyerData({ ...flyerData, phoneFormatted: e.target.value })}
-                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
               />
             </div>
 
@@ -204,7 +201,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 type="email"
                 value={flyerData.email}
                 onChange={e => setFlyerData({ ...flyerData, email: e.target.value })}
-                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
               />
             </div>
 
@@ -216,7 +213,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 type="text"
                 value={flyerData.location}
                 onChange={e => setFlyerData({ ...flyerData, location: e.target.value })}
-                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
               />
             </div>
           </div>
@@ -237,7 +234,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 type="text"
                 value={flyerData.hookTitle || ''}
                 onChange={e => setFlyerData({ ...flyerData, hookTitle: e.target.value })}
-                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
               />
             </div>
 
@@ -249,7 +246,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                 value={flyerData.slogan}
                 onChange={e => setFlyerData({ ...flyerData, slogan: e.target.value })}
                 rows={2}
-                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
               />
             </div>
 
@@ -262,7 +259,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                   type="text"
                   value={flyerData.promoBadge}
                   onChange={e => setFlyerData({ ...flyerData, promoBadge: e.target.value })}
-                  className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                  className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
                 />
               </div>
 
@@ -274,7 +271,7 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                   type="text"
                   value={flyerData.guaranteeText || ''}
                   onChange={e => setFlyerData({ ...flyerData, guaranteeText: e.target.value })}
-                  className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                  className="w-full bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
                 />
               </div>
             </div>
@@ -304,12 +301,12 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                   type="text"
                   value={service}
                   onChange={e => handleServiceChange(idx, e.target.value)}
-                  className="flex-1 bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                  className="flex-1 bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
                 />
                 <button
                   onClick={() => handleRemoveService(idx)}
                   className="p-3 text-red-600 hover:bg-red-50 rounded-sm border border-stone-300 cursor-pointer"
-                  title="Eliminar"
+                  title="Eliminar" aria-label="Eliminar elemento"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -341,12 +338,12 @@ export const FlyerEditor: React.FC<FlyerEditorProps> = ({
                   type="text"
                   value={benefit}
                   onChange={e => handleBenefitChange(idx, e.target.value)}
-                  className="flex-1 bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] outline-none"
+                  className="flex-1 bg-[#fcf9f8] border border-stone-300 rounded-sm p-3 text-xs text-[#1e1b1b] focus:border-[#4a5d4a] focus:ring-2 focus:ring-[#4a5d4a]/30 outline-none"
                 />
                 <button
                   onClick={() => handleRemoveBenefit(idx)}
                   className="p-3 text-red-600 hover:bg-red-50 rounded-sm border border-stone-300 cursor-pointer"
-                  title="Eliminar"
+                  title="Eliminar" aria-label="Eliminar elemento"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

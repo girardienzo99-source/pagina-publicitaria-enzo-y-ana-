@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { motion } from 'motion/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { 
-  Sparkles, 
   CheckCircle2, 
   Layers, 
   Monitor, 
@@ -11,13 +10,7 @@ import {
   Smartphone, 
   Mail, 
   Zap, 
-  ExternalLink,
-  Code2,
-  FileCheck,
-  Utensils,
-  ShoppingBag,
-  Wrench,
-  Calendar
+  ExternalLink 
 } from 'lucide-react';
 import { FlyerData, FlyerTheme, FlyerFormat } from '../types';
 import { getWhatsAppUrl, OFFICIAL_PHONE_FORMATTED } from '../lib/whatsapp';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Layers, CheckCircle2, MessageCircle, Sparkles, Check } from 'lucide-react';
+import { Layers, MessageCircle, Sparkles, Check } from 'lucide-react';
 import { getWhatsAppUrl } from '../lib/whatsapp';
 
 interface PlansAndModalitiesSectionProps {
