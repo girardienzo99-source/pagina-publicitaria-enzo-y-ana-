@@ -10,7 +10,6 @@
  *                               confirm the address once)
  * Destination email: LEAD_NOTIFY_EMAIL (comma separated). Defaults to the team inbox.
  */
-import { clientIp, cleanText, escapeHtml, json, rateLimit, readJson, createNodeHandler } from './_lib/http';
 
 const DEFAULT_NOTIFY_EMAIL = 'enzogirardi84@gmail.com';
 const SITE_URL = process.env.SITE_URL || 'https://riocuarto-web.online';
@@ -27,6 +26,67 @@ interface Lead {
   notes: string;
   estimate: string;
   page: string;
+}
+
+function json(status: number, body: unknown, extraHeaders: Record<string, string> = {}) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      ...extraHeaders,
+    },
+  });
+}
+
+function clientIp(request: Request): string {
+  return (
+    request.headers.get('x-real-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    'unknown'
+  );
+}
+
+const buckets = new Map<string, { count: number; resetAt: number }>();
+function rateLimit(key: string, limit: number, windowMs: number): boolean {
+  const now = Date.now();
+  const bucket = buckets.get(key);
+  if (!bucket || bucket.resetAt < now) {
+    buckets.set(key, { count: 1, resetAt: now + windowMs });
+    if (buckets.size > 5000) {
+      for (const [k, b] of buckets) if (b.resetAt < now) buckets.delete(k);
+    }
+    return true;
+  }
+  bucket.count += 1;
+  return bucket.count <= limit;
+}
+
+function cleanText(value: unknown, maxLength: number): string {
+  if (typeof value !== 'string') return '';
+  // eslint-disable-next-line no-control-regex
+  return value.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '').trim().slice(0, maxLength);
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+async function readJson<T = Record<string, unknown>>(request: Request, maxBytes = 16_000): Promise<T | null> {
+  const contentType = request.headers.get('content-type') || '';
+  if (!contentType.includes('application/json') && !contentType.includes('text/plain')) return null;
+  const raw = await request.text();
+  if (raw.length > maxBytes) return null;
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
 }
 
 function parseLead(body: Record<string, unknown>): Lead | { error: string } {
@@ -167,4 +227,55 @@ export function GET(): Response {
   return json(405, { ok: false, error: 'Método no permitido.' }, { allow: 'POST' });
 }
 
-export default createNodeHandler({ POST, GET });
+// Vercel Serverless Function Default Export Adapter
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function handler(req: any, res: any) {
+  const method = (req.method || 'GET').toUpperCase();
+  if (method !== 'POST') {
+    if (typeof res.setHeader === 'function') res.setHeader('Allow', 'POST');
+    return typeof res.status === 'function'
+      ? res.status(405).json({ ok: false, error: 'Método no permitido.' })
+      : res.end('Method Not Allowed');
+  }
+
+  try {
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'localhost';
+    const url = `${protocol}://${host}${req.url}`;
+
+    const headers = new Headers();
+    for (const [key, value] of Object.entries(req.headers)) {
+      if (typeof value === 'string') headers.set(key, value);
+      else if (Array.isArray(value)) value.forEach(v => headers.append(key, v));
+    }
+
+    let body: string | undefined = undefined;
+    if (typeof req.body === 'object' && req.body !== null) {
+      body = JSON.stringify(req.body);
+      if (!headers.has('content-type')) headers.set('content-type', 'application/json');
+    } else if (typeof req.body === 'string') {
+      body = req.body;
+    }
+
+    const webRequest = new Request(url, { method: 'POST', headers, body });
+    const webResponse = await POST(webRequest);
+
+    if (typeof res.status === 'function') res.status(webResponse.status);
+    else res.statusCode = webResponse.status;
+
+    webResponse.headers.forEach((val, k) => {
+      if (typeof res.setHeader === 'function') res.setHeader(k, val);
+    });
+
+    const text = await webResponse.text();
+    if (typeof res.send === 'function') res.send(text);
+    else res.end(text);
+  } catch (err) {
+    console.error('[lead serverless error]', err);
+    if (typeof res.status === 'function') res.status(500).json({ ok: false, error: 'Error del servidor.' });
+    else {
+      res.statusCode = 500;
+      res.end('Server Error');
+    }
+  }
+}
