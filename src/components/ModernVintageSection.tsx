@@ -249,10 +249,7 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
         {/* MÓDULO 02: POS y Gestión Gastronómica */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-6 order-2 lg:order-1">
-            <GastronomicVideoPlayer 
-              videoSrc="/assets/video_patron.mp4"
-              posterSrc={posGastronomicoImg}
-            />
+            <GastronomicVideoPlayer posterSrc={posGastronomicoImg} />
           </div>
 
           <div className="lg:col-span-6 space-y-4 order-1 lg:order-2">

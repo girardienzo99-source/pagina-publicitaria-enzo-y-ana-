@@ -9,7 +9,7 @@ interface GastronomicVideoPlayerProps {
 }
 
 export const GastronomicVideoPlayer: React.FC<GastronomicVideoPlayerProps> = ({
-  videoSrc = '/assets/video_patron.mp4',
+  videoSrc = '',
   posterSrc = posGastronomicoFallback,
   className = '',
 }) => {
@@ -20,7 +20,8 @@ export const GastronomicVideoPlayer: React.FC<GastronomicVideoPlayerProps> = ({
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMusicActive, setIsMusicActive] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [hasVideoError, setHasVideoError] = useState(false);
+  // Without a video file we go straight to the real photo (no failed network request).
+  const [hasVideoError, setHasVideoError] = useState(!videoSrc);
 
   // Generador de música ambiental suave (Resto-Lounge Chillout) usando Web Audio API
   // para garantizar que la música funcione siempre de forma inmediata sin archivos pesados ni bloqueos
