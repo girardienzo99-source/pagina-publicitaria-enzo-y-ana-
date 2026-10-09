@@ -16,9 +16,7 @@ import { portfolioModules } from '../data/portfolioData';
 import { SystemModule } from '../types';
 import { getWhatsAppUrl } from '../lib/whatsapp';
 import { RoiCalculatorSection } from './RoiCalculatorSection';
-import { PlansAndModalitiesSection } from './PlansAndModalitiesSection';
 import { TestimonialsSection } from './TestimonialsSection';
-import { FaqAccordionSection } from './FaqAccordionSection';
 
 interface PortfolioShowcaseProps {
   phone: string;
@@ -305,19 +303,13 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({ phone, onO
         </motion.div>
       </AnimatePresence>
 
-      {/* STRUCTURAL EXTENSIONS */}
+      {/* STRUCTURAL EXTENSIONS (planes y FAQ viven en la portada) */}
       <div className="space-y-12 pt-8 border-t border-stone-200">
-        {/* 1. Modalidades & Planes de Trabajo */}
-        <PlansAndModalitiesSection phone={phone} />
-
-        {/* 2. Simulador de Retorno de Inversión (ROI) */}
+        {/* 1. Simulador de Retorno de Inversión (ROI) */}
         <RoiCalculatorSection phone={phone} />
 
-        {/* 3. Casos de Éxito & Testimonios */}
+        {/* 2. Casos de Éxito & Testimonios */}
         <TestimonialsSection phone={phone} />
-
-        {/* 4. Preguntas Frecuentes Interactivas */}
-        <FaqAccordionSection phone={phone} />
       </div>
 
     </div>

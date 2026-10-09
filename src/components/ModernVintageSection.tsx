@@ -1,161 +1,211 @@
 import React from 'react';
-import { 
-  MessageCircle, 
-  Check, 
-  Sparkles
+import {
+  MessageCircle,
+  Check,
+  Sparkles,
+  ShieldCheck,
+  Receipt,
+  Headphones,
+  GraduationCap,
+  Zap,
+  Smartphone,
+  BarChart3,
+  Wrench,
+  ArrowRight,
+  MessagesSquare,
+  FileText,
+  Settings2,
+  Rocket
 } from 'lucide-react';
 import { getWhatsAppUrl } from '../lib/whatsapp';
 import { GastronomicVideoPlayer } from './GastronomicVideoPlayer';
 import { PromoVideoSection } from './PromoVideoSection';
+import { PlansAndModalitiesSection } from './PlansAndModalitiesSection';
+import { TestimonialsSection } from './TestimonialsSection';
+import { FaqAccordionSection } from './FaqAccordionSection';
 import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.webp';
 import posGastronomicoImg from '../assets/pos_gastronomico.webp';
 import ferreteriaImg from '../assets/ferreteria.webp';
 
 interface ModernVintageSectionProps {
+  phone: string;
   onNavigateToPortfolio?: () => void;
   onNavigateToCalculator?: () => void;
 }
 
+const TRUST_ITEMS = [
+  { icon: ShieldCheck, label: 'Cero comisiones por venta' },
+  { icon: Receipt, label: 'Facturación ARCA (ex AFIP)' },
+  { icon: Headphones, label: 'Soporte directo por WhatsApp' },
+  { icon: GraduationCap, label: 'Instalación y capacitación' }
+];
+
+const BENEFITS = [
+  {
+    icon: Zap,
+    title: 'Vendé más rápido',
+    text: 'Caja ágil con código de barras, cobro con efectivo, tarjeta o Mercado Pago y tickets al instante. Menos filas, más ventas.'
+  },
+  {
+    icon: BarChart3,
+    title: 'Controlá tu stock y tus números',
+    text: 'Stock en tiempo real, alertas de faltantes, cierre de caja diario y reportes claros de ventas y rentabilidad.'
+  },
+  {
+    icon: Smartphone,
+    title: 'Tu negocio en el celular',
+    text: 'Consultá ventas y caja desde cualquier lugar. Catálogo web con pedidos directos a tu WhatsApp.'
+  },
+  {
+    icon: Wrench,
+    title: 'Hecho a tu medida',
+    text: 'No es un sistema genérico: lo adaptamos a tu rubro y a tu forma de trabajar, y lo hacemos crecer con vos.'
+  }
+];
+
+const STEPS = [
+  { icon: MessagesSquare, title: 'Charlamos', text: 'Nos contás por WhatsApp cómo trabaja tu negocio y qué necesitás resolver.' },
+  { icon: FileText, title: 'Propuesta', text: 'Te enviamos una propuesta clara con alcance, tiempos y presupuesto sin compromiso.' },
+  { icon: Settings2, title: 'Configuración', text: 'Desarrollamos y configuramos el sistema, y cargamos tus productos, precios y clientes.' },
+  { icon: Rocket, title: 'Capacitación', text: 'Te enseñamos a usarlo en minutos y quedamos a tu lado con soporte directo.' }
+];
+
 export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
-  onNavigateToPortfolio,
-  onNavigateToCalculator
+  phone,
+  onNavigateToPortfolio
 }) => {
   const whatsappAnahiUrl = getWhatsAppUrl(
-    'Hola Anahí! Vi el diseño de Río Cuarto Web y quisiera pedir asesoramiento para mi negocio.',
+    'Hola Anahí! Vi la página de Río Cuarto Web y quisiera pedir un presupuesto para mi negocio.',
     'anahi'
   );
   const whatsappEnzoUrl = getWhatsAppUrl(
-    'Hola Enzo! Vi el diseño de Río Cuarto Web y quisiera pedir asesoramiento para mi negocio.',
+    'Hola Enzo! Vi la página de Río Cuarto Web y quisiera pedir un presupuesto para mi negocio.',
     'enzo'
   );
-  
-  const getPlanWhatsAppUrl = (planName: string) => {
-    return getWhatsAppUrl(
-      `Hola Enzo y Anahí! Me interesa el plan "${planName}" de Río Cuarto Web.`,
-      'enzo'
-    );
-  };
 
   return (
-    <div className="space-y-16 sm:space-y-24 bg-[#fcf9f8] text-[#1e1b1b] rounded-3xl sm:rounded-[40px] p-6 sm:p-12 lg:p-16 border border-stone-300/80 shadow-2xl font-montserrat">
+    <div className="space-y-20 sm:space-y-28 bg-[#fcf9f8] text-[#1e1b1b] rounded-3xl sm:rounded-[40px] p-6 sm:p-12 lg:p-16 border border-stone-300/80 shadow-2xl font-montserrat">
 
       {/* ========================================================
-          1. BARRA DE NAVEGACIÓN EN ESPAÑOL
+          1. HERO
       ======================================================== */}
-      <nav className="flex flex-col sm:flex-row justify-between items-center gap-4 pb-8 border-b border-stone-200">
-        <div className="font-editorial text-2xl sm:text-3xl font-bold tracking-tight text-[#1e1b1b]">
-          Río Cuarto Web
-        </div>
-
-        <div className="flex items-center space-x-6 sm:space-x-8 text-xs font-semibold uppercase tracking-widest text-[#1e1b1b]/70">
-          <button 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-            className="text-[#1e1b1b] border-b-2 border-[#4a5d4a] pb-1 cursor-pointer font-bold"
-          >
-            INICIO
-          </button>
-          <a href="#solutions" className="hover:text-[#4a5d4a] transition">
-            SOLUCIONES
-          </a>
-          {onNavigateToPortfolio && (
-            <button onClick={onNavigateToPortfolio} className="hover:text-[#4a5d4a] transition cursor-pointer">
-              PROYECTOS
-            </button>
-          )}
-        </div>
-
-        <a
-          href={whatsappEnzoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white px-6 py-2.5 rounded-sm text-xs font-semibold uppercase tracking-wider transition shadow-md inline-flex items-center space-x-2"
-        >
-          <span>CONTACTO</span>
-        </a>
-      </nav>
-
-
-      {/* ========================================================
-          2. PORTADA HERO — ARTESANÍA DIGITAL
-      ======================================================== */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
-        
-        {/* Columna Izquierda: Titular & Propuesta de Valor */}
-        <div className="space-y-6">
-          <h1 className="font-editorial text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-[#1e1b1b]">
-            Diseño Digital<br />
-            <span className="text-[#4a5d4a] italic font-normal">a Medida</span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-[#1e1b1b]/80 leading-relaxed max-w-md font-normal">
-            Cero comisiones. Facturación ARCA. Soporte Directo. Soluciones de software premium para empresas exigentes.
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <a
-              href={whatsappEnzoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white px-8 py-4 rounded-sm font-semibold text-xs sm:text-sm uppercase tracking-wider transition shadow-lg inline-flex items-center space-x-2"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>Contactar</span>
-            </a>
-
-            <a
-              href="#solutions"
-              className="border border-[#4a5d4a] text-[#4a5d4a] hover:bg-[#4a5d4a]/10 px-8 py-4 rounded-sm font-semibold text-xs sm:text-sm uppercase tracking-wider transition inline-flex items-center"
-            >
-              Ver Soluciones
-            </a>
-          </div>
-        </div>
-
-        {/* Columna Derecha: Marco Visual con Filosofía de Artesanía Digital */}
-        <div className="relative">
-          <div className="relative rounded-sm overflow-hidden shadow-2xl border border-stone-300">
-            <img 
-              src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1000" 
-              alt="Artesanía Digital - Río Cuarto Web" 
-              loading="eager"
-              decoding="async"
-              className="w-full h-80 sm:h-96 object-cover"
-            />
-          </div>
-
-          {/* Tarjeta Flotante Translúcida de Filosofía */}
-          <div className="absolute -bottom-6 -left-4 sm:-left-6 glass-card-vintage p-5 sm:p-6 border-l-4 border-[#4a5d4a] shadow-2xl rounded-sm max-w-xs">
-            <span className="text-xs uppercase tracking-widest opacity-60 font-semibold block text-[#1e1b1b]">
-              Filosofía
+      <section className="space-y-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+          <div className="lg:col-span-6 space-y-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4a5d4a]/10 text-[#4a5d4a] border border-[#4a5d4a]/20 text-[11px] font-bold uppercase tracking-[0.18em]">
+              <Sparkles className="w-3.5 h-3.5" />
+              Software para comercios
             </span>
-            <p className="font-editorial italic text-xl font-bold text-[#1e1b1b] mt-1">
-              Artesanía Digital
+
+            <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight text-[#1e1b1b]">
+              El sistema que tu negocio necesita,{' '}
+              <span className="text-[#4a5d4a] italic font-normal">hecho a medida.</span>
+            </h1>
+
+            <p className="text-base sm:text-lg text-[#1e1b1b]/75 leading-relaxed max-w-lg">
+              Punto de venta, control de stock, facturación ARCA y catálogo web para comercios, gastronomía y pymes.
+              Sin comisiones por venta y con soporte directo de quienes lo programan.
             </p>
-            <p className="text-xs text-[#1e1b1b]/70 mt-1">
-              Desarrollado línea por línea por Anahí Gilardi & Enzo Girardi.
+
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <a
+                href={whatsappEnzoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white px-7 py-4 min-h-[48px] rounded-sm font-semibold text-xs sm:text-sm uppercase tracking-wider transition shadow-lg inline-flex items-center gap-2"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Pedir presupuesto
+              </a>
+              {onNavigateToPortfolio ? (
+                <button
+                  type="button"
+                  onClick={onNavigateToPortfolio}
+                  className="border border-[#4a5d4a] text-[#4a5d4a] hover:bg-[#4a5d4a]/10 px-7 py-4 min-h-[48px] rounded-sm font-semibold text-xs sm:text-sm uppercase tracking-wider transition inline-flex items-center gap-2 cursor-pointer"
+                >
+                  Ver proyectos
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <a
+                  href="#solutions"
+                  className="border border-[#4a5d4a] text-[#4a5d4a] hover:bg-[#4a5d4a]/10 px-7 py-4 min-h-[48px] rounded-sm font-semibold text-xs sm:text-sm uppercase tracking-wider transition inline-flex items-center gap-2"
+                >
+                  Ver soluciones
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              )}
+            </div>
+
+            <p className="text-xs text-[#1e1b1b]/60">
+              Desarrollado por <strong className="text-[#1e1b1b]/80">Anahí Gilardi &amp; Enzo Girardi</strong> · Respuesta en el día
             </p>
+          </div>
+
+          <div className="lg:col-span-6">
+            <PromoVideoSection variant="hero" />
           </div>
         </div>
 
+        {/* Trust strip */}
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          {TRUST_ITEMS.map(({ icon: Icon, label }) => (
+            <li
+              key={label}
+              className="flex items-center gap-3 bg-white border border-stone-200 rounded-xl px-4 py-3.5 shadow-sm"
+            >
+              <span className="flex items-center justify-center w-9 h-9 shrink-0 rounded-full bg-[#4a5d4a]/10">
+                <Icon className="w-4.5 h-4.5 text-[#4a5d4a]" />
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-[#1e1b1b]/85 leading-snug">{label}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* ========================================================
-          2.b VIDEO PROMOCIONAL
+          2. BENEFICIOS
       ======================================================== */}
-      <PromoVideoSection />
+      <section aria-labelledby="benefits-title" className="space-y-10">
+        <div className="text-center max-w-2xl mx-auto space-y-3">
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#4a5d4a]">Por qué elegirnos</span>
+          <h2 id="benefits-title" className="font-editorial text-3xl sm:text-5xl font-bold tracking-tight text-[#1e1b1b]">
+            Menos planillas. Más control.
+          </h2>
+          <p className="text-sm sm:text-base text-[#1e1b1b]/70 font-light leading-relaxed">
+            Herramientas simples para el día a día de tu comercio, pensadas para que dejes de perder tiempo y plata.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {BENEFITS.map(({ icon: Icon, title, text }) => (
+            <div
+              key={title}
+              className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-[#4a5d4a]/40 transition duration-300 space-y-3"
+            >
+              <span className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#4a5d4a] text-white shadow-md">
+                <Icon className="w-5 h-5" />
+              </span>
+              <h3 className="font-editorial text-xl font-bold text-[#1e1b1b]">{title}</h3>
+              <p className="text-xs sm:text-sm text-[#1e1b1b]/70 leading-relaxed">{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* ========================================================
           3. SOLUCIONES DE SOFTWARE A MEDIDA (3 MÓDULOS EN ESPAÑOL)
       ======================================================== */}
-      <section id="solutions" className="space-y-16 sm:space-y-24 pt-8">
+      <section id="solutions" className="space-y-16 sm:space-y-24 scroll-mt-24">
         
         {/* Título de la Sección */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <h2 className="font-editorial text-4xl sm:text-6xl font-bold tracking-tight text-[#1e1b1b]">
-            Soluciones de Software a Medida.
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#4a5d4a]">Casos reales</span>
+          <h2 className="font-editorial text-3xl sm:text-5xl font-bold tracking-tight text-[#1e1b1b]">
+            Sistemas funcionando en negocios reales.
           </h2>
           <p className="text-sm sm:text-base text-[#1e1b1b]/70 leading-relaxed font-light">
-            Ingeniería y desarrollo de precisión para comercios y empresas modernas. Desde control de stock y talles hasta puntos de venta y facturación automática, diseñados para optimizar tu gestión.
+            Facturación, gastronomía y comercio minorista: cada sistema se adapta al rubro, desde el control de stock hasta el punto de venta y la facturación automática.
           </p>
         </div>
 
@@ -304,155 +354,97 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
 
       </section>
 
-
       {/* ========================================================
-          4. PLANES DE INVERSIÓN (EN ESPAÑOL)
+          4. CÓMO TRABAJAMOS
       ======================================================== */}
-      <section className="space-y-12 pt-8">
-        
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <h2 className="font-editorial text-4xl sm:text-5xl font-bold tracking-tight text-[#1e1b1b]">
-            Planes de Inversión.
+      <section aria-labelledby="process-title" className="space-y-10">
+        <div className="text-center max-w-2xl mx-auto space-y-3">
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#4a5d4a]">Cómo trabajamos</span>
+          <h2 id="process-title" className="font-editorial text-3xl sm:text-5xl font-bold tracking-tight text-[#1e1b1b]">
+            De la primera charla a vender con tu sistema.
           </h2>
-          <p className="text-xs sm:text-sm text-[#1e1b1b]/70 leading-relaxed font-light">
-            Precios claros y transparentes diseñados para escalar al ritmo de tu negocio, sin comisiones por venta.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-          
-          {/* Tarjeta 1: Pyme */}
-          <div className="bg-white rounded-2xl p-7 border border-stone-200 shadow-md flex flex-col justify-between space-y-6">
-            <div className="space-y-3">
-              <h3 className="font-editorial text-2xl font-bold text-[#1e1b1b]">Pyme</h3>
-              <p className="text-xs text-[#1e1b1b]/70 min-h-[32px]">
-                Herramientas esenciales para comercios locales en crecimiento.
-              </p>
-              <ul className="space-y-2.5 pt-4 border-t border-stone-100 text-xs text-[#1e1b1b]/80">
-                <li className="flex items-center space-x-2">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Control de Inventario Básico</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Punto de Venta (POS) Estándar</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Soporte Técnico por WhatsApp y Email</span>
-                </li>
-              </ul>
-            </div>
-
-            <a
-              href={getPlanWhatsAppUrl('Pyme')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-3 text-center border border-stone-300 text-[#1e1b1b] hover:bg-stone-50 font-bold text-xs uppercase tracking-wider rounded-sm transition"
-            >
-              CONSULTAR
-            </a>
-          </div>
-
-          {/* Tarjeta 2: Pro ARCA (Destacado) */}
-          <div className="bg-white rounded-2xl p-7 border-2 border-[#4a5d4a] shadow-xl relative flex flex-col justify-between space-y-6 transform md:-translate-y-2">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4a5d4a] text-white px-3.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-md">
-              MÁS ELEGIDO
-            </div>
-
-            <div className="space-y-3 pt-2">
-              <h3 className="font-editorial text-2xl font-bold text-[#1e1b1b]">Pro ARCA</h3>
-              <p className="text-xs text-[#1e1b1b]/70 min-h-[32px]">
-                Cumplimiento normativo total y funciones avanzadas de gestión.
-              </p>
-              <ul className="space-y-2.5 pt-4 border-t border-stone-100 text-xs text-[#1e1b1b]/80">
-                <li className="flex items-center space-x-2 font-medium">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Todo lo incluido en Pyme</span>
-                </li>
-                <li className="flex items-center space-x-2 font-medium">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Facturación Electrónica ARCA Completa</span>
-                </li>
-                <li className="flex items-center space-x-2 font-medium">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Soporte Multidepósito y Sucursales</span>
-                </li>
-              </ul>
-            </div>
-
-            <a
-              href={getPlanWhatsAppUrl('Pro ARCA')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-3 text-center bg-[#4a5d4a] hover:bg-[#3b4b3b] text-white font-bold text-xs uppercase tracking-wider rounded-sm transition shadow-md"
-            >
-              ELEGIR PLAN
-            </a>
-          </div>
-
-          {/* Tarjeta 3: Exclusivo a Medida */}
-          <div className="bg-white rounded-2xl p-7 border border-stone-200 shadow-md flex flex-col justify-between space-y-6">
-            <div className="space-y-3">
-              <h3 className="font-editorial text-2xl font-bold text-[#1e1b1b]">Exclusivo a Medida</h3>
-              <p className="text-xs text-[#1e1b1b]/70 min-h-[32px]">
-                Desarrollo 100% personalizado y atención prioritaria para empresas.
-              </p>
-              <ul className="space-y-2.5 pt-4 border-t border-stone-100 text-xs text-[#1e1b1b]/80">
-                <li className="flex items-center space-x-2">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Módulos Exclusivos para tu Rubro</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Servidor Dedicado y Base de Datos Propia</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Check className="w-4 h-4 text-[#4a5d4a]" />
-                  <span>Soporte Directo Telefónico y WhatsApp 24/7</span>
-                </li>
-              </ul>
-            </div>
-
-            <a
-              href={getPlanWhatsAppUrl('Exclusivo a Medida')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-3 text-center border border-stone-300 text-[#1e1b1b] hover:bg-stone-50 font-bold text-xs uppercase tracking-wider rounded-sm transition"
-            >
-              CONTACTARNOS
-            </a>
-          </div>
-
-        </div>
-
+        <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {STEPS.map(({ icon: Icon, title, text }, idx) => (
+            <li key={title} className="relative bg-white rounded-2xl p-6 border border-stone-200 shadow-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-[#4a5d4a]/10 text-[#4a5d4a]">
+                  <Icon className="w-5 h-5" />
+                </span>
+                <span className="font-editorial text-4xl font-bold text-[#4a5d4a]/20">0{idx + 1}</span>
+              </div>
+              <h3 className="font-editorial text-xl font-bold text-[#1e1b1b]">{title}</h3>
+              <p className="text-xs sm:text-sm text-[#1e1b1b]/70 leading-relaxed">{text}</p>
+            </li>
+          ))}
+        </ol>
       </section>
 
+      {/* ========================================================
+          5. PLANES (sin precios: siempre "Consultar")
+      ======================================================== */}
+      <section id="planes-home">
+        <PlansAndModalitiesSection phone={phone} />
+      </section>
 
       {/* ========================================================
-          5. PIE DE PÁGINA INSTITUCIONAL EN ESPAÑOL
+          6. TESTIMONIOS
       ======================================================== */}
-      <footer className="pt-12 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6 text-xs text-[#1e1b1b]/70">
-        <div>
-          <span className="font-editorial text-lg font-bold text-[#1e1b1b] block">
-            Río Cuarto Web
-          </span>
-          <p className="text-[11px] text-[#1e1b1b]/60 mt-0.5">
-            Desarrollo de software y arquitectura digital a medida desde 2024. Creado por Anahí Gilardi & Enzo Girardi.
+      <section id="testimonios">
+        <TestimonialsSection phone={phone} />
+      </section>
+
+      {/* ========================================================
+          7. PREGUNTAS FRECUENTES
+      ======================================================== */}
+      <section id="faq">
+        <FaqAccordionSection phone={phone} />
+      </section>
+
+      {/* ========================================================
+          8. CTA FINAL
+      ======================================================== */}
+      <section className="relative overflow-hidden rounded-3xl bg-[#4a5d4a] text-white px-6 py-12 sm:px-12 sm:py-16 shadow-2xl">
+        <div aria-hidden="true" className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/10 blur-2xl" />
+        <div aria-hidden="true" className="absolute -bottom-28 -left-20 w-72 h-72 rounded-full bg-black/10 blur-2xl" />
+
+        <div className="relative max-w-3xl mx-auto text-center space-y-6">
+          <h2 className="font-editorial text-3xl sm:text-5xl font-bold tracking-tight leading-tight">
+            ¿Listo para ordenar tu negocio?
+          </h2>
+          <p className="text-sm sm:text-lg text-white/85 font-light leading-relaxed">
+            Escribinos por WhatsApp, contanos qué necesitás y te enviamos un presupuesto a medida, sin compromiso.
           </p>
-        </div>
 
-        <div className="flex flex-wrap items-center gap-6 text-xs font-semibold">
-          <a href="#solutions" className="hover:text-[#4a5d4a] transition">Servicios</a>
-          <a href={whatsappEnzoUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#4a5d4a] transition">Términos</a>
-          <a href={whatsappAnahiUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#4a5d4a] transition">Privacidad</a>
-          <a href={whatsappEnzoUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#4a5d4a] transition">Contacto</a>
-        </div>
-      </footer>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <a
+              href={whatsappAnahiUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-[#2f3d2f] hover:bg-[#f3efe9] px-7 py-4 min-h-[48px] rounded-sm font-bold text-xs sm:text-sm uppercase tracking-wider transition shadow-lg"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Hablar con Anahí
+            </a>
+            <a
+              href={whatsappEnzoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/70 text-white hover:bg-white/10 px-7 py-4 min-h-[48px] rounded-sm font-bold text-xs sm:text-sm uppercase tracking-wider transition"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Hablar con Enzo
+            </a>
+          </div>
 
-      <div className="text-center text-[10px] text-stone-400 border-t border-stone-100 pt-4">
-        © 2026 Río Cuarto Web. Todos los derechos reservados. Creado por Anahí Gilardi & Enzo Girardi.
-      </div>
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-2 text-xs text-white/80">
+            <li className="inline-flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> Presupuesto sin cargo</li>
+            <li className="inline-flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> Respuesta en el día</li>
+            <li className="inline-flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> Pago único o en cuotas</li>
+          </ul>
+        </div>
+      </section>
 
     </div>
   );

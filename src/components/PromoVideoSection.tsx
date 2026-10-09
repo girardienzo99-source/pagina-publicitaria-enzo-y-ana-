@@ -6,19 +6,31 @@ const VIDEO_VERSION = '1';
 const VIDEO_SRC = `/assets/video_promo_riocuarto_web.mp4?v=${VIDEO_VERSION}`;
 const POSTER_SRC = `/assets/video_promo_poster.webp?v=${VIDEO_VERSION}`;
 
+interface PromoVideoSectionProps {
+  /**
+   * 'section' (default): full block with heading, autoplays muted when scrolled into view.
+   * 'hero': frame only, for the top of the page. The video is downloaded only when the
+   * user presses play, so it never slows down the first paint.
+   */
+  variant?: 'section' | 'hero';
+}
+
 /**
  * Promo video of the site. Starts muted when it scrolls into view (browsers block
  * autoplay with sound) and offers a clear "Activar sonido" button for the music.
  * The file is only downloaded once the section gets close to the viewport.
  */
-export const PromoVideoSection: React.FC = () => {
+export const PromoVideoSection: React.FC<PromoVideoSectionProps> = ({ variant = 'section' }) => {
+  const isHero = variant === 'hero';
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const playWhenLoaded = useRef(false);
   const [shouldLoad, setShouldLoad] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
   useEffect(() => {
+    if (isHero) return;
     const el = containerRef.current;
     if (!el) return;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -38,6 +50,13 @@ export const PromoVideoSection: React.FC = () => {
     );
     observer.observe(el);
     return () => observer.disconnect();
+  }, [shouldLoad, isHero]);
+
+  // Hero variant: start playback right after the src has been attached on first click.
+  useEffect(() => {
+    if (!shouldLoad || !playWhenLoaded.current) return;
+    playWhenLoaded.current = false;
+    videoRef.current?.play().catch(() => undefined);
   }, [shouldLoad]);
 
   const toggleSound = () => {
@@ -57,9 +76,81 @@ export const PromoVideoSection: React.FC = () => {
     if (!video) return;
     video.muted = false;
     setIsMuted(false);
+    if (!shouldLoad) {
+      playWhenLoaded.current = true;
+      setShouldLoad(true);
+      return;
+    }
     video.currentTime = 0;
     video.play().catch(() => undefined);
   };
+
+  const frame = (
+    <div ref={containerRef} className={`relative mx-auto ${isHero ? 'w-full' : 'max-w-5xl'}`}>
+      {/* Premium frame: soft sage glow + double border */}
+      <div aria-hidden="true" className="absolute -inset-3 sm:-inset-4 rounded-[28px] sm:rounded-[36px] bg-gradient-to-br from-[#4a5d4a]/25 via-[#d9cfc7]/30 to-[#4a5d4a]/20 blur-xl" />
+      <div className="relative rounded-[22px] sm:rounded-[30px] p-1.5 sm:p-2 bg-gradient-to-br from-white via-[#efe9e5] to-[#d9d2cc] shadow-2xl">
+        <div className="relative overflow-hidden rounded-[18px] sm:rounded-[24px] ring-1 ring-black/10 bg-[#1e1b1b] aspect-video">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover"
+            poster={POSTER_SRC}
+            src={shouldLoad ? VIDEO_SRC : undefined}
+            muted
+            playsInline
+            loop
+            preload="none"
+            controls={isPlaying && !isMuted}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            aria-label="Video promocional de Río Cuarto Web"
+          />
+
+          {!isPlaying && (
+            <button
+              type="button"
+              onClick={startWithSound}
+              className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition group"
+              aria-label="Reproducir video con sonido"
+            >
+              <span className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-white/95 shadow-2xl ring-8 ring-white/30 group-hover:scale-105 transition">
+                <Play className="w-7 h-7 sm:w-9 sm:h-9 text-[#4a5d4a] translate-x-0.5" fill="currentColor" />
+              </span>
+              {isHero && (
+                <span className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur text-white text-[10px] sm:text-xs font-semibold tracking-wide">
+                  Ver video · 45 s
+                </span>
+              )}
+            </button>
+          )}
+
+          {isPlaying && isMuted && (
+            <button
+              type="button"
+              onClick={toggleSound}
+              className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 text-[#1e1b1b] text-xs font-bold uppercase tracking-wider shadow-lg hover:bg-white transition"
+            >
+              <VolumeX className="w-4 h-4 text-[#4a5d4a]" />
+              Activar sonido
+            </button>
+          )}
+
+          {isPlaying && !isMuted && (
+            <button
+              type="button"
+              onClick={toggleSound}
+              className="absolute top-3 right-3 sm:top-5 sm:right-5 flex items-center justify-center w-10 h-10 rounded-full bg-white/90 shadow-lg hover:bg-white transition"
+              aria-label="Silenciar video"
+            >
+              <Volume2 className="w-4 h-4 text-[#4a5d4a]" />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (isHero) return frame;
 
   return (
     <section aria-labelledby="promo-video-title" className="space-y-8 pt-4">
@@ -74,64 +165,7 @@ export const PromoVideoSection: React.FC = () => {
           Un recorrido real por nuestra web, los sistemas que desarrollamos y cómo cotizar el tuyo.
         </p>
       </div>
-
-      <div ref={containerRef} className="relative mx-auto max-w-5xl">
-        {/* Premium frame: soft sage glow + double border */}
-        <div aria-hidden="true" className="absolute -inset-3 sm:-inset-4 rounded-[28px] sm:rounded-[36px] bg-gradient-to-br from-[#4a5d4a]/25 via-[#d9cfc7]/30 to-[#4a5d4a]/20 blur-xl" />
-        <div className="relative rounded-[22px] sm:rounded-[30px] p-1.5 sm:p-2 bg-gradient-to-br from-white via-[#efe9e5] to-[#d9d2cc] shadow-2xl">
-          <div className="relative overflow-hidden rounded-[18px] sm:rounded-[24px] ring-1 ring-black/10 bg-[#1e1b1b] aspect-video">
-            <video
-              ref={videoRef}
-              className="absolute inset-0 w-full h-full object-cover"
-              poster={POSTER_SRC}
-              src={shouldLoad ? VIDEO_SRC : undefined}
-              muted
-              playsInline
-              loop
-              preload="none"
-              controls={isPlaying && !isMuted}
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
-              aria-label="Video promocional de Río Cuarto Web"
-            />
-
-            {!isPlaying && (
-              <button
-                type="button"
-                onClick={startWithSound}
-                className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition group"
-                aria-label="Reproducir video con sonido"
-              >
-                <span className="flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/95 shadow-2xl ring-8 ring-white/30 group-hover:scale-105 transition">
-                  <Play className="w-9 h-9 text-[#4a5d4a] translate-x-0.5" fill="currentColor" />
-                </span>
-              </button>
-            )}
-
-            {isPlaying && isMuted && (
-              <button
-                type="button"
-                onClick={toggleSound}
-                className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 text-[#1e1b1b] text-xs font-bold uppercase tracking-wider shadow-lg hover:bg-white transition"
-              >
-                <VolumeX className="w-4 h-4 text-[#4a5d4a]" />
-                Activar sonido
-              </button>
-            )}
-
-            {isPlaying && !isMuted && (
-              <button
-                type="button"
-                onClick={toggleSound}
-                className="absolute top-3 right-3 sm:top-5 sm:right-5 flex items-center justify-center w-10 h-10 rounded-full bg-white/90 shadow-lg hover:bg-white transition"
-                aria-label="Silenciar video"
-              >
-                <Volume2 className="w-4 h-4 text-[#4a5d4a]" />
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+      {frame}
     </section>
   );
 };

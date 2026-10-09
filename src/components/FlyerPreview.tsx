@@ -15,6 +15,7 @@ interface FlyerPreviewProps {
 }
 
 export const FlyerPreview: React.FC<FlyerPreviewProps> = ({
+  flyerData,
   onNavigateToPortfolio,
   onNavigateToCalculator
 }) => {
@@ -22,6 +23,7 @@ export const FlyerPreview: React.FC<FlyerPreviewProps> = ({
     <div className="pb-8 max-w-6xl mx-auto">
       {/* Complete Modern Vintage Experience with Tailored Software Solutions & Investment Plans */}
       <ModernVintageSection
+        phone={flyerData.phone}
         onNavigateToPortfolio={onNavigateToPortfolio}
         onNavigateToCalculator={onNavigateToCalculator}
       />
