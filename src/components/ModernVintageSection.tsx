@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { getWhatsAppUrl } from '../lib/whatsapp';
 import { GastronomicVideoPlayer } from './GastronomicVideoPlayer';
+import { PromoVideoSection } from './PromoVideoSection';
 import sistemaGastronomicoLaptopImg from '../assets/sistema_gastronomico_laptop.webp';
 import posGastronomicoImg from '../assets/pos_gastronomico.webp';
 import ferreteriaImg from '../assets/ferreteria.webp';
@@ -138,6 +139,10 @@ export const ModernVintageSection: React.FC<ModernVintageSectionProps> = ({
 
       </section>
 
+      {/* ========================================================
+          2.b VIDEO PROMOCIONAL
+      ======================================================== */}
+      <PromoVideoSection />
 
       {/* ========================================================
           3. SOLUCIONES DE SOFTWARE A MEDIDA (3 MÓDULOS EN ESPAÑOL)
