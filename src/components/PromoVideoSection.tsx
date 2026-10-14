@@ -3,8 +3,8 @@ import { Play, Volume2, VolumeX } from 'lucide-react';
 
 // Bump VIDEO_VERSION when the files change: /assets/* is served with an immutable cache.
 const VIDEO_VERSION = '1';
-const VIDEO_SRC = `/assets/video_promo_riocuarto_web.mp4?v=${VIDEO_VERSION}`;
-const POSTER_SRC = `/assets/video_promo_poster.webp?v=${VIDEO_VERSION}`;
+const VIDEO_SRC = `${import.meta.env.BASE_URL}assets/video_promo_riocuarto_web.mp4?v=${VIDEO_VERSION}`;
+const POSTER_SRC = `${import.meta.env.BASE_URL}assets/video_promo_poster.webp?v=${VIDEO_VERSION}`;
 
 interface PromoVideoSectionProps {
   /**

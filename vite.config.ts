@@ -58,6 +58,7 @@ export default defineConfig(({ mode }) => {
   Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
 
   return {
+    base: './',
     plugins: [react(), tailwindcss(), vercelApiDevServer()],
     resolve: {
       alias: {

@@ -4,6 +4,7 @@ import { Lock } from 'lucide-react';
 import { HeaderNav, PublicTab } from './components/HeaderNav';
 import { FlyerPreview } from './components/FlyerPreview';
 import { DirectContactBar } from './components/DirectContactBar';
+import { PlansAndModalitiesSection } from './components/PlansAndModalitiesSection';
 import { initialFlyerData } from './data/portfolioData';
 import { FlyerData, FlyerTheme, FlyerFormat } from './types';
 import { loadStoredFlyerConfig, saveFlyerConfig as persistFlyerConfig } from './lib/flyerStorage';
@@ -14,9 +15,6 @@ const PortfolioShowcase = lazy(() =>
 );
 const InteractiveQuoteCalculator = lazy(() =>
   import('./components/InteractiveQuoteCalculator').then(m => ({ default: m.InteractiveQuoteCalculator }))
-);
-const PlansAndModalitiesSection = lazy(() =>
-  import('./components/PlansAndModalitiesSection').then(m => ({ default: m.PlansAndModalitiesSection }))
 );
 const AdminToolsPanel = lazy(() =>
   import('./components/AdminToolsPanel').then(m => ({ default: m.AdminToolsPanel }))
