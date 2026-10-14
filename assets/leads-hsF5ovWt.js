@@ -1,0 +1,1 @@
+async function a(e){try{return(await fetch("/api/lead",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({...e,page:window.location.pathname}),keepalive:!0})).ok}catch{return!1}}export{a as s};
